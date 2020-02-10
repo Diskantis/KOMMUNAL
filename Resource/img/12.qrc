@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="img">
+    <file>icon_checked_n.png</file>
+    <file>icon_checked_o.png</file>
+  </qresource>
+</RCC>
