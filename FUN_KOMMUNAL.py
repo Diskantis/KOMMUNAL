@@ -14,6 +14,27 @@ month = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май',
          'Декабрь']
 
 
+def denominacia(year, cash):
+    year_in = int(year)
+    if year_in <= 2016:  # and self.comboBox_month_KP.currentIndex() + 1 < 6:
+        den_cash = str(int(round(cash, 0)))
+        den_cash = text_convert(den_cash)
+    else:
+        den_cash = str(round(cash, 2))
+        den_cash = text_convert(den_cash)
+    return den_cash
+
+
+def clear_layout(layout):
+    if layout is not None:
+        while layout.count():
+            child = layout.takeAt(0)
+            if child.widget() is not None:
+                child.widget().deleteLater()
+            elif child.layout() is not None:
+                clear_layout(child.layout())
+
+
 def center(a):
     qr = a.geometry()
     cp = QDesktopWidget().availableGeometry().center()

@@ -15,7 +15,7 @@ from PyQt5.QtGui import QIcon
 class UiWinPlateg(object):
     def setupUi_KP(self, WinPlateg):
         self.WinPlateg = WinPlateg
-        self.WinPlateg.setObjectName("KomunPlateg")
+        self.WinPlateg.setObjectName("KommunPlateg")
         self.WinPlateg.setWindowModality(QtCore.Qt.ApplicationModal)
         self.WinPlateg.resize(800, 400)
         self.WinPlateg.setFixedWidth(800)
@@ -197,7 +197,7 @@ class UiWinPlateg(object):
         font.setWeight(75)
         self.lineEdit_P_trf.setFont(font)
         self.lineEdit_P_trf.setAlignment(QtCore.Qt.AlignCenter)
-        self.lineEdit_P_trf.setReadOnly(False)
+        self.lineEdit_P_trf.setReadOnly(True)
         self.lineEdit_P_trf.setStyleSheet("border-radius: 4px; \n color: rgb(209, 209, 217); \n "
                                           "border: 1px solid rgba(50, 50, 50, 240); \n "
                                           "background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, "
@@ -285,7 +285,7 @@ class UiWinPlateg(object):
         font.setWeight(75)
         self.lineEdit_W_trf.setFont(font)
         self.lineEdit_W_trf.setAlignment(QtCore.Qt.AlignCenter)
-        self.lineEdit_W_trf.setReadOnly(False)
+        self.lineEdit_W_trf.setReadOnly(True)
         self.lineEdit_W_trf.setStyleSheet("border-radius: 4px; \n color: rgb(209, 209, 217); \n "
                                           "border: 1px solid rgba(50, 50, 50, 240); \n "
                                           "background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, "
@@ -373,7 +373,7 @@ class UiWinPlateg(object):
         font.setWeight(75)
         self.lineEdit_G_trf.setFont(font)
         self.lineEdit_G_trf.setAlignment(QtCore.Qt.AlignCenter)
-        self.lineEdit_G_trf.setReadOnly(False)
+        self.lineEdit_G_trf.setReadOnly(True)
         self.lineEdit_G_trf.setStyleSheet("border-radius: 4px; \n color: rgb(209, 209, 217); \n "
                                           "border: 1px solid rgba(50, 50, 50, 240); \n "
                                           "background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, "
@@ -413,36 +413,6 @@ class UiWinPlateg(object):
         self.gridLayout.setVerticalSpacing(1)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
         self.gridLayout.setObjectName("gridLayout")
-
-        # self.frame_1 = QtWidgets.QFrame(self.WinPlateg)
-        # self.frame_1.setGeometry(QtCore.QRect(20, 225, 760, 34))
-        # self.frame_1.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        # self.frame_1.setFrameShadow(QtWidgets.QFrame.Raised)
-        # self.frame_1.setStyleSheet("border-radius: 5px; \n border: 1px solid rgba(209, 209, 217, 240);")
-        # self.frame_1.setObjectName("frame_1")
-
-        # self.lineEdit_we = QtWidgets.QLineEdit(self.frame_1)
-        # self.lineEdit_we.setGeometry(QtCore.QRect(180, 2, 170, 30))
-        # sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        # sizePolicy.setHorizontalStretch(0)
-        # sizePolicy.setVerticalStretch(0)
-        # sizePolicy.setHeightForWidth(self.lineEdit_we.sizePolicy().hasHeightForWidth())
-        # self.lineEdit_we.setSizePolicy(sizePolicy)
-        # self.lineEdit_we.setMinimumSize(QtCore.QSize(170, 30))
-        # self.lineEdit_we.setMaximumSize(QtCore.QSize(170, 30))
-        # font = QtGui.QFont()
-        # font.setPointSize(12)
-        # font.setWeight(75)
-        # self.lineEdit_we.setFont(font)
-        # self.lineEdit_we.setMaxLength(9)
-        # self.lineEdit_we.setStyleSheet("border-radius: 4px; \n color: rgb(255, 170, 0); \n "
-        #                                    "border: 1px solid rgba(50, 50, 50, 240); \n "
-        #                                    "background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, "
-        #                                    "stop:0 rgba(125, 126, 131, 255), stop:0.01 rgba(91, 92, 96, 255), "
-        #                                    "stop:0.99 rgba(108, 109, 114, 255), stop:1 rgba(125, 126, 131, 255));")
-        # self.lineEdit_we.setAlignment(QtCore.Qt.AlignCenter)
-        # self.lineEdit_we.setReadOnly(True)
-        # self.lineEdit_we.setObjectName("lineEdit_IS_sum")
 
         # кнопка вызова метода создания ДОЛНИТЕЛЬНЫХ ПЛАТЕЖЕЙ
         self.pushButton_add_Plateg_KP = QtWidgets.QPushButton("Добавить платеж", self.frame_PWG_KP)
@@ -615,7 +585,6 @@ class UiWinPlateg(object):
         font.setPointSize(12)
         font.setWeight(75)
         self.lineEdit_Pl_sum.setFont(font)
-        self.lineEdit_Pl_sum.setMaxLength(9)
         self.lineEdit_Pl_sum.setAlignment(QtCore.Qt.AlignCenter)
         self.lineEdit_Pl_sum.setReadOnly(False)
         self.lineEdit_Pl_sum.setStyleSheet("border-radius: 4px; \n color: rgb(209, 209, 217); \n "
