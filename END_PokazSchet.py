@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import win32api
 
 from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtWidgets import QApplication
@@ -96,6 +97,8 @@ class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
         self.read_pokaz_schet()
 
     def read_pokaz_schet(self):
+        if win32api.GetKeyboardLayout() == 68748313:  # 67699721 - английский 00000409
+            win32api.LoadKeyboardLayout("00000409", 1)  # 68748313 - русский    00000419
 
         file_db = open('Komunal.db', 'a')  # открываем файл базы данных
         file_db.close()

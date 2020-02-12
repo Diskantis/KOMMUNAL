@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import win32api
 
-from PyQt5 import QtWidgets, QtCore, Qt
+from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QApplication
 
 from FUN_KOMMUNAL import *
@@ -56,6 +57,9 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
         # КНОПКИ окна ДОБАВЛЕНИЕ ПЛАТЕЖА
         if self.wa.btn_OK.clicked.connect(lambda: self.btn_ok_wa_name(self.win_resize_y, self.position)):
             pass    # кнопка OK
+        self.wa.btn_OK.setAutoDefault(True)  # click on <Enter>
+        self.wa.lineEdit.returnPressed.connect(self.wa.btn_OK.click)
+
         self.wa.btn_Cancel.clicked.connect(self.btn_cancel_wa)  # кнопка CANCEL
 
         # СОХРАНЯЕМ показания
@@ -121,6 +125,8 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
 
     def btn_add_plateg(self):
         self.wa.name_plateg()
+        if win32api.GetKeyboardLayout() == 67699721:    # 67699721 - английский 00000409
+            win32api.LoadKeyboardLayout("00000419", 1)  # 68748313 - русский    00000419
 
     def btn_ok_wa_name(self, y, position):
         self.name = self.wa.lineEdit.text()
@@ -133,8 +139,12 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
         self.sum_pl.label.setText("Сумма платежа")
         self.sum_pl.name_plateg()
 
+        if win32api.GetKeyboardLayout() == 68748313:    # 67699721 - английский 00000409
+            win32api.LoadKeyboardLayout("00000409", 1)  # 68748313 - русский    00000419
+
         self.sum_pl.btn_OK.clicked.connect(self.btn_ok_sum_pl)
-        # self.sum_pl.btn_OK.keyPressEvent(self.btn_ok_sum_pl)
+        self.sum_pl.btn_OK.setAutoDefault(True)
+        self.sum_pl.lineEdit.returnPressed.connect(self.sum_pl.btn_OK.click)
         self.sum_pl.btn_Cancel.clicked.connect(self.btn_cancel_sum_pl)
 
     def btn_ok_sum_pl(self):
@@ -150,8 +160,7 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
         self.sum_pl.lineEdit.clear()
         self.sum_pl.close()
 
-    def btn_cancel_sum_pl(self, e):
-        self.keyPressEvent(e)
+    def btn_cancel_sum_pl(self):
         self.sum_pl.close()
 
     def btn_cancel_wa(self):
@@ -200,11 +209,11 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
         read_table_KP = sqlite3_read_db(data_base, table_plateg)
         read_table_KP = read_table_KP[0]
 
-        # for i in read_table_KP:
-        #     year = self.comboBox_year_KP.currentText()
-        #     if i[0] == self.comboBox_month_KP.currentIndex() + 1:
-        #         self.list_plat.append(i[2])
-        #         self.list_sum.append(i[3])
+        for i in read_table_KP:
+            year = self.comboBox_year_KP.currentText()
+            if i[0] == self.comboBox_month_KP.currentIndex() + 1:
+                self.list_plat.append(i[2])
+                self.list_sum.append(i[3])
         #         if i[2] == 'Электричество':
         #             self.lineEdit_P_trf.setText(str(i[5]))
         #             pl_sum = float(self.lineEdit_P_kol.text()) * float(self.lineEdit_P_trf.text())
@@ -227,24 +236,24 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
         #         # if i[5] != 0:
         #         #     self.label_OK_1.setPixmap(QtGui.QPixmap("./Resource/img/Galochka.png"))
         #
-        # for i in range(len(self.list_plat)):
-        #     if i > 2:
-        #         self.WinPlateg.resize(800, 365 + self.win_resize_y)
-        #         center(self.WinPlateg)
-        #         self.frame_plategi_KP.setGeometry(QtCore.QRect(20, 225, 760, 0 + self.win_resize_y))
-        #         self.frame_plateg(self.list_plat[i], self.position)
-        #         self.plategi_sum += float(self.list_sum[i])
-        #         self.lineEdit_Pl_sum.setText(text_convert(str(self.list_sum[i])) + " руб")
-        #         self.win_resize_y += 32
-        #         self.position += 1
+        for i in range(len(self.list_plat)):
+            if i > 2:
+                self.WinPlateg.resize(800, 365 + self.win_resize_y)
+                center(self.WinPlateg)
+                self.frame_plategi_KP.setGeometry(QtCore.QRect(20, 225, 760, 0 + self.win_resize_y))
+                self.frame_plateg(self.list_plat[i], self.position)
+                self.plategi_sum += float(self.list_sum[i])
+                self.lineEdit_Pl_sum.setText(text_convert(str(self.list_sum[i])) + " руб")
+                self.win_resize_y += 32
+                self.position += 1
         #
         # if self.plategi_sum > 0:
         #     year = self.comboBox_year_KP.currentText()
         #     den = denominacia(year, cash=self.plategi_sum)
         #     self.lineEdit_IS_sum.setText(den + " руб")
 
-        # print(self.list_plat)
-        # print(self.list_sum)
+        print(self.list_plat)
+        print(self.list_sum)
 
     def read_only(self):  # режим РЕДАКТИРОВАНИЯ значений
         if self.checkBox_Edit_KP.isChecked():

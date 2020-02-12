@@ -643,9 +643,11 @@ class UiWinAdd(QWidget):  # метод создания ДОЛНИТЕЛЬНЫХ
                                     "stop:0 rgba(125, 126, 131, 255), stop:0.01 rgba(108, 109, 114, 255), "
                                     "stop:0.99 rgba(91, 92, 96, 255), stop:1 rgba(125, 126, 131, 255));")
         self.lineEdit.setAlignment(QtCore.Qt.AlignCenter)
+        self.lineEdit.setFocus()
         self.lineEdit.setObjectName("lineEdit")
 
         self.btn_OK.setGeometry(QtCore.QRect(30, 80, 110, 30))
+        self.btn_OK.setAutoDefault(True)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHeightForWidth(self.btn_OK.sizePolicy().hasHeightForWidth())
         self.btn_OK.setSizePolicy(sizePolicy)
@@ -664,5 +666,8 @@ class UiWinAdd(QWidget):  # метод создания ДОЛНИТЕЛЬНЫХ
         self.btn_Cancel.setFont(font)
         self.btn_Cancel.setStyleSheet("font-weight: 700;\n color: rgb(209, 209, 217);\n padding: .5em 1em;")
         self.btn_Cancel.setObjectName("btn_Cancel")
+
+        # QtCore.QMetaObject.connectSlotsByName(self.WinPokazanya)
+        self.setTabOrder(self.btn_OK, self.btn_Cancel)
 
         self.show()
