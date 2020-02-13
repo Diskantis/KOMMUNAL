@@ -3,7 +3,7 @@
 import sys
 import win32api
 
-from PyQt5 import QtWidgets, QtCore
+from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtWidgets import QApplication
 
 from FUN_KOMMUNAL import *
@@ -71,7 +71,7 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
         # ЧИТАЕТ платежи из базы данных
         self.read_kommunal_plateg()
 
-        self.show()
+        # self.show()
 
     def default_win(self, y=0):
         self.WinPlateg.resize(800, 400)
@@ -233,8 +233,8 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
         #             den = denominacia(year, pl_sum)
         #             self.lineEdit_G_sum.setText(den + " руб")
         #
-        #         # if i[5] != 0:
-        #         #     self.label_OK_1.setPixmap(QtGui.QPixmap("./Resource/img/Galochka.png"))
+                if i[5] != 0:
+                    self.label_OK_1.setPixmap(QtGui.QPixmap("./Resource/img/Galochka.png"))
         #
         for i in range(len(self.list_plat)):
             if i > 2:
