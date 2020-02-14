@@ -62,7 +62,7 @@ class UiWinPlateg(object):
 
         self.label_OK_1 = QtWidgets.QLabel(self.Label_KP)
         self.label_OK_1.setGeometry(QtCore.QRect(50, -1, 30, 30))
-        self.label_OK_1.setStyleSheet("image: url(:/img/galochka.png);")
+        self.label_OK_1.setStyleSheet("image: url(:/img/Galochka.png);")
         self.label_OK_1.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.label_OK_1.setFrameShadow(QtWidgets.QFrame.Plain)
         self.label_OK_1.setStyleSheet("background-color: rgba(255, 255, 255, 0); \n border: 0px solid;")
@@ -417,13 +417,14 @@ class UiWinPlateg(object):
         # кнопка вызова метода создания ДОЛНИТЕЛЬНЫХ ПЛАТЕЖЕЙ
         self.pushButton_add_Plateg_KP = QtWidgets.QPushButton("Добавить платеж", self.frame_PWG_KP)
         self.pushButton_add_Plateg_KP.setGeometry(QtCore.QRect(10, 0, 780, 30))
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.pushButton_add_Plateg_KP.sizePolicy().hasHeightForWidth())
-        self.pushButton_add_Plateg_KP.setSizePolicy(sizePolicy)
-        self.pushButton_add_Plateg_KP.setMinimumSize(QtCore.QSize(780, 30))
-        self.pushButton_add_Plateg_KP.setMaximumSize(QtCore.QSize(780, 30))
+        self.pushButton_add_Plateg_KP.setAutoDefault(True)
+        # sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        # sizePolicy.setHorizontalStretch(0)
+        # sizePolicy.setVerticalStretch(0)
+        # sizePolicy.setHeightForWidth(self.pushButton_add_Plateg_KP.sizePolicy().hasHeightForWidth())
+        # self.pushButton_add_Plateg_KP.setSizePolicy(sizePolicy)
+        # self.pushButton_add_Plateg_KP.setMinimumSize(QtCore.QSize(780, 30))
+        # self.pushButton_add_Plateg_KP.setMaximumSize(QtCore.QSize(780, 30))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.pushButton_add_Plateg_KP.setFont(font)
@@ -511,8 +512,7 @@ class UiWinPlateg(object):
         font.setPointSize(12)
         font.setWeight(75)
         self.label_ERROR.setFont(font)
-        self.label_ERROR.setStyleSheet("font-weight: 700;\n color: rgb(209, 209, 217);\n padding: .4em 1em; \n "
-                                       "color: rgb(255, 0, 0);")
+        self.label_ERROR.setStyleSheet("font-weight: 700;\n color: rgb(0, 170, 255);\n padding: .4em 1em;")
         self.label_ERROR.setAlignment(QtCore.Qt.AlignCenter)
         self.label_ERROR.setObjectName("label_ERROR")
 
@@ -530,6 +530,7 @@ class UiWinPlateg(object):
         # кнопка СОХРАНЕНИЯ данных в базу данных
         self.pushButton_Save_KP = QtWidgets.QPushButton("Сохранить", self.Button_KP)
         self.pushButton_Save_KP.setGeometry(QtCore.QRect(550, 5, 110, 30))
+        self.pushButton_Save_KP.setAutoDefault(True)
         font = QtGui.QFont()
         font.setPointSize(10)
         self.pushButton_Save_KP.setFont(font)
@@ -539,6 +540,7 @@ class UiWinPlateg(object):
         # кнопка ЗАКРЫТИЯ окна
         self.pushButton_Cancel_KP = QtWidgets.QPushButton("Cancel", self.Button_KP)
         self.pushButton_Cancel_KP.setGeometry(QtCore.QRect(670, 5, 110, 30))
+        self.pushButton_Cancel_KP.setAutoDefault(True)
         font = QtGui.QFont()
         font.setPointSize(10)
         self.pushButton_Cancel_KP.setFont(font)
@@ -546,6 +548,15 @@ class UiWinPlateg(object):
         self.pushButton_Cancel_KP.setObjectName("pushButton_Cancel_KP")
 
         self.verticalLayout.addWidget(self.Button_KP)
+
+        QtCore.QMetaObject.connectSlotsByName(self.WinPlateg)
+        self.WinPlateg.setTabOrder(self.lineEdit_P_trf, self.lineEdit_W_trf)
+        self.WinPlateg.setTabOrder(self.lineEdit_W_trf, self.lineEdit_G_trf)
+        self.WinPlateg.setTabOrder(self.lineEdit_G_trf, self.pushButton_add_Plateg_KP)
+        self.WinPlateg.setTabOrder(self.pushButton_add_Plateg_KP, self.pushButton_Save_KP)
+        self.WinPlateg.setTabOrder(self.pushButton_Save_KP, self.pushButton_Cancel_KP)
+        self.WinPlateg.setTabOrder(self.pushButton_Cancel_KP, self.comboBox_month_KP)
+        self.WinPlateg.setTabOrder(self.comboBox_month_KP, self.comboBox_year_KP)
 
     def frame_plateg(self, name, position):
         self.widget_Plat = QtWidgets.QWidget(self.frame_plategi_KP)
@@ -666,8 +677,5 @@ class UiWinAdd(QWidget):  # метод создания ДОЛНИТЕЛЬНЫХ
         self.btn_Cancel.setFont(font)
         self.btn_Cancel.setStyleSheet("font-weight: 700;\n color: rgb(209, 209, 217);\n padding: .5em 1em;")
         self.btn_Cancel.setObjectName("btn_Cancel")
-
-        # QtCore.QMetaObject.connectSlotsByName(self.WinPokazanya)
-        self.setTabOrder(self.btn_OK, self.btn_Cancel)
 
         self.show()
