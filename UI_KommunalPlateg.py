@@ -8,7 +8,6 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QWidget
 from PyQt5.QtGui import QIcon
 
 
@@ -60,8 +59,8 @@ class UiWinPlateg(object):
         self.btn_Right.setStyleSheet("color: rgb(209, 209, 217);")
         self.btn_Right.setObjectName("btn_Right")
 
-        self.label_OK_1 = QtWidgets.QLabel(self.Label_KP)
-        self.label_OK_1.setGeometry(QtCore.QRect(50, -1, 30, 30))
+        self.label_OK_1 = QtWidgets.QLabel(self.WinPlateg)
+        self.label_OK_1.setGeometry(QtCore.QRect(45, 10, 70, 30))
         self.label_OK_1.setStyleSheet("image: url(:/img/Galochka.png);")
         self.label_OK_1.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.label_OK_1.setFrameShadow(QtWidgets.QFrame.Plain)
@@ -617,65 +616,3 @@ class UiWinPlateg(object):
         self.btn_Pl_pdf.setObjectName("btn_Pl_pdf")
 
         self.gridLayout.addWidget(self.widget_Plat, position, 0, 1, 1)
-
-
-# class UiWinAdd(QWidget):  # метод создания ДОЛНИТЕЛЬНЫХ ПЛАТЕЖЕЙ
-#     def __init__(self):
-#         super().__init__()
-#
-#         self.label = QtWidgets.QLabel("Имя платежа", self)
-#         self.lineEdit = QtWidgets.QLineEdit(self)
-#         self.btn_OK = QtWidgets.QPushButton("OK", self)
-#         self.btn_Cancel = QtWidgets.QPushButton("Cancel", self)
-#
-#     def name_plateg(self):
-#         self.setObjectName("Form")
-#         self.setWindowModality(QtCore.Qt.ApplicationModal)
-#         self.resize(290, 120)
-#         self.setStyleSheet("background-color: rgb(78, 79, 84);")
-#         self.setWindowTitle("Добовление платежа")
-#
-#         self.label.setGeometry(QtCore.QRect(10, 5, 270, 30))
-#         font = QtGui.QFont()
-#         font.setPointSize(14)
-#         self.label.setFont(font)
-#         self.label.setStyleSheet("font-weight: 700; \n color: rgb(209, 209, 217); \n padding: .1em; \n border: 1px;")
-#         self.label.setAlignment(QtCore.Qt.AlignCenter)
-#         self.label.setObjectName("label")
-#
-#         self.lineEdit.setGeometry(QtCore.QRect(10, 40, 270, 30))
-#         font = QtGui.QFont()
-#         font.setPointSize(12)
-#         font.setWeight(75)
-#         self.lineEdit.setFont(font)
-#         self.lineEdit.setStyleSheet("border-radius: 4px; \n color: rgb(209, 209, 217); \n "
-#                                     "border: 1px solid rgba(50, 50, 50, 240); \n "
-#                                     "background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, "
-#                                     "stop:0 rgba(125, 126, 131, 255), stop:0.01 rgba(108, 109, 114, 255), "
-#                                     "stop:0.99 rgba(91, 92, 96, 255), stop:1 rgba(125, 126, 131, 255));")
-#         self.lineEdit.setAlignment(QtCore.Qt.AlignCenter)
-#         self.lineEdit.setFocus()
-#         self.lineEdit.setObjectName("lineEdit")
-#
-#         self.btn_OK.setGeometry(QtCore.QRect(30, 80, 110, 30))
-#         self.btn_OK.setAutoDefault(True)
-#         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-#         sizePolicy.setHeightForWidth(self.btn_OK.sizePolicy().hasHeightForWidth())
-#         self.btn_OK.setSizePolicy(sizePolicy)
-#         font = QtGui.QFont()
-#         font.setPointSize(10)
-#         self.btn_OK.setFont(font)
-#         self.btn_OK.setStyleSheet("font-weight: 700;\n color: rgb(209, 209, 217);\n padding: .5em 1em;")
-#         self.btn_OK.setObjectName("btn_OK")
-#
-#         self.btn_Cancel.setGeometry(QtCore.QRect(150, 80, 110, 30))
-#         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-#         sizePolicy.setHeightForWidth(self.btn_Cancel.sizePolicy().hasHeightForWidth())
-#         self.btn_Cancel.setSizePolicy(sizePolicy)
-#         font = QtGui.QFont()
-#         font.setPointSize(10)
-#         self.btn_Cancel.setFont(font)
-#         self.btn_Cancel.setStyleSheet("font-weight: 700;\n color: rgb(209, 209, 217);\n padding: .5em 1em;")
-#         self.btn_Cancel.setObjectName("btn_Cancel")
-#
-#         self.show()

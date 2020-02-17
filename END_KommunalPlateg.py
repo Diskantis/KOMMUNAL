@@ -3,11 +3,10 @@
 import sys
 import win32api
 
-from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtWidgets import QApplication
 
 from FUN_KOMMUNAL import *
-from UI_KommunalPlateg import UiWinPlateg  # , UiWinAdd
+from UI_KommunalPlateg import UiWinPlateg
 
 
 # ОКНО КОММУНАЛЬНЫХ ПЛАТЕЖЕЙ
@@ -52,8 +51,7 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
         self.pushButton_add_Plateg_KP.clicked.connect(self.btn_add_plateg)
 
         # КНОПКИ окна ДОБАВЛЕНИЕ ПЛАТЕЖА
-        if self.wa.btn_OK.clicked.connect(lambda: self.btn_ok_wa_name(self.win_resize_y, self.position)):
-            pass  # кнопка OK
+        self.wa.btn_OK.clicked.connect(self.btn_ok_wa_name)  # кнопка OK
         self.wa.btn_OK.setAutoDefault(True)  # click on <Enter>
         self.wa.lineEdit.returnPressed.connect(self.wa.btn_OK.click)
 
@@ -76,6 +74,12 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
         self.WinPlateg.setMinimumSize(QtCore.QSize(800, 365 + y))
         center(self.WinPlateg)
         self.frame_plategi_KP.setGeometry(QtCore.QRect(20, 225, 760, 0 + y))
+
+    def itog_sum(self, plategi_sum):
+        if self.plategi_sum > 0:
+            year = self.comboBox_year_KP.currentText()
+            den = denominacia(year, cash=plategi_sum)
+            self.lineEdit_IS_sum.setText(den + " руб")
 
     # показывает в заголовке выбранный месяц и год
     def label_sel_period(self):
@@ -131,12 +135,10 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
             win32api.LoadKeyboardLayout("00000419", 1)  # 68748313 - русский    00000419
 
     # OK окна "имя нового платежа"
-    def btn_ok_wa_name(self, y, position):
+    def btn_ok_wa_name(self, ):
         self.name = self.wa.lineEdit.text()
-        self.frame_plateg(self.name, position)
         self.wa.lineEdit.clear()
         self.wa.close()
-        self.default_win(y)
 
         self.sum_pl = UiWinAdd()
         self.sum_pl.label.setText("Сумма платежа")
@@ -145,19 +147,23 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
         if win32api.GetKeyboardLayout() == 68748313:  # 67699721 - английский 00000409
             win32api.LoadKeyboardLayout("00000409", 1)  # 68748313 - русский    00000419
 
-        self.sum_pl.btn_OK.clicked.connect(self.btn_ok_sum_pl)
+        if self.sum_pl.btn_OK.clicked.connect(lambda: self.btn_ok_sum_pl(self.win_resize_y, self.position)): pass
         self.sum_pl.btn_OK.setAutoDefault(True)
         self.sum_pl.lineEdit.returnPressed.connect(self.sum_pl.btn_OK.click)
         self.sum_pl.btn_Cancel.clicked.connect(self.btn_cancel_sum_pl)
 
     # OK окна "сумма нового платежа"
-    def btn_ok_sum_pl(self):
+    def btn_ok_sum_pl(self, y, position):
         self.sum_pl.lineEdit.close()
         self.sum = self.sum_pl.lineEdit.text()
+        self.frame_plateg(self.name, position)
+        self.default_win(y)
         dop_pl = text_convert(self.sum)
         self.lineEdit_Pl_sum.setText(dop_pl + " руб")
 
         self.dop_plategi[self.name] = float(self.sum), 0, 0
+        self.plategi_sum += float(self.sum)
+        self.itog_sum(self.plategi_sum)
 
         self.win_resize_y += 32
         self.position += 1
@@ -175,7 +181,7 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
 
     # читаем сохраненые данные из базы данных
     def read_kommunal_plateg(self):  # читаем данные из базы данных
-        self.win_resize_y = 32
+        self.win_resize_y = 35
         self.position = 1
 
         self.default_win()
@@ -185,7 +191,7 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
         self.pole = [self.lineEdit_P_sum, self.lineEdit_P_kol, self.lineEdit_P_trf,
                      self.lineEdit_W_sum, self.lineEdit_W_kol, self.lineEdit_W_trf,
                      self.lineEdit_G_sum, self.lineEdit_G_kol, self.lineEdit_G_trf,
-                     self.label_ERROR, self.lineEdit_IS_sum]
+                     self.label_ERROR, self.label_OK_1, self.lineEdit_IS_sum]
         for i in self.pole:
             i.clear()
 
@@ -199,6 +205,7 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
         data_base = 'Komunal.db'
         table_pokaz = 'Pokazanya_year_' + str(self.comboBox_year_KP.currentText())
         table_plateg = 'Plategi_year_' + str(self.comboBox_year_KP.currentText())
+        col_name = 'id'
         heading = 'id integer, month_year text, Plateg text, Sum integer, Kol integer, Trf integer'
 
         sqlite3_create_db(data_base, table_plateg, heading)  # создаем базу данных в случаи ее отсутствия
@@ -215,26 +222,42 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
                 self.lineEdit_W_kol.setText(str(pred_pokaz[17]))
                 self.lineEdit_G_kol.setText(str(pred_pokaz[18]))
 
-        # читаем таблицу ПЛАТЕЖЕЙ из базе данных
-        read_table_KP = sqlite3_read_db(data_base, table_plateg)
-        read_table_KP = read_table_KP[0]
+        if self.comboBox_month_KP.currentIndex() + 1 in sqlite3_read_db(data_base, table_plateg, col_name)[0]:
+            self.label_OK_1.setPixmap(QtGui.QPixmap("./Resource/img/Galochka.png"))
 
         self.dop_plategi = {}  # словарь всех значения
         self.plategi_trf = {}  # словарь значения тарифов
 
-        for a in read_table_KP:  # значения тарифов предыдущего периода
-            if a[0] == self.comboBox_month_KP.currentIndex():
-                self.plategi_trf[a[2]] = a[5]
+        # читаем таблицу ПЛАТЕЖЕЙ из базе данных
+        if not sqlite3_read_db(data_base, table_plateg)[0] and month[self.comboBox_month_KP.currentIndex()] == "Январь":
+            table_plateg = 'Plategi_year_' + str(int(self.comboBox_year_KP.currentText()) - 1)
+            read_table_last = sqlite3_read_db(data_base, table_plateg)[0]
+
+            for a in read_table_last:  # значения тарифов предыдущего периода
+                if a[0] == self.comboBox_month_KP.currentIndex() + 12:
+                    self.plategi_trf[a[2]] = a[5]
+        else:
+            table_plateg = 'Plategi_year_' + str(int(self.comboBox_year_KP.currentText()))
+            read_table_last = sqlite3_read_db(data_base, table_plateg)[0]
+
+            for b in read_table_last:  # значения тарифов предыдущего периода
+                if b[0] == self.comboBox_month_KP.currentIndex():
+                    self.plategi_trf[b[2]] = b[5]
+
+        read_table_KP = sqlite3_read_db(data_base, table_plateg)[0]
 
         for i in read_table_KP:  # значения тарифов сохраненного периода
             year = self.comboBox_year_KP.currentText()
             try:
+
                 if i[0] == self.comboBox_month_KP.currentIndex() + 1:
                     self.dop_plategi[i[2]] = i[3]  # заносим в словарь суммы платежей сохраненного периода
-                    self.plategi_trf[i[2]] = i[5] if i[5] else 0  # заносим в словарь тарифы сохраненного периода
+                # if i[5]:
+                #     self.plategi_trf[i[2]] = i[5]  # заносим в словарь тарифы сохраненного периода
 
                 if i[2] == 'Электричество':
                     self.lineEdit_P_trf.setText(str(self.plategi_trf.get(i[2], "")))
+
                     pl_sum = float(self.lineEdit_P_kol.text()) * float(self.lineEdit_P_trf.text())
                     list_pl = pl_sum, int(self.lineEdit_P_kol.text()), float(self.lineEdit_P_trf.text())
                     self.dop_plategi[i[2]] = list_pl
@@ -255,9 +278,6 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
                     den = denominacia(year, pl_sum)
                     self.lineEdit_G_sum.setText(den + " руб")
 
-                elif i[1] == self.label_month_year_KP.text():
-                    self.label_OK_1.setPixmap(QtGui.QPixmap("./Resource/img/Galochka.png"))
-
             except ValueError:
                 self.checkBox_Edit_KP.hide()
                 self.label_ERROR.setText('Нет значений!')
@@ -274,7 +294,7 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
             elif i == 'Газ':
                 continue
             else:
-                self.WinPlateg.resize(800, 365 + self.win_resize_y)
+                self.WinPlateg.setMinimumSize(QtCore.QSize(800, 365 + self.win_resize_y))
                 center(self.WinPlateg)
                 self.frame_plategi_KP.setGeometry(QtCore.QRect(20, 225, 760, 0 + self.win_resize_y))
                 self.frame_plateg(i, self.position)
@@ -283,10 +303,7 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
                 self.win_resize_y += 32
                 self.position += 1
 
-        if self.plategi_sum > 0:
-            year = self.comboBox_year_KP.currentText()
-            den = denominacia(year, cash=self.plategi_sum)
-            self.lineEdit_IS_sum.setText(den + " руб")
+        self.itog_sum(self.plategi_sum)
 
     def read_only(self):  # режим РЕДАКТИРОВАНИЯ значений
         if self.checkBox_Edit_KP.isChecked():
@@ -304,7 +321,7 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
 
     def text_editing(self, label):
         try:
-            if win32api.GetKeyboardLayout() == 68748313:    # 67699721 - английский 00000409
+            if win32api.GetKeyboardLayout() == 68748313:  # 67699721 - английский 00000409
                 win32api.LoadKeyboardLayout("00000409", 1)  # 68748313 - русский    00000419
 
             self.label_ERROR.clear()
@@ -335,10 +352,7 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
             for i, j in self.dop_plategi.items():
                 self.plategi_sum += float(j[0]) if type(j) == tuple else float(j)
 
-            if self.plategi_sum > 0:
-                year = self.comboBox_year_KP.currentText()
-                den = denominacia(year, cash=self.plategi_sum)
-                self.lineEdit_IS_sum.setText(den + " руб")
+            self.itog_sum(self.plategi_sum)
 
         except ValueError:
             self.checkBox_Edit_KP.hide()
@@ -370,7 +384,7 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
             else:
                 for data_i in data:
                     pass
-                    # sqlite3_insert_tbl(data_base, table, data_i)
+                    sqlite3_insert_tbl(data_base, table, data_i)
 
             # if self.comboBox_month_KP.currentIndex() + 2 != 13:
             #     b = month[self.comboBox_month_KP.currentIndex() + 1]

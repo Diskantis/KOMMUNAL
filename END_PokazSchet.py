@@ -3,7 +3,6 @@
 import sys
 import win32api
 
-# from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtWidgets import QApplication
 
 from FUN_KOMMUNAL import *
@@ -106,6 +105,7 @@ class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
         file_db.close()
         data_base = 'Komunal.db'  # имя базы данных
         table = 'Pokazanya_year_' + str(self.comboBox_year_PS.currentText())  # имя таблицы
+        col_name = 'id'  # Имя колонки
 
         heading = ('id integer primary key , month_year text, Pred_PW integer, Actual_PW integer, Pred_WA_1 integer, '
                    'Actual_WA_1 integer, Pred_WA_2 integer, Actual_WA_2 integer, Pred_WA_3 integer, '
@@ -128,6 +128,9 @@ class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
 
         self.checkBox_Edit_PS.show()
 
+        if self.comboBox_month_PS.currentIndex() + 1 in sqlite3_read_db(data_base, table, col_name)[0]:
+            self.label_OK_1.setPixmap(QtGui.QPixmap("./Resource/img/Galochka.png"))
+
         if not sqlite3_read_db(data_base, table)[0] and month[self.comboBox_month_PS.currentIndex()] == "Январь":
             table = 'Pokazanya_year_' + str(int(self.comboBox_year_PS.currentText()) - 1)
 
@@ -141,8 +144,6 @@ class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
                 # присваеваем полям значения из сохраненной таблицы
                 for a, b in zip(win_pole[:18], range(2, 19)):
                     a.setText(str(pred_pokaz[b]))
-                if pred_pokaz[3] != 0:
-                    self.label_OK_1.setPixmap(QtGui.QPixmap("./Resource/img/Galochka.png"))
                 break
             else:
                 cor_month = month[self.comboBox_month_PS.currentIndex() - 1]
@@ -258,7 +259,6 @@ class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
             if int(row_record) in a:
                 self.save_yes_or_not()
             else:
-                pass
                 sqlite3_insert_tbl(data_base, table, data)
 
                 self.read_pokaz_schet()
