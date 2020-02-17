@@ -7,7 +7,7 @@ from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtWidgets import QApplication
 
 from FUN_KOMMUNAL import *
-from UI_KommunalPlateg import UiWinPlateg, UiWinAdd
+from UI_KommunalPlateg import UiWinPlateg  # , UiWinAdd
 
 
 # ОКНО КОММУНАЛЬНЫХ ПЛАТЕЖЕЙ
@@ -68,7 +68,7 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
         # ЧИТАЕТ платежи из базы данных
         self.read_kommunal_plateg()
 
-        # self.show()
+        self.show()
 
     # значения по умолчанию
     def default_win(self, y=0):
@@ -158,7 +158,6 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
         self.lineEdit_Pl_sum.setText(dop_pl + " руб")
 
         self.dop_plategi[self.name] = float(self.sum), 0, 0
-        # self.plategi_sum_fun(self.plategi_sum)
 
         self.win_resize_y += 32
         self.position += 1
@@ -229,7 +228,6 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
 
         for i in read_table_KP:  # значения тарифов сохраненного периода
             year = self.comboBox_year_KP.currentText()
-
             try:
                 if i[0] == self.comboBox_month_KP.currentIndex() + 1:
                     self.dop_plategi[i[2]] = i[3]  # заносим в словарь суммы платежей сохраненного периода
@@ -285,9 +283,6 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
                 self.win_resize_y += 32
                 self.position += 1
 
-                # self.plategi_sum_fun()
-
-    # def plategi_sum_fun(self):
         if self.plategi_sum > 0:
             year = self.comboBox_year_KP.currentText()
             den = denominacia(year, cash=self.plategi_sum)
@@ -303,11 +298,11 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
             self.lineEdit_W_trf.setReadOnly(True)
             self.lineEdit_G_trf.setReadOnly(True)
 
-        if self.lineEdit_P_trf.textEdited[str].connect(lambda: self.text_read_only(self.lineEdit_P_sum)): pass  # ЭЛЕКТ
-        if self.lineEdit_W_trf.textEdited[str].connect(lambda: self.text_read_only(self.lineEdit_W_sum)): pass  # ВОДА
-        if self.lineEdit_G_trf.textEdited[str].connect(lambda: self.text_read_only(self.lineEdit_G_sum)): pass  # ГАЗ
+        if self.lineEdit_P_trf.textEdited[str].connect(lambda: self.text_editing(self.lineEdit_P_sum)): pass  # ЭЛЕКТ
+        if self.lineEdit_W_trf.textEdited[str].connect(lambda: self.text_editing(self.lineEdit_W_sum)): pass  # ВОДА
+        if self.lineEdit_G_trf.textEdited[str].connect(lambda: self.text_editing(self.lineEdit_G_sum)): pass  # ГАЗ
 
-    def text_read_only(self, label):
+    def text_editing(self, label):
         try:
             if win32api.GetKeyboardLayout() == 68748313:    # 67699721 - английский 00000409
                 win32api.LoadKeyboardLayout("00000409", 1)  # 68748313 - русский    00000419
@@ -364,18 +359,18 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
         data_base = 'Komunal.db'
         data = self.create_list_plateg_kommun()
         table = 'Plategi_year_' + data_convert(data[1])
+
         col_name = 'id'  # Имя колонки
         row_record = str(data[0][0])  # Имя записи
-
         a = sqlite3_read_db(data_base, table, col_name)[0]
 
         try:
             if int(row_record) in a:
-                self.save_yes_or_no()
+                self.save_yes_or_not()
             else:
                 for data_i in data:
                     pass
-                    sqlite3_insert_tbl(data_base, table, data_i)
+                    # sqlite3_insert_tbl(data_base, table, data_i)
 
             # if self.comboBox_month_KP.currentIndex() + 2 != 13:
             #     b = month[self.comboBox_month_KP.currentIndex() + 1]
@@ -394,7 +389,7 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
             self.checkBox_Edit_KP.hide()
             self.label_ERROR.setText('Такая запись уже существует!')
 
-    def save_yes_or_no(self):
+    def save_yes_or_not(self):
         self.save_yn = UiWinAdd()
         self.save_yn.name_plateg()
         self.save_yn.setWindowTitle("Сохранение")
@@ -414,9 +409,10 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
         row_record = str(data[0][0])  # имя записи
 
         for data_i in data:
-            pass
             sqlite3_delete_record(data_base, table, col_name, row_record)
             sqlite3_insert_tbl(data_base, table, data_i)
+
+        self.save_yn.close()
 
     def btn_cancel_save_yn(self):
         self.save_yn.close()

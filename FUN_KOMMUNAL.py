@@ -4,7 +4,8 @@ import datetime
 import sqlite3
 import re
 
-from PyQt5.QtWidgets import QDesktopWidget
+from PyQt5 import QtWidgets, QtCore, QtGui
+from PyQt5.QtWidgets import QDesktopWidget, QWidget
 
 dt_day = datetime.datetime.now().strftime("%d")  # Текущий день (str "30")
 dt_month = datetime.datetime.now().strftime("%m")  # Текущий месяц (str "01")
@@ -220,6 +221,7 @@ def sqlite3_update_record(data_base, table, col_name, row_record, param_col, par
     cur.close()  # удаляем курсор
     con.close()  # разрываем соеденение с базой
 
+
 # data_base = 'Komunal.db'
 # table = 'year_2018'
 # heading = ('id integer primary key , month_year text, Pred_PW integer, Actual_PW integer, Pred_WA_1 integer, '
@@ -249,3 +251,65 @@ def sqlite3_update_record(data_base, table, col_name, row_record, param_col, par
 # row(row) - ряд
 # cell(cel) - ячейка
 # heading - заголовок
+
+
+class UiWinAdd(QWidget):  # метод создания ДОЛНИТЕЛЬНЫХ ПЛАТЕЖЕЙ
+    def __init__(self):
+        super().__init__()
+
+        self.label = QtWidgets.QLabel("Имя платежа", self)
+        self.lineEdit = QtWidgets.QLineEdit(self)
+        self.btn_OK = QtWidgets.QPushButton("OK", self)
+        self.btn_Cancel = QtWidgets.QPushButton("Cancel", self)
+
+    def name_plateg(self):
+        self.setObjectName("Form")
+        self.setWindowModality(QtCore.Qt.ApplicationModal)
+        self.resize(290, 120)
+        self.setStyleSheet("background-color: rgb(78, 79, 84);")
+        self.setWindowTitle("Добовление платежа")
+
+        self.label.setGeometry(QtCore.QRect(10, 5, 270, 30))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        self.label.setFont(font)
+        self.label.setStyleSheet("font-weight: 700; \n color: rgb(209, 209, 217); \n padding: .1em; \n border: 1px;")
+        self.label.setAlignment(QtCore.Qt.AlignCenter)
+        self.label.setObjectName("label")
+
+        self.lineEdit.setGeometry(QtCore.QRect(10, 40, 270, 30))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        font.setWeight(75)
+        self.lineEdit.setFont(font)
+        self.lineEdit.setStyleSheet("border-radius: 4px; \n color: rgb(209, 209, 217); \n "
+                                    "border: 1px solid rgba(50, 50, 50, 240); \n "
+                                    "background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, "
+                                    "stop:0 rgba(125, 126, 131, 255), stop:0.01 rgba(108, 109, 114, 255), "
+                                    "stop:0.99 rgba(91, 92, 96, 255), stop:1 rgba(125, 126, 131, 255));")
+        self.lineEdit.setAlignment(QtCore.Qt.AlignCenter)
+        self.lineEdit.setFocus()
+        self.lineEdit.setObjectName("lineEdit")
+
+        self.btn_OK.setGeometry(QtCore.QRect(30, 80, 110, 30))
+        self.btn_OK.setAutoDefault(True)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHeightForWidth(self.btn_OK.sizePolicy().hasHeightForWidth())
+        self.btn_OK.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.btn_OK.setFont(font)
+        self.btn_OK.setStyleSheet("font-weight: 700;\n color: rgb(209, 209, 217);\n padding: .5em 1em;")
+        self.btn_OK.setObjectName("btn_OK")
+
+        self.btn_Cancel.setGeometry(QtCore.QRect(150, 80, 110, 30))
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHeightForWidth(self.btn_Cancel.sizePolicy().hasHeightForWidth())
+        self.btn_Cancel.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.btn_Cancel.setFont(font)
+        self.btn_Cancel.setStyleSheet("font-weight: 700;\n color: rgb(209, 209, 217);\n padding: .5em 1em;")
+        self.btn_Cancel.setObjectName("btn_Cancel")
+
+        self.show()

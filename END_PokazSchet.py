@@ -3,7 +3,7 @@
 import sys
 import win32api
 
-from PyQt5 import QtWidgets, QtGui
+# from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtWidgets import QApplication
 
 from FUN_KOMMUNAL import *
@@ -53,6 +53,8 @@ class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
 
         # ЧИТАЕТ показания из базы данных
         self.read_pokaz_schet()
+
+        self.show()
 
     def label_sel_period(self):  # показывает в заголовке выбранный месяц и год
         m_sel = self.comboBox_month_PS.currentText()  # выбранный в comboBox месяц
@@ -152,15 +154,36 @@ class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
                     for j in win_pole[1: 12: 2] + win_pole[12: 17]:
                         j.setText("0")
 
-        if self.lineEdit_P1.textEdited[str].connect(lambda: self.text_label(self.label_PM_2)): pass  # ЭЛЕКТРИЧЕСТВО
-        if self.lineEdit_W1.textEdited[str].connect(lambda: self.text_label(self.label_WM_2)): pass  # ХОЛОДНАЯ ВОДА № 1
-        if self.lineEdit_W2.textEdited[str].connect(lambda: self.text_label(self.label_WM_4)): pass  # ГОРЯЧАЯ ВОДА № 2
-        if self.lineEdit_W3.textEdited[str].connect(lambda: self.text_label(self.label_WM_2)): pass  # ХОЛОДНАЯ ВОДА № 3
-        if self.lineEdit_W4.textEdited[str].connect(lambda: self.text_label(self.label_WM_4)): pass  # ГОРЯЧАЯ ВОДА № 4
-        if self.lineEdit_W4.textEdited[str].connect(lambda: self.text_label(self.label_WM_6)): pass  # ВСЯ ВОДА
-        if self.lineEdit_G1.textEdited[str].connect(lambda: self.text_label(self.label_GM_2)): pass  # ГАЗ
+        if self.lineEdit_P1.textEdited[str].connect(lambda: self.text_editing(self.label_PM_2)): pass  # ЭЛЕКТРИЧЕСТВО
+        if self.lineEdit_pokaz_P1.textEdited[str].connect(lambda: self.text_editing(self.label_PM_2)): pass
+        if self.lineEdit_W1.textEdited[str].connect(lambda: self.text_editing(self.label_WM_2)): pass  # ХОЛОД. ВОДА № 1
+        if self.lineEdit_pokaz_W1.textEdited[str].connect(lambda: self.text_editing(self.label_WM_2)): pass
+        if self.lineEdit_W2.textEdited[str].connect(lambda: self.text_editing(self.label_WM_4)): pass  # ГОРЯЧ. ВОДА № 2
+        if self.lineEdit_pokaz_W2.textEdited[str].connect(lambda: self.text_editing(self.label_WM_4)): pass
+        if self.lineEdit_W3.textEdited[str].connect(lambda: self.text_editing(self.label_WM_2)): pass  # ХОЛОД. ВОДА № 3
+        if self.lineEdit_pokaz_W3.textEdited[str].connect(lambda: self.text_editing(self.label_WM_2)): pass
+        if self.lineEdit_W4.textEdited[str].connect(lambda: self.text_editing(self.label_WM_4)): pass  # ГОРЯЧ. ВОДА № 4
+        if self.lineEdit_pokaz_W4.textEdited[str].connect(lambda: self.text_editing(self.label_WM_4)): pass
+        if self.lineEdit_G1.textEdited[str].connect(lambda: self.text_editing(self.label_GM_2)): pass  # ГАЗ
+        if self.lineEdit_pokaz_G1.textEdited[str].connect(lambda: self.text_editing(self.label_GM_2)): pass
 
-    def text_label(self, label):
+    def read_only(self):  # режим РЕДАКТИРОВАНИЯ значений
+        if self.checkBox_Edit_PS.isChecked():
+            self.lineEdit_pokaz_P1.setReadOnly(False)
+            self.lineEdit_pokaz_W1.setReadOnly(False)
+            self.lineEdit_pokaz_W2.setReadOnly(False)
+            self.lineEdit_pokaz_W3.setReadOnly(False)
+            self.lineEdit_pokaz_W4.setReadOnly(False)
+            self.lineEdit_pokaz_G1.setReadOnly(False)
+        else:
+            self.lineEdit_pokaz_P1.setReadOnly(True)
+            self.lineEdit_pokaz_W1.setReadOnly(True)
+            self.lineEdit_pokaz_W2.setReadOnly(True)
+            self.lineEdit_pokaz_W3.setReadOnly(True)
+            self.lineEdit_pokaz_W4.setReadOnly(True)
+            self.lineEdit_pokaz_G1.setReadOnly(True)
+
+    def text_editing(self, label):
         try:
             self.label_ERROR.clear()
             self.checkBox_Edit_PS.show()
@@ -174,18 +197,13 @@ class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
                     label.clear()
                     label.setText(str((int(self.lineEdit_W1.text()) - int(self.lineEdit_pokaz_W1.text())) +
                                       (int(self.lineEdit_W3.text()) - int(self.lineEdit_pokaz_W3.text()))))
+                    self.label_WM_6.setText(str(int(self.label_WM_2.text()) + int(self.label_WM_4.text())))
             elif label == self.label_WM_4:  # количество израсходованного за период ГОРЯЧЕЙ ВОДЫ
                 if int(self.lineEdit_W2.text()) or int(self.lineEdit_W4.text()) != 0:
                     label.clear()
                     label.setText(str((int(self.lineEdit_W2.text()) - int(self.lineEdit_pokaz_W2.text())) +
                                       (int(self.lineEdit_W4.text()) - int(self.lineEdit_pokaz_W4.text()))))
-            elif label == self.label_WM_6:  # количество израсходованного за период ВСЕГО ВОДЫ
-                if int(self.lineEdit_W4.text()) != 0:
-                    label.clear()
-                    label.setText(str(((int(self.lineEdit_W1.text()) - int(self.lineEdit_pokaz_W1.text())) +
-                                       (int(self.lineEdit_W3.text()) - int(self.lineEdit_pokaz_W3.text()))) +
-                                      ((int(self.lineEdit_W2.text()) - int(self.lineEdit_pokaz_W2.text())) +
-                                       (int(self.lineEdit_W4.text()) - int(self.lineEdit_pokaz_W4.text())))))
+                    self.label_WM_6.setText(str(int(self.label_WM_2.text()) + int(self.label_WM_4.text())))
             elif label == self.label_GM_2:  # количество израсходованного за период ГАЗА
                 if int(self.lineEdit_G1.text()) != 0:
                     label.clear()
@@ -193,6 +211,8 @@ class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
         except ValueError:
             self.checkBox_Edit_PS.hide()
             self.label_ERROR.setText('Должно быдь значение!')
+
+        self.create_list_pokaz_schet()
 
     def create_list_pokaz_schet(self):
         ppw = self.lineEdit_pokaz_P1.text()  # ПРЕДЫДУЩИЕ значение ЭЛЕКТРИЧЕСТВО
@@ -229,42 +249,63 @@ class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
         data_base = 'Komunal.db'
         data = self.create_list_pokaz_schet()
         table = 'Pokazanya_year_' + data_convert(data)
+        col_name = 'id'  # Имя колонки
+        row_record = str(data[0])  # Имя записи
+
+        a = sqlite3_read_db(data_base, table, col_name)[0]
 
         try:
-            sqlite3_insert_tbl(data_base, table, data)
-
-            if self.comboBox_month_PS.currentIndex() + 2 != 13:
-                b = month[self.comboBox_month_PS.currentIndex() + 1]
-                c = self.comboBox_year_PS.currentText()
+            if int(row_record) in a:
+                self.save_yes_or_not()
             else:
-                b = month[self.comboBox_month_PS.currentIndex() - 11]
-                c = str(int(self.comboBox_year_PS.currentText()) + 1)
+                pass
+                sqlite3_insert_tbl(data_base, table, data)
 
-            self.label_month_year_PS.setText(b + " " + c)  # устанавливает заголовок ("Месяц Год")
-            self.comboBox_month_PS.setCurrentIndex(month.index(b))  # устанавливает текущий месяц ("Месяц")
-            self.comboBox_year_PS.setCurrentText(c)  # устанавливает текущий год ("Год")
+                self.read_pokaz_schet()
 
-            self.read_pokaz_schet()
+            # if self.comboBox_month_PS.currentIndex() + 2 != 13:
+            #     b = month[self.comboBox_month_PS.currentIndex() + 1]
+            #     c = self.comboBox_year_PS.currentText()
+            # else:
+            #     b = month[self.comboBox_month_PS.currentIndex() - 11]
+            #     c = str(int(self.comboBox_year_PS.currentText()) + 1)
+            #
+            # self.label_month_year_PS.setText(b + " " + c)  # устанавливает заголовок ("Месяц Год")
+            # self.comboBox_month_PS.setCurrentIndex(month.index(b))  # устанавливает текущий месяц ("Месяц")
+            # self.comboBox_year_PS.setCurrentText(c)  # устанавливает текущий год ("Год")
 
         except sqlite3.IntegrityError:
             self.checkBox_Edit_PS.hide()
             self.label_ERROR.setText('Такая запись уже существует!')
 
-    def read_only(self):  # режим РЕДАКТИРОВАНИЯ значений
-        if self.checkBox_Edit_PS.isChecked():
-            self.lineEdit_pokaz_P1.setReadOnly(False)
-            self.lineEdit_pokaz_W1.setReadOnly(False)
-            self.lineEdit_pokaz_W2.setReadOnly(False)
-            self.lineEdit_pokaz_W3.setReadOnly(False)
-            self.lineEdit_pokaz_W4.setReadOnly(False)
-            self.lineEdit_pokaz_G1.setReadOnly(False)
-        else:
-            self.lineEdit_pokaz_P1.setReadOnly(True)
-            self.lineEdit_pokaz_W1.setReadOnly(True)
-            self.lineEdit_pokaz_W2.setReadOnly(True)
-            self.lineEdit_pokaz_W3.setReadOnly(True)
-            self.lineEdit_pokaz_W4.setReadOnly(True)
-            self.lineEdit_pokaz_G1.setReadOnly(True)
+    def save_yes_or_not(self):
+        self.save_yn = UiWinAdd()
+        self.save_yn.name_plateg()
+        self.save_yn.setWindowTitle("Сохранение")
+        self.save_yn.lineEdit.close()
+        self.save_yn.label.setGeometry(QtCore.QRect(10, 0, 270, 70))
+        self.save_yn.label.setText("Вы действительно хотите \n презаписать эту запись?")
+
+        self.save_yn.btn_OK.clicked.connect(self.btn_ok_save_yn)
+        self.save_yn.btn_OK.setAutoDefault(True)
+        self.save_yn.btn_Cancel.clicked.connect(self.btn_cancel_save_yn)
+
+    def btn_ok_save_yn(self):
+        data_base = 'Komunal.db'  # имя базы данных
+        data = self.create_list_pokaz_schet()  # список данных для записи
+        table = 'Pokazanya_year_' + data_convert(data)  # имя таблицы (период)
+        col_name = 'id'  # имя колонки
+        row_record = str(data[0])  # имя записи
+
+        sqlite3_delete_record(data_base, table, col_name, row_record)
+        sqlite3_insert_tbl(data_base, table, data)
+
+        self.read_pokaz_schet()
+
+        self.save_yn.close()
+
+    def btn_cancel_save_yn(self):
+        self.save_yn.close()
 
     def btn_cancel_ps(self):
         self.close()
