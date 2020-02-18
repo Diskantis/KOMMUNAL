@@ -188,11 +188,18 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
         self.checkBox_Edit_KP.setChecked(False)
 
         # очищаем ячейки окна
-        self.pole = [self.lineEdit_P_sum, self.lineEdit_P_kol, self.lineEdit_P_trf,
-                     self.lineEdit_W_sum, self.lineEdit_W_kol, self.lineEdit_W_trf,
-                     self.lineEdit_G_sum, self.lineEdit_G_kol, self.lineEdit_G_trf,
-                     self.label_ERROR, self.label_OK_1, self.lineEdit_IS_sum]
-        for i in self.pole:
+        self.dict_pole = {'Электричество': [self.lineEdit_P_sum, self.lineEdit_P_kol, self.lineEdit_P_trf],
+                          'Вода': [self.lineEdit_W_sum, self.lineEdit_W_kol, self.lineEdit_W_trf],
+                          'Газ': [self.lineEdit_G_sum, self.lineEdit_G_kol, self.lineEdit_G_trf]}
+
+        self.list_pole = [self.lineEdit_P_trf, self.lineEdit_W_trf, self.lineEdit_G_trf,
+                          self.label_ERROR, self.label_OK_1, self.lineEdit_IS_sum]
+
+        for i in self.dict_pole.values():
+            for j in i:
+                j.clear()
+
+        for i in self.list_pole:
             i.clear()
 
         # self.label_ERROR.hide()
@@ -211,72 +218,74 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
         sqlite3_create_db(data_base, table_plateg, heading)  # создаем базу данных в случаи ее отсутствия
 
         # читаем таблицу ПОКАЗАНИЙ счетчиков из базе данных
-        read_table_PS = sqlite3_read_db(data_base, table_pokaz)
-        read_table_PS = read_table_PS[0]
+        try:
+            read_table_PS = sqlite3_read_db(data_base, table_pokaz)
+            read_table_PS = read_table_PS[0]
 
-        for i in range(len(read_table_PS)):
-            if read_table_PS[i][0] == month.index(self.comboBox_month_KP.currentText()) + 1:
-                pred_pokaz = read_table_PS[i]
+            for i in range(len(read_table_PS)):
+                if read_table_PS[i][0] == month.index(self.comboBox_month_KP.currentText()) + 1:
+                    pred_pokaz = read_table_PS[i]
 
-                self.lineEdit_P_kol.setText(str(pred_pokaz[14]))
-                self.lineEdit_W_kol.setText(str(pred_pokaz[17]))
-                self.lineEdit_G_kol.setText(str(pred_pokaz[18]))
+                    self.lineEdit_P_kol.setText(str(pred_pokaz[14]))
+                    self.lineEdit_W_kol.setText(str(pred_pokaz[17]))
+                    self.lineEdit_G_kol.setText(str(pred_pokaz[18]))
+
+        except sqlite3.OperationalError:
+            self.checkBox_Edit_KP.show()
 
         if self.comboBox_month_KP.currentIndex() + 1 in sqlite3_read_db(data_base, table_plateg, col_name)[0]:
             self.label_OK_1.setPixmap(QtGui.QPixmap("./Resource/img/Galochka.png"))
 
         self.dop_plategi = {}  # словарь всех значения
         self.plategi_trf = {}  # словарь значения тарифов
+        year = self.comboBox_year_KP.currentText()
 
         # читаем таблицу ПЛАТЕЖЕЙ из базе данных
-        if not sqlite3_read_db(data_base, table_plateg)[0] and month[self.comboBox_month_KP.currentIndex()] == "Январь":
-            table_plateg = 'Plategi_year_' + str(int(self.comboBox_year_KP.currentText()) - 1)
-            read_table_last = sqlite3_read_db(data_base, table_plateg)[0]
+        try:
+            if not sqlite3_read_db(data_base, table_plateg)[0] and \
+                    month[self.comboBox_month_KP.currentIndex()] == "Январь":
 
-            for a in read_table_last:  # значения тарифов предыдущего периода
-                if a[0] == self.comboBox_month_KP.currentIndex() + 12:
-                    self.plategi_trf[a[2]] = a[5]
-        else:
-            table_plateg = 'Plategi_year_' + str(int(self.comboBox_year_KP.currentText()))
-            read_table_last = sqlite3_read_db(data_base, table_plateg)[0]
+                table_plateg_jan = 'Plategi_year_' + str(int(self.comboBox_year_KP.currentText()) - 1)
+                read_table_last = sqlite3_read_db(data_base, table_plateg_jan)[0]
 
-            for b in read_table_last:  # значения тарифов предыдущего периода
-                if b[0] == self.comboBox_month_KP.currentIndex():
-                    self.plategi_trf[b[2]] = b[5]
+                for a in read_table_last:  # значения тарифов предыдущего периода
+                    if a[0] == self.comboBox_month_KP.currentIndex() + 12:
+                        self.plategi_trf[a[2]] = a[5]
+
+                for j, a in zip(self.plategi_trf.values(), self.list_pole[:3]):
+                    a.setText(str(j))
+
+                for p, v in self.dict_pole.items():
+                    pl_sum = float(v[1].text()) * float(v[2].text())
+                    list_pl = pl_sum, int(v[1].text()), float(v[2].text())
+                    self.dop_plategi[p] = list_pl
+                    den = denominacia(year, pl_sum)
+                    v[0].setText(den + " руб")
+
+        except sqlite3.OperationalError:
+            self.checkBox_Edit_KP.show()
+        except ValueError:
+            self.checkBox_Edit_KP.show()
 
         read_table_KP = sqlite3_read_db(data_base, table_plateg)[0]
 
         for i in read_table_KP:  # значения тарифов сохраненного периода
             year = self.comboBox_year_KP.currentText()
+
+            if i[0] == self.comboBox_month_KP.currentIndex() + 1:
+                self.dop_plategi[i[2]] = i[3]  # заносим в словарь суммы платежей сохраненного периода
+            if i[5]:
+                self.plategi_trf[i[2]] = i[5]  # заносим в словарь тарифы сохраненного периода
             try:
-
-                if i[0] == self.comboBox_month_KP.currentIndex() + 1:
-                    self.dop_plategi[i[2]] = i[3]  # заносим в словарь суммы платежей сохраненного периода
-                # if i[5]:
-                #     self.plategi_trf[i[2]] = i[5]  # заносим в словарь тарифы сохраненного периода
-
                 if i[2] == 'Электричество':
                     self.lineEdit_P_trf.setText(str(self.plategi_trf.get(i[2], "")))
-
-                    pl_sum = float(self.lineEdit_P_kol.text()) * float(self.lineEdit_P_trf.text())
-                    list_pl = pl_sum, int(self.lineEdit_P_kol.text()), float(self.lineEdit_P_trf.text())
-                    self.dop_plategi[i[2]] = list_pl
-                    den = denominacia(year, pl_sum)
-                    self.lineEdit_P_sum.setText(den + " руб")
+                    self.sum_platega(self.dict_pole, i[2], year)
                 elif i[2] == 'Вода':
                     self.lineEdit_W_trf.setText(str(self.plategi_trf.get(i[2], "")))
-                    pl_sum = float(int(self.lineEdit_W_kol.text()) * float(self.lineEdit_W_trf.text()))
-                    list_pl = pl_sum, int(self.lineEdit_W_kol.text()), float(self.lineEdit_W_trf.text())
-                    self.dop_plategi[i[2]] = list_pl
-                    den = denominacia(year, pl_sum)
-                    self.lineEdit_W_sum.setText(den + " руб")
+                    self.sum_platega(self.dict_pole, i[2], year)
                 elif i[2] == 'Газ':
                     self.lineEdit_G_trf.setText(str(self.plategi_trf.get(i[2], "")))
-                    pl_sum = float(int(self.lineEdit_G_kol.text()) * float(self.lineEdit_G_trf.text()))
-                    list_pl = pl_sum, int(self.lineEdit_G_kol.text()), float(self.lineEdit_G_trf.text())
-                    self.dop_plategi[i[2]] = list_pl
-                    den = denominacia(year, pl_sum)
-                    self.lineEdit_G_sum.setText(den + " руб")
+                    self.sum_platega(self.dict_pole, i[2], year)
 
             except ValueError:
                 self.checkBox_Edit_KP.hide()
@@ -304,6 +313,14 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
                 self.position += 1
 
         self.itog_sum(self.plategi_sum)
+
+    def sum_platega(self, pole, plat, year):
+        v = pole.get(plat)
+        pl_sum = float(v[1].text()) * float(v[2].text())
+        list_pl = pl_sum, int(v[1].text()), float(v[2].text())
+        self.dop_plategi[plat] = list_pl
+        den = denominacia(year, pl_sum)
+        v[0].setText(den + " руб")
 
     def read_only(self):  # режим РЕДАКТИРОВАНИЯ значений
         if self.checkBox_Edit_KP.isChecked():
