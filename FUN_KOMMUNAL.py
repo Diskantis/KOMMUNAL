@@ -267,7 +267,7 @@ class UiWinAdd(QWidget):  # метод создания ДОЛНИТЕЛЬНЫХ
         self.setWindowModality(QtCore.Qt.ApplicationModal)
         self.resize(290, 120)
         self.setStyleSheet("background-color: rgb(78, 79, 84);")
-        self.setWindowTitle("Добовление платежа")
+        self.setWindowTitle("Добавление платежа")
 
         self.label.setGeometry(QtCore.QRect(10, 5, 270, 30))
         font = QtGui.QFont()

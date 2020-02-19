@@ -21,7 +21,6 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
 
-
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1920, 20))
         self.menubar.setObjectName("menubar")
@@ -33,11 +32,9 @@ class Ui_MainWindow(object):
         self.menu_Menu = QtWidgets.QMenu(self.menubar)
         self.menu_Menu.setObjectName("menu_Menu")
 
-
         self.toolBar = QtWidgets.QToolBar(MainWindow)
         self.toolBar.setObjectName("toolBar")
         MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
-
 
         self.action_PokazSchet = QtWidgets.QAction(MainWindow)
         icon = QtGui.QIcon()
@@ -51,9 +48,14 @@ class Ui_MainWindow(object):
         self.action_KomunPlateg.setIcon(icon)
         self.action_KomunPlateg.setObjectName("action_KomunPlateg")
 
+        self.action_DebitKredit = QtWidgets.QAction(MainWindow)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("Resource/img/dollar.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.action_DebitKredit.setIcon(icon)
+        self.action_DebitKredit.setObjectName("action_DebitKredit")
+
         self.action_Exit = QtWidgets.QAction(MainWindow)
         self.action_Exit.setObjectName("action_Exit")
-
 
         self.menu_File.addSeparator()
         self.menu_File.addAction(self.action_Exit)
@@ -61,6 +63,8 @@ class Ui_MainWindow(object):
 
         self.menu_Menu.addAction(self.action_PokazSchet)
         self.menu_Menu.addAction(self.action_KomunPlateg)
+        self.menu_Menu.addAction(self.action_DebitKredit)
+
         self.menubar.addAction(self.menu_Menu.menuAction())
 
         self.toolBar.addSeparator()
@@ -68,9 +72,10 @@ class Ui_MainWindow(object):
         self.toolBar.addSeparator()
         self.toolBar.addAction(self.action_KomunPlateg)
         self.toolBar.addSeparator()
+        self.toolBar.addAction(self.action_DebitKredit)
+        self.toolBar.addSeparator()
 
         MainWindow.setCentralWidget(self.centralwidget)
-
 
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
         self.gridLayout.setObjectName("gridLayout")
@@ -147,5 +152,6 @@ class Ui_MainWindow(object):
         self.toolBar.setWindowTitle(_translate("MainWindow", "toolBar"))
         self.action_PokazSchet.setText(_translate("MainWindow", "Показания счетчиков"))
         self.action_KomunPlateg.setText(_translate("MainWindow", "Комунальные платежи"))
+        self.action_DebitKredit.setText(_translate("MainWindow", "Доходы/Расходы"))
         self.action_Exit.setText(_translate("MainWindow", "Выход"))
         self.pushButton_clean.setText(_translate("MainWindow", "Очистить"))

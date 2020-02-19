@@ -596,7 +596,7 @@ class UiWinPlateg(object):
         font.setWeight(75)
         self.lineEdit_Pl_sum.setFont(font)
         self.lineEdit_Pl_sum.setAlignment(QtCore.Qt.AlignCenter)
-        self.lineEdit_Pl_sum.setReadOnly(False)
+        self.lineEdit_Pl_sum.setReadOnly(True)
         self.lineEdit_Pl_sum.setStyleSheet("border-radius: 4px; \n color: rgb(209, 209, 217); \n "
                                            "border: 1px solid rgba(50, 50, 50, 240); \n "
                                            "background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, "

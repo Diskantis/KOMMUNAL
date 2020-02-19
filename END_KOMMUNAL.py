@@ -9,6 +9,7 @@ from UI_KOMMUNAL import Ui_MainWindow
 from FUN_KOMMUNAL import dt_day, dt_month, dt_year, convert_month
 from END_PokazSchet import PokazSchet
 from END_KommunalPlateg import KommunalPlateg
+from END_DebitKredit import DebitKredit
 
 
 # ОСНОВНОЕ ОКНО ПРОГРАММЫ
@@ -17,6 +18,8 @@ class KOMUNAL(QMainWindow, Ui_MainWindow):
         super(KOMUNAL, self).__init__(parent)
         self.PokazSchet = PokazSchet()
         self.KommunalPlateg = KommunalPlateg()
+        self.DebitKredit = DebitKredit()
+
         self.setupUi(self)
 
         # показывает текущую дату
@@ -24,6 +27,7 @@ class KOMUNAL(QMainWindow, Ui_MainWindow):
 
         self.action_PokazSchet.triggered.connect(self.open_ps)  # вызывает окно ПОКАЗАНИЯ СЧЕТЧИКОВ
         self.action_KomunPlateg.triggered.connect(self.open_kp)  # вызывает окно КОМУНАЛЬНЫЕ ПЛАТЕЖИ
+        self.action_DebitKredit.triggered.connect(self.open_db)  # вызывает окно ДОХОДЫ/РАСХОДЫ
 
         self.action_Exit.triggered.connect(self.close_main)  # закрывает окно KOMMUNAL
 
@@ -32,6 +36,9 @@ class KOMUNAL(QMainWindow, Ui_MainWindow):
 
     def open_kp(self):  # открывает окно КОМУНАЛЬНЫЕ ПЛАТЕЖИ
         self.KommunalPlateg.show()
+
+    def open_db(self):  # открывает окно ДОХОДЫ/РАСХОДЫ
+        self.DebitKredit.show()
 
     def close_main(self):  # закрывает окно KOMMUNAL
         self.close()

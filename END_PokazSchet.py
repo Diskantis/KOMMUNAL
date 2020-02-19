@@ -53,7 +53,7 @@ class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
         # ЧИТАЕТ показания из базы данных
         self.read_pokaz_schet()
 
-        self.show()
+        # self.show()
 
     def label_sel_period(self):  # показывает в заголовке выбранный месяц и год
         m_sel = self.comboBox_month_PS.currentText()  # выбранный в comboBox месяц
