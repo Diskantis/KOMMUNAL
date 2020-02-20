@@ -17,10 +17,10 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
         self.wa = UiWinAdd()
 
         self.setupUi_KP(self)
-        center(self.WinPlateg)
+        # center(self.WinPlateg)
 
-        current_month = 'Сентябрь'  # convert_month(dt_month)  # Текущий месяц ("Январь")
-        current_year = "2008"  # dt_year  # Текущий год ("2020")
+        current_month = convert_month(dt_month)  # Текущий месяц ("Январь")
+        current_year = dt_year  # Текущий год ("2020")
 
         self.month_index = month.index(current_month)
         self.month_text = month[self.month_index]
@@ -60,19 +60,19 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
         # СОХРАНЯЕМ показания
         self.pushButton_Save_KP.clicked.connect(self.btn_save_kp)
 
-        # ЗАКРЫВАЕТ окно ПОКАЗАНИЙ
+        # ЗАКРЫВАЕТ окно ПЛАТЕЖИ
         self.pushButton_Cancel_KP.clicked.connect(self.btn_cancel_kp)
 
         # ЧИТАЕТ платежи из базы данных
         self.read_kommunal_plateg()
 
-        self.show()
+        # self.show()
 
     # значения по умолчанию
     def default_win(self, y=0):
         self.WinPlateg.resize(800, 400)
         self.WinPlateg.setMinimumSize(QtCore.QSize(800, 365 + y))
-        center(self.WinPlateg)
+        # center(self.WinPlateg)
         self.frame_plategi_KP.setGeometry(QtCore.QRect(20, 225, 760, 0 + y))
 
     # показывает в заголовке выбранный месяц и год
@@ -317,7 +317,7 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
                 continue
             else:
                 self.WinPlateg.setMinimumSize(QtCore.QSize(800, 365 + self.win_resize_y))
-                center(self.WinPlateg)
+                # center(self.WinPlateg)
                 self.frame_plategi_KP.setGeometry(QtCore.QRect(20, 225, 760, 0 + self.win_resize_y))
                 self.frame_plateg(i, self.position)
                 self.dop_plategi[i] = (float(j), 0, 0)
@@ -347,21 +347,21 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
     # включение режима редактирования
     def read_only(self):  # режим РЕДАКТИРОВАНИЯ значений
         # try:
-            if self.checkBox_Edit_KP.isChecked():
-                self.lineEdit_P_trf.setReadOnly(False)
-                self.lineEdit_W_trf.setReadOnly(False)
-                self.lineEdit_G_trf.setReadOnly(False)
-                self.lineEdit_Pl_sum.setReadOnly(False)
-            else:
-                self.lineEdit_P_trf.setReadOnly(True)
-                self.lineEdit_W_trf.setReadOnly(True)
-                self.lineEdit_G_trf.setReadOnly(True)
-                self.lineEdit_Pl_sum.setReadOnly(True)
+        if self.checkBox_Edit_KP.isChecked():
+            self.lineEdit_P_trf.setReadOnly(False)
+            self.lineEdit_W_trf.setReadOnly(False)
+            self.lineEdit_G_trf.setReadOnly(False)
+            # self.lineEdit_Pl_sum.setReadOnly(False)
+        else:
+            self.lineEdit_P_trf.setReadOnly(True)
+            self.lineEdit_W_trf.setReadOnly(True)
+            self.lineEdit_G_trf.setReadOnly(True)
+            # self.lineEdit_Pl_sum.setReadOnly(True)
 
-            if self.lineEdit_P_trf.textEdited[str].connect(lambda: self.text_editing(self.lineEdit_P_sum)): pass
-            if self.lineEdit_W_trf.textEdited[str].connect(lambda: self.text_editing(self.lineEdit_W_sum)): pass
-            if self.lineEdit_G_trf.textEdited[str].connect(lambda: self.text_editing(self.lineEdit_G_sum)): pass
-            if self.lineEdit_Pl_sum.textEdited[str].connect(lambda: self.text_editing(self.lineEdit_Pl_sum)): pass
+        if self.lineEdit_P_trf.textEdited[str].connect(lambda: self.text_editing(self.lineEdit_P_sum)): pass
+        if self.lineEdit_W_trf.textEdited[str].connect(lambda: self.text_editing(self.lineEdit_W_sum)): pass
+        if self.lineEdit_G_trf.textEdited[str].connect(lambda: self.text_editing(self.lineEdit_G_sum)): pass
+        if self.lineEdit_Pl_sum.textEdited[str].connect(lambda: self.text_editing(self.lineEdit_Pl_sum)): pass
 
         # except RuntimeError:
         #     self.checkBox_Edit_KP.show()

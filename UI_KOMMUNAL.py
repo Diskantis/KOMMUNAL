@@ -14,6 +14,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1335, 600)
+        MainWindow.setGeometry(QtCore.QRect(293, 200, 1335, 600))
         MainWindow.setMinimumSize(QtCore.QSize(1335, 600))
         MainWindow.setDockOptions(QtWidgets.QMainWindow.AllowTabbedDocks | QtWidgets.QMainWindow.AnimatedDocks)
         MainWindow.setUnifiedTitleAndToolBarOnMac(True)

@@ -17,9 +17,10 @@ class UiWinPokazanya(object):
         self.WinPokazanya.setObjectName("PokazanyaSchet")
         self.WinPokazanya.setWindowModality(QtCore.Qt.ApplicationModal)
         self.WinPokazanya.resize(800, 400)
+        self.WinPokazanya.setGeometry(QtCore.QRect(560, 200, 800, 400))
         self.WinPokazanya.setMinimumSize(QtCore.QSize(800, 400))
         self.WinPokazanya.setMaximumSize(QtCore.QSize(800, 400))
-        self.WinPokazanya.setWindowTitle('Показания счетчиков')
+        self.WinPokazanya.setWindowTitle('ПОКАЗАНИЯ СЧЕТЧИКОВ')
         self.WinPokazanya.setWindowIcon(QIcon('Resource/img/euro.png'))
         self.WinPokazanya.setStyleSheet("background-color: rgb(78, 79, 84);")
 

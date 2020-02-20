@@ -17,9 +17,10 @@ class UiWinPlateg(object):
         self.WinPlateg.setObjectName("KommunPlateg")
         self.WinPlateg.setWindowModality(QtCore.Qt.ApplicationModal)
         self.WinPlateg.resize(800, 400)
+        self.WinPlateg.setGeometry(QtCore.QRect(560, 200, 800, 400))
         self.WinPlateg.setFixedWidth(800)
         self.WinPlateg.setMinimumSize(QtCore.QSize(800, 400))
-        self.WinPlateg.setWindowTitle("Платежи")
+        self.WinPlateg.setWindowTitle("ПЛАТЕЖИ")
         self.WinPlateg.setWindowIcon(QIcon('Resource/img/dollar.png'))
         self.WinPlateg.setStyleSheet("background-color: rgb(78, 79, 84);")
 
@@ -71,11 +72,6 @@ class UiWinPlateg(object):
         self.verticalLayout.addWidget(self.Label_KP)
 
         self.frame = QtWidgets.QFrame(self.WinPlateg)
-        # sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Preferred)
-        # sizePolicy.setHorizontalStretch(0)
-        # sizePolicy.setVerticalStretch(0)
-        # sizePolicy.setHeightForWidth(self.frame.sizePolicy().hasHeightForWidth())
-        # self.frame.setSizePolicy(sizePolicy)
         self.frame.setMinimumSize(QtCore.QSize(780, 0))
         self.frame.setStyleSheet("border-radius: 5px;\n border: 1px solid rgba(209, 209, 217, 240);")
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -85,7 +81,7 @@ class UiWinPlateg(object):
         self.verticalLayout.addWidget(self.frame)
 
         self.frame_PWG_KP = QtWidgets.QWidget(self.WinPlateg)
-        self.frame_PWG_KP.setGeometry(QtCore.QRect(20, 52, 760, 180))
+        self.frame_PWG_KP.setGeometry(QtCore.QRect(20, 52, 760, 210))
         self.frame_PWG_KP.setObjectName("frame_PWG_KP")
 
         self.label_Plategi_KP = QtWidgets.QLabel("Комунальные платежи", self.frame_PWG_KP)
@@ -216,7 +212,7 @@ class UiWinPlateg(object):
         self.btn_P_pdf.setObjectName("btn_P_pdf")
 
         # ВОДА создаем виджет с полями
-        self.widget_Water = QtWidgets.QWidget(self.frame_PWG_KP)
+        self.widget_Water = QtWidgets.QWidget(self.frame_PWG_KP)  #
         self.widget_Water.setGeometry(QtCore.QRect(0, 94, 760, 34))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -417,13 +413,6 @@ class UiWinPlateg(object):
         self.pushButton_add_Plateg_KP = QtWidgets.QPushButton("Добавить платеж", self.frame_PWG_KP)
         self.pushButton_add_Plateg_KP.setGeometry(QtCore.QRect(10, 0, 780, 30))
         self.pushButton_add_Plateg_KP.setAutoDefault(True)
-        # sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        # sizePolicy.setHorizontalStretch(0)
-        # sizePolicy.setVerticalStretch(0)
-        # sizePolicy.setHeightForWidth(self.pushButton_add_Plateg_KP.sizePolicy().hasHeightForWidth())
-        # self.pushButton_add_Plateg_KP.setSizePolicy(sizePolicy)
-        # self.pushButton_add_Plateg_KP.setMinimumSize(QtCore.QSize(780, 30))
-        # self.pushButton_add_Plateg_KP.setMaximumSize(QtCore.QSize(780, 30))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.pushButton_add_Plateg_KP.setFont(font)
@@ -458,13 +447,6 @@ class UiWinPlateg(object):
 
         self.lineEdit_IS_sum = QtWidgets.QLineEdit(self.Itog_KP)
         self.lineEdit_IS_sum.setGeometry(QtCore.QRect(190, 5, 530, 30))
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.lineEdit_IS_sum.sizePolicy().hasHeightForWidth())
-        self.lineEdit_IS_sum.setSizePolicy(sizePolicy)
-        self.lineEdit_IS_sum.setMinimumSize(QtCore.QSize(530, 30))
-        self.lineEdit_IS_sum.setMaximumSize(QtCore.QSize(530, 30))
         font = QtGui.QFont()
         font.setPointSize(12)
         font.setWeight(75)
@@ -596,7 +578,7 @@ class UiWinPlateg(object):
         font.setWeight(75)
         self.lineEdit_Pl_sum.setFont(font)
         self.lineEdit_Pl_sum.setAlignment(QtCore.Qt.AlignCenter)
-        self.lineEdit_Pl_sum.setReadOnly(True)
+        self.lineEdit_Pl_sum.setReadOnly(False)
         self.lineEdit_Pl_sum.setStyleSheet("border-radius: 4px; \n color: rgb(209, 209, 217); \n "
                                            "border: 1px solid rgba(50, 50, 50, 240); \n "
                                            "background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, "
