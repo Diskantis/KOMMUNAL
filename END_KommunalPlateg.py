@@ -17,7 +17,6 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
         self.wa = UiWinAdd()
 
         self.setupUi_KP(self)
-        # center(self.WinPlateg)
 
         current_month = convert_month(dt_month)  # Текущий месяц ("Январь")
         current_year = dt_year  # Текущий год ("2020")
@@ -66,13 +65,12 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
         # ЧИТАЕТ платежи из базы данных
         self.read_kommunal_plateg()
 
-        # self.show()
+        self.show()
 
     # значения по умолчанию
     def default_win(self, y=0):
         self.WinPlateg.resize(800, 400)
         self.WinPlateg.setMinimumSize(QtCore.QSize(800, 365 + y))
-        # center(self.WinPlateg)
         self.frame_plategi_KP.setGeometry(QtCore.QRect(20, 225, 760, 0 + y))
 
     # показывает в заголовке выбранный месяц и год
@@ -166,12 +164,21 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
         self.sum_pl.lineEdit.clear()
         self.sum_pl.close()
 
+        self.btn_Pl_pdf.clicked.connect(self.btn_del_plateg)
+
+    def btn_del_plateg(self):
+        self.widget_Plat.close()
+        self.win_resize_y -= 32
+        self.position -= 1
+
     # кнопка CANCEL окна "имя нового платежа"
     def btn_cancel_wa(self):
+        self.wa.lineEdit.clear()
         self.wa.close()
 
     # кнопка CANCEL окна "сумма нового платежа"
     def btn_cancel_sum_pl(self):
+        self.sum_pl.lineEdit.clear()
         self.sum_pl.close()
 
     # читаем сохраненые данные из базы данных
@@ -182,7 +189,7 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
         self.default_win()
         self.checkBox_Edit_KP.setChecked(False)
 
-        # очищаем ячейки окна
+        # очищаем поля окна ПЛАТЕЖИ
         self.dict_pole = {'Электричество': [self.lineEdit_P_sum, self.lineEdit_P_kol, self.lineEdit_P_trf],
                           'Вода': [self.lineEdit_W_sum, self.lineEdit_W_kol, self.lineEdit_W_trf],
                           'Газ': [self.lineEdit_G_sum, self.lineEdit_G_kol, self.lineEdit_G_trf]}
@@ -227,70 +234,71 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
         except sqlite3.OperationalError:
             self.checkBox_Edit_KP.show()
 
+        # проверяем существует ли такая запись в таблице ПЛАТЕЖЕЙ, если ДА то помечаем галочкой
         if self.comboBox_month_KP.currentIndex() + 1 in sqlite3_read_db(data_base, table_plateg, col_name)[0]:
             self.label_OK_1.setPixmap(QtGui.QPixmap("./Resource/img/Galochka.png"))
 
-        self.dop_plategi = {}  # словарь всех значения
-        self.plategi_trf = {}  # словарь значения тарифов
-        year = self.comboBox_year_KP.currentText()
+        self.dop_plategi = {}  # словарь всех ПЛАТЕЖЕЙ
+        self.plategi_trf = {}  # словарь только значений тарифов
 
-        # читаем таблицу ПЛАТЕЖЕЙ из базы данных
+        year = self.comboBox_year_KP.currentText()  # "ГОД" нужен для функции denominacia
+
+        # читаем таблицу ПЛАТЕЖЕЙ из базы данных (ищим значения тарифов)
         try:
-            # если нет таблицы и записи (январь)
+            # если нет записи (только январь)
             if self.comboBox_month_KP.currentIndex() + 1 not in sqlite3_read_db(data_base, table_plateg, "id")[0] and \
                     month[self.comboBox_month_KP.currentIndex()] == "Январь":
-
+                # таблица из предыдущего года
                 table_plateg_jan = 'Plategi_year_' + str(int(self.comboBox_year_KP.currentText()) - 1)
                 read_table_last = sqlite3_read_db(data_base, table_plateg_jan)[0]
-
-                for a in read_table_last:  # значения тарифов предыдущего периода
+                for a in read_table_last:  # значения тарифов из декабрьской таблицы
                     if a[0] == self.comboBox_month_KP.currentIndex() + 12:
                         self.plategi_trf[a[2]] = a[5]
-
             # если нет записи (любой месяц кроме января)
             elif self.comboBox_month_KP.currentIndex() + 1 not in sqlite3_read_db(data_base, table_plateg, "id")[0] \
                     and month[self.comboBox_month_KP.currentIndex()] != "Январь":
-
+                # таблица из текущего года
                 table_plateg = 'Plategi_year_' + str(self.comboBox_year_KP.currentText())
                 read_table_last = sqlite3_read_db(data_base, table_plateg)[0]
-
                 for a in read_table_last:  # значения тарифов предыдущего периода
                     if a[0] == self.comboBox_month_KP.currentIndex():
                         self.plategi_trf[a[2]] = a[5]
-
-            # если есть запись (любой месяц)
-            else:
+            else:  # если есть запись (любой месяц)
+                # таблица из текущего года
                 table_plateg = 'Plategi_year_' + str(self.comboBox_year_KP.currentText())
                 read_table_last = sqlite3_read_db(data_base, table_plateg)[0]
-
-                for a in read_table_last:  # значения тарифов предыдущего периода
+                for a in read_table_last:  # значения тарифов сохраненного периода
                     if a[0] == self.comboBox_month_KP.currentIndex() + 1:
-                        self.plategi_trf[a[2]] = a[5]  # заносим в словарь тарифы сохраненного периода
+                        self.plategi_trf[a[2]] = a[5]
 
+            # устанавливаем значения тарифов в поля окна
             for j, a in zip(self.plategi_trf.values(), self.list_pole[:3]):
                 a.setText(str(j))
 
+            # вычисляем значения суммы для наших счетчиков согласно тарифов
+            # и заносим эти значения в поля окна и в словарь платежей
             for p, v in self.dict_pole.items():
-                pl_sum = float(v[1].text()) * float(v[2].text())
+                pl_sum = float(v[1].text()) * float(v[2].text())  # вычисляем значения суммы
                 list_pl = pl_sum, int(v[1].text()), float(v[2].text())
-                self.dop_plategi[p] = list_pl
+                self.dop_plategi[p] = list_pl  # заносим значения в словарь платежей
                 den = denominacia(year, pl_sum)
-                v[0].setText(den + " руб")
+                v[0].setText(den + " руб")  # заносим значения в поля окна
 
         except sqlite3.OperationalError:
             self.checkBox_Edit_KP.show()
         except ValueError:
             self.checkBox_Edit_KP.show()
 
+        # читаем таблицу ПЛАТЕЖЕЙ из базы данных (имя и значение доп.платежа)
         read_table_KP = sqlite3_read_db(data_base, table_plateg)[0]
 
-        for i in read_table_KP:  # значения тарифов сохраненного периода
-            year = self.comboBox_year_KP.currentText()
+        for i in read_table_KP:  # имя и значения доп.платежа сохраненного периода
+            year = self.comboBox_year_KP.currentText() #
 
             if i[0] == self.comboBox_month_KP.currentIndex() + 1:
-                self.dop_plategi[i[2]] = i[3]  # заносим в словарь суммы платежей сохраненного периода
+                self.dop_plategi[i[2]] = i[3]  # заносим в словарь
 
-            try:
+            try: #
                 if i[2] == 'Электричество':
                     self.lineEdit_P_trf.setText(str(self.plategi_trf.get(i[2], "")))
                     self.sum_platega(self.dict_pole, i[2], year)
@@ -304,8 +312,9 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
             except ValueError:
                 self.checkBox_Edit_KP.show()
 
-        self.plategi_sum = 0
+        self.plategi_sum = 0  # общая сумма всех платежей
 
+        # вычисляем общую сумму всех платежей
         for i, j in self.dop_plategi.items():
             self.plategi_sum += float(j[0]) if type(j) == tuple else float(j)
 
@@ -317,7 +326,6 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
                 continue
             else:
                 self.WinPlateg.setMinimumSize(QtCore.QSize(800, 365 + self.win_resize_y))
-                # center(self.WinPlateg)
                 self.frame_plategi_KP.setGeometry(QtCore.QRect(20, 225, 760, 0 + self.win_resize_y))
                 self.frame_plateg(i, self.position)
                 self.dop_plategi[i] = (float(j), 0, 0)
@@ -326,16 +334,17 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
                 self.win_resize_y += 32
                 self.position += 1
 
+            if self.lineEdit_Pl_sum.textEdited[str].connect(lambda: self.text_editing(self.lineEdit_Pl_sum)): pass
+
         self.itog_sum(self.plategi_sum)
 
-    # вычисляем сумму платежа и заносим в поле сумма
-    def sum_platega(self, pole, plat, year):
-        v = pole.get(plat)
-        pl_sum = float(v[1].text()) * float(v[2].text())
-        list_pl = pl_sum, int(v[1].text()), float(v[2].text())
-        self.dop_plategi[plat] = list_pl
-        den = denominacia(year, pl_sum)
-        v[0].setText(den + " руб")
+    # def check_plateg(self, name_btn, status):
+    #     icon = QtGui.QIcon()
+    #     name_btn.setIcon(icon)
+    #     if status == 1:
+    #         icon.addPixmap(QtGui.QPixmap("Resource/img/icon_checked_o.png"), QtGui.QIcon.Active, QtGui.QIcon.On)
+    #     else:
+    #         icon.addPixmap(QtGui.QPixmap("Resource/img/icon_checked_n.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
 
     # вычисляем итоговою сумму платежей
     def itog_sum(self, plategi_sum):
@@ -344,29 +353,29 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
             den = denominacia(year, cash=plategi_sum)
             self.lineEdit_IS_sum.setText(den + " руб")
 
+    # функция вычисляет сумму платежа и заносит значение в поле сумма
+    def sum_platega(self, pole, plat, year):
+        v = pole.get(plat)
+        pl_sum = float(v[1].text()) * float(v[2].text())
+        list_pl = pl_sum, int(v[1].text()), float(v[2].text())
+        self.dop_plategi[plat] = list_pl
+        den = denominacia(year, pl_sum)
+        v[0].setText(den + " руб")
+
     # включение режима редактирования
     def read_only(self):  # режим РЕДАКТИРОВАНИЯ значений
-        # try:
         if self.checkBox_Edit_KP.isChecked():
             self.lineEdit_P_trf.setReadOnly(False)
             self.lineEdit_W_trf.setReadOnly(False)
             self.lineEdit_G_trf.setReadOnly(False)
-            # self.lineEdit_Pl_sum.setReadOnly(False)
         else:
             self.lineEdit_P_trf.setReadOnly(True)
             self.lineEdit_W_trf.setReadOnly(True)
             self.lineEdit_G_trf.setReadOnly(True)
-            # self.lineEdit_Pl_sum.setReadOnly(True)
 
         if self.lineEdit_P_trf.textEdited[str].connect(lambda: self.text_editing(self.lineEdit_P_sum)): pass
         if self.lineEdit_W_trf.textEdited[str].connect(lambda: self.text_editing(self.lineEdit_W_sum)): pass
         if self.lineEdit_G_trf.textEdited[str].connect(lambda: self.text_editing(self.lineEdit_G_sum)): pass
-        if self.lineEdit_Pl_sum.textEdited[str].connect(lambda: self.text_editing(self.lineEdit_Pl_sum)): pass
-
-        # except RuntimeError:
-        #     self.checkBox_Edit_KP.show()
-        # except AttributeError:
-        #     self.checkBox_Edit_KP.show()
 
     # режим редактирования
     def text_editing(self, label):
@@ -380,25 +389,10 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
 
             if label == self.lineEdit_P_sum:
                 self.sum_platega(self.dict_pole, 'Электричество', year)
-                # pl_sum = float(self.lineEdit_P_kol.text()) * float(self.lineEdit_P_trf.text())
-                # list_pl = pl_sum, int(self.lineEdit_P_kol.text()), float(self.lineEdit_P_trf.text())
-                # self.dop_plategi['Электричество'] = list_pl
-                # den = denominacia(year, pl_sum)
-                # self.lineEdit_P_sum.setText(den + " руб")
             elif label == self.lineEdit_W_sum:
                 self.sum_platega(self.dict_pole, 'Вода', year)
-                # pl_sum = float(self.lineEdit_W_kol.text()) * float(self.lineEdit_W_trf.text())
-                # list_pl = pl_sum, int(self.lineEdit_W_kol.text()), float(self.lineEdit_W_trf.text())
-                # self.dop_plategi['Вода'] = list_pl
-                # den = denominacia(year, pl_sum)
-                # self.lineEdit_W_sum.setText(den + " руб")
             elif label == self.lineEdit_G_sum:
                 self.sum_platega(self.dict_pole, 'Газ', year)
-                # pl_sum = float(self.lineEdit_G_kol.text()) * float(self.lineEdit_G_trf.text())
-                # list_pl = pl_sum, int(self.lineEdit_G_kol.text()), float(self.lineEdit_G_trf.text())
-                # self.dop_plategi['Газ'] = list_pl
-                # den = denominacia(year, pl_sum)
-                # self.lineEdit_G_sum.setText(den + " руб")
             elif label == self.lineEdit_Pl_sum:
                 v = self.dict_pole.get(self.label_Plat.text())
                 pl_sum = float(v.text())
@@ -450,7 +444,7 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
             else:
                 for data_i in data:
                     pass
-                    sqlite3_insert_tbl(data_base, table, data_i)
+                    # sqlite3_insert_tbl(data_base, table, data_i)
 
                 self.read_kommunal_plateg()
 
@@ -492,8 +486,8 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
 
         for data_i in data:
             pass
-            sqlite3_delete_record(data_base, table, col_name, row_record)
-            sqlite3_insert_tbl(data_base, table, data_i)
+            # sqlite3_delete_record(data_base, table, col_name, row_record)
+            # sqlite3_insert_tbl(data_base, table, data_i)
 
         self.read_kommunal_plateg()
 

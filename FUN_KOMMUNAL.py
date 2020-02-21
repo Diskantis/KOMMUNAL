@@ -5,7 +5,7 @@ import sqlite3
 import re
 
 from PyQt5 import QtWidgets, QtCore, QtGui
-from PyQt5.QtWidgets import QDesktopWidget, QWidget
+from PyQt5.QtWidgets import QDesktopWidget, QWidget, QCompleter
 
 dt_day = datetime.datetime.now().strftime("%d")  # Текущий день (str "30")
 dt_month = datetime.datetime.now().strftime("%m")  # Текущий месяц (str "01")
@@ -261,6 +261,18 @@ class UiWinAdd(QWidget):  # метод создания ДОЛНИТЕЛЬНЫХ
         self.lineEdit = QtWidgets.QLineEdit(self)
         self.btn_OK = QtWidgets.QPushButton("OK", self)
         self.btn_Cancel = QtWidgets.QPushButton("Cancel", self)
+
+        strList = ['Квартира', 'Телефон', 'Интернет', 'Детский сад']
+        completer = QCompleter(strList, self.lineEdit)
+        self.lineEdit.setCompleter(completer)
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        completer.popup().setFont(font)
+        completer.popup().setStyleSheet("border-radius: 4px; \n color: rgb(209, 209, 217); \n "
+                                        "border: 1px solid rgba(50, 50, 50, 240); \n "
+                                        "background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, "
+                                        "stop:0 rgba(125, 126, 131, 255), stop:0.01 rgba(108, 109, 114, 255), "
+                                        "stop:0.99 rgba(91, 92, 96, 255), stop:1 rgba(125, 126, 131, 255));")
 
     def name_plateg(self):
         self.setObjectName("Form")
