@@ -7,12 +7,13 @@ import re
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtWidgets import QDesktopWidget, QWidget, QCompleter
 
+
 dt_day = datetime.datetime.now().strftime("%d")  # Текущий день (str "30")
 dt_month = datetime.datetime.now().strftime("%m")  # Текущий месяц (str "01")
 dt_year = datetime.datetime.now().strftime("%Y")  # Текущий год (str "2020")
 
-month = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь',
-         'Декабрь']
+month = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
+         'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
 
 
 def denominacia(year, cash):

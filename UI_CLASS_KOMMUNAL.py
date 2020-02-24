@@ -1,17 +1,10 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'PokazSchet.ui'
-#
-# Created by: PyQt5 UI code generator 5.13.1
-#
-# WARNING! All changes made in this file will be lost!
-
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QIcon
 
 
-class UiWinPokazanya(object):
+class UiWindows(object):
     def setupUi_PS(self, WinPokazanya):
         self.WinPokazanya = WinPokazanya
         self.WinPokazanya.setObjectName("PokazanyaSchet")
@@ -62,46 +55,17 @@ class UiWinPokazanya(object):
         self.label_OK_1.setAlignment(QtCore.Qt.AlignCenter)
         self.label_OK_1.setObjectName("label_OK_1")
 
-        self.groupPowerBox = QtWidgets.QGroupBox("Электроэнергия", self.WinPokazanya)
-        self.groupPowerBox.setGeometry(QtCore.QRect(10, 50, 230, 300))
-        font = QtGui.QFont()
-        font.setPointSize(14)
-        self.groupPowerBox.setFont(font)
-        self.groupPowerBox.setStyleSheet("font-weight: 700;\n color: rgb(209, 209, 217);\n padding: .5em 1em; \n "
-                                         "border-radius: 5px; \n border: 1px solid rgba(209, 209, 217, 240);")
-        self.groupPowerBox.setAlignment(QtCore.Qt.AlignCenter)
-        self.groupPowerBox.setObjectName("groupPowerBox")
 
-        self.label_P = self.label("Р/С 171 269 - 5", self.groupPowerBox, 10, 30, 210, 25)
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.label_P.setFont(font)
-        self.label_P.setStyleSheet("color: rgb(80, 80, 80); \n background-color: rgb(255, 255, 0); \n "
-                                   "font-weight: 700; \n padding: .4em; \n "
-                                   "border: 1px solid rgba(50, 50, 50, 240); \n border-radius: 4px; \n ")
-
-        self.label("предыдущие", self.groupPowerBox, 10, 55, 100, 25)
-        self.label("последние", self.groupPowerBox, 120, 55, 100, 25)
-        self.label("месячный расход", self.groupPowerBox, 10, 235, 210, 25)
-
-        color = "(0, 160, 0)"
-        grad_1 = "(91, 92, 96, 255)"
-        grad_2 = "(108, 109, 114, 255)"
-
-        self.lineEdit_pred_pokaz_P = self.pokaz(self.groupPowerBox, 10, 80, 100, 150, color, grad_1, grad_2)
-        self.lineEdit_post_pokaz_P = self.pokaz(self.groupPowerBox, 120, 80, 100, 150, color, grad_2, grad_1)
-
-        self.label_month_ras_P = self.label("", self.groupPowerBox, 10, 260, 210, 30)
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        font.setWeight(75)
-        self.label_month_ras_P.setFont(font)
-        self.label_month_ras_P.setStyleSheet("border-radius: 4px; \n color: rgb(0, 160, 0); \n "
-                                             "border: 1px solid rgba(50, 50, 50, 240); \n "
-                                             "background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, "
-                                             "stop:0 rgba(125, 126, 131, 255), stop:0.02 rgba(91, 92, 96, 255), "
-                                             "stop:0.98 rgba(108, 109, 114, 255), stop:1 rgba(125, 126, 131, 255));")
-
+        # self.groupPowerBox = QtWidgets.QGroupBox("Электроэнергия", self.WinPokazanya)
+        # self.groupPowerBox.setGeometry(QtCore.QRect(10, 50, 230, 300))
+        # font = QtGui.QFont()
+        # font.setPointSize(14)
+        # self.groupPowerBox.setFont(font)
+        # self.groupPowerBox.setStyleSheet("font-weight: 700;\n color: rgb(209, 209, 217);\n padding: .5em 1em; \n "
+        #                                  "border-radius: 5px; \n border: 1px solid rgba(209, 209, 217, 240);")
+        # self.groupPowerBox.setAlignment(QtCore.Qt.AlignCenter)
+        # self.groupPowerBox.setObjectName("groupPowerBox")
+        #
         # self.label_P1 = QtWidgets.QLabel("Р/С 181 820 562", self.groupPowerBox)
         # self.label_P1.setGeometry(QtCore.QRect(10, 30, 210, 25))
         # font = QtGui.QFont()
@@ -130,7 +94,7 @@ class UiWinPokazanya(object):
         # self.label_P3.setAlignment(QtCore.Qt.AlignCenter)
         # self.label_P3.setStyleSheet("font-weight: 600; \n color: rgb(209, 209, 217); \n padding: .3em; \n border: 0px;")
         # self.label_P3.setObjectName("label_P3")
-
+        #
         # self.lineEdit_pokaz_P1 = QtWidgets.QLineEdit(self.groupPowerBox)
         # self.lineEdit_pokaz_P1.setGeometry(QtCore.QRect(10, 80, 100, 150))
         # font = QtGui.QFont()
@@ -160,7 +124,7 @@ class UiWinPokazanya(object):
         #                                "stop:0.99 rgba(91, 92, 96, 255), stop:1 rgba(125, 126, 131, 255));")
         # self.lineEdit_P1.setAlignment(QtCore.Qt.AlignCenter)
         # self.lineEdit_P1.setObjectName("lineEdit_P1")
-
+        #
         # self.label_PM_1 = QtWidgets.QLabel("месячный расход", self.groupPowerBox)
         # self.label_PM_1.setGeometry(QtCore.QRect(10, 235, 210, 25))
         # font = QtGui.QFont()
@@ -170,7 +134,7 @@ class UiWinPokazanya(object):
         # self.label_PM_1.setStyleSheet("font-weight: 600; \n color: rgb(209, 209, 217); \n "
         #                               "padding: .3em; \n border: 0px;")
         # self.label_PM_1.setObjectName("label_PM_1")
-
+        #
         # self.label_PM_2 = QtWidgets.QLabel(self.groupPowerBox)
         # self.label_PM_2.setGeometry(QtCore.QRect(10, 260, 210, 30))
         # font = QtGui.QFont()
@@ -185,41 +149,45 @@ class UiWinPokazanya(object):
         # self.label_PM_2.setAlignment(QtCore.Qt.AlignCenter)
         # self.label_PM_2.setObjectName("label_PM_2")
 
-        self.groupWaterBox = QtWidgets.QGroupBox("Вода", self.WinPokazanya)
-        self.groupWaterBox.setGeometry(QtCore.QRect(250, 50, 300, 300))
+
+    # data = ("Электроэнергия", self.WinPokazanya, "Р/С 300 046 056 19")
+
+    def group_plateg(self, name, win, r_s):
+        self.groupBox = QtWidgets.QGroupBox(name, win)
+        self.groupBox.setGeometry(QtCore.QRect(250, 50, 300, 300))
         font = QtGui.QFont()
         font.setPointSize(14)
-        self.groupWaterBox.setFont(font)
-        self.groupWaterBox.setStyleSheet("font-weight: 700;\n color: rgb(209, 209, 217);\n padding: .5em 1em; \n "
-                                         "border-radius: 5px; \n border: 1px solid rgba(209, 209, 217, 240);")
-        self.groupWaterBox.setAlignment(QtCore.Qt.AlignCenter)
-        self.groupWaterBox.setObjectName("groupWaterBox")
+        self.groupBox.setFont(font)
+        self.groupBox.setStyleSheet("font-weight: 700;\n color: rgb(209, 209, 217);\n padding: .5em 1em; \n "
+                                    "border-radius: 5px; \n border: 1px solid rgba(209, 209, 217, 240);")
+        self.groupBox.setAlignment(QtCore.Qt.AlignCenter)
+        self.groupBox.setObjectName("groupWaterBox")
 
-        self.label_W1 = QtWidgets.QLabel("Р/С 300 046 056 19", self.groupWaterBox)
-        self.label_W1.setGeometry(QtCore.QRect(10, 30, 280, 25))
+        self.label_raschet_schet = QtWidgets.QLabel(r_s, self.groupBox)
+        self.label_raschet_schet.setGeometry(QtCore.QRect(10, 30, 280, 25))
         font = QtGui.QFont()
         font.setPointSize(12)
-        self.label_W1.setFont(font)
-        self.label_W1.setStyleSheet("color: rgb(80, 80, 80); \n background-color: rgb(85, 170, 255); \n "
-                                    "font-weight: 700; \n padding: .4em; \n "
-                                    "border: 1px solid rgba(50, 50, 50, 240); \n border-radius: 4px; \n ")
-        self.label_W1.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_W1.setObjectName("label_W1")
+        self.label_raschet_schet.setFont(font)
+        self.label_raschet_schet.setStyleSheet("color: rgb(80, 80, 80); \n background-color: rgb(85, 170, 255); \n "
+                                               "font-weight: 700; \n padding: .4em; \n "
+                                               "border: 1px solid rgba(50, 50, 50, 240); \n border-radius: 4px; \n ")
+        self.label_raschet_schet.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_raschet_schet.setObjectName("label_raschet_schet")
 
-        self.label("счетчик", self.groupWaterBox, 10, 55, 100, 25)
-        self.label("предыдущие", self.groupWaterBox, 110, 55, 100, 25)
-        self.label("последние", self.groupWaterBox, 210, 55, 80, 25)
-        self.label("месячный расход", self.groupWaterBox, 10, 235, 280, 25)
+        self.label("счетчик", 10, 55, 100, 25)
+        self.label("предыдущие", 110, 55, 100, 25)
+        self.label("последние", 210, 55, 80, 25)
+        self.label("месячный расход", 10, 235, 280, 25)
 
-        self.number("№1", self.groupWaterBox, 10, 80, 25, 30)
-        self.number("№2", self.groupWaterBox, 10, 120, 25, 30)
-        self.number("№3", self.groupWaterBox, 10, 160, 25, 30)
-        self.number("№4", self.groupWaterBox, 10, 200, 25, 30)
+        self.number("№1", 10, 80, 25, 30)
+        self.number("№2", 10, 120, 25, 30)
+        self.number("№3", 10, 160, 25, 30)
+        self.number("№4", 10, 200, 25, 30)
 
-        self.place("Туалет (хл)", self.groupWaterBox, 40, 80, 80, 30, "(0, 170, 255)")
-        self.place("Туалет (гр)", self.groupWaterBox, 40, 120, 80, 30, "(255, 140, 0)")
-        self.place("Кухня (хл)", self.groupWaterBox, 40, 160, 80, 30, "(0, 170, 255)")
-        self.place("Кухня (гр)", self.groupWaterBox, 40, 200, 80, 30, "(255, 140, 0)")
+        self.place("Туалет (хл)", 40, 80, 80, 30, "(0, 170, 255)")
+        self.place("Туалет (гр)", 40, 120, 80, 30, "(255, 140, 0)")
+        self.place("Кухня (хл)", 40, 160, 80, 30, "(0, 170, 255)")
+        self.place("Кухня (гр)", 40, 200, 80, 30, "(255, 140, 0)")
 
         color_1 = "(0, 170, 255)"
         color_2 = "(255, 140, 0)"
@@ -227,125 +195,175 @@ class UiWinPokazanya(object):
         grad_1 = "(91, 92, 96, 255)"
         grad_2 = "(108, 109, 114, 255)"
 
-        self.lineEdit_pred_pokaz_W1 = self.pokaz(self.groupWaterBox, 120, 80, 80, 30, color_1, grad_1, grad_2)
-        self.lineEdit_pred_pokaz_W2 = self.pokaz(self.groupWaterBox, 120, 120, 80, 30, color_2, grad_1, grad_2)
-        self.lineEdit_pred_pokaz_W3 = self.pokaz(self.groupWaterBox, 120, 160, 80, 30, color_1, grad_1, grad_2)
-        self.lineEdit_pred_pokaz_W4 = self.pokaz(self.groupWaterBox, 120, 200, 80, 30, color_2, grad_1, grad_2)
+        self.lineEdit_pred_pokaz_W1 = self.pokaz(120, 80, 80, 30, color_1, grad_1, grad_2)
+        self.lineEdit_pred_pokaz_W2 = self.pokaz(120, 120, 80, 30, color_2, grad_1, grad_2)
+        self.lineEdit_pred_pokaz_W3 = self.pokaz(120, 160, 80, 30, color_1, grad_1, grad_2)
+        self.lineEdit_pred_pokaz_W4 = self.pokaz(120, 200, 80, 30, color_2, grad_1, grad_2)
 
-        self.lineEdit_post_pokaz_W1 = self.pokaz(self.groupWaterBox, 210, 80, 80, 30, color_1, grad_2, grad_1)
-        self.lineEdit_post_pokaz_W2 = self.pokaz(self.groupWaterBox, 210, 120, 80, 30, color_2, grad_2, grad_1)
-        self.lineEdit_post_pokaz_W3 = self.pokaz(self.groupWaterBox, 210, 160, 80, 30, color_1, grad_2, grad_1)
-        self.lineEdit_post_pokaz_W4 = self.pokaz(self.groupWaterBox, 210, 200, 80, 30, color_2, grad_2, grad_1)
+        self.lineEdit_post_pokaz_W1 = self.pokaz(210, 80, 80, 30, color_1, grad_2, grad_1)
+        self.lineEdit_post_pokaz_W2 = self.pokaz(210, 120, 80, 30, color_2, grad_2, grad_1)
+        self.lineEdit_post_pokaz_W3 = self.pokaz(210, 160, 80, 30, color_1, grad_2, grad_1)
+        self.lineEdit_post_pokaz_W4 = self.pokaz(210, 200, 80, 30, color_2, grad_2, grad_1)
 
-        # self.label_W2 = QtWidgets.QLabel("счетчик", self.groupWaterBox)
-        # self.label_W2.setGeometry(QtCore.QRect(10, 55, 100, 25))
+    def label(self, label_name, group, x, y, xl, yl):
+        label = QtWidgets.QLabel(label_name, group)
+        label.setGeometry(QtCore.QRect(x, y, xl, yl))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        label.setFont(font)
+        label.setStyleSheet("font-weight: 600; \n color: rgb(209, 209, 217); \n padding: .3em; \n border: 0px;")
+        label.setAlignment(QtCore.Qt.AlignCenter)
+        label.setObjectName("label_name")
+
+    def number(self, num, group, x, y, xl, yl):
+        label_nomer = QtWidgets.QLabel(num, group)
+        label_nomer.setGeometry(QtCore.QRect(x, y, xl, yl))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        label_nomer.setFont(font)
+        label_nomer.setStyleSheet(
+            "font-weight: 600; \n color: rgb(209, 209, 217); \n padding: .1em; \n border: 0px;")
+        label_nomer.setAlignment(QtCore.Qt.AlignCenter)
+        label_nomer.setObjectName("label_nomer")
+
+    def place(self, place, group, x, y, xl, yl, color):
+        label_place = QtWidgets.QLabel(place, group)
+        label_place.setGeometry(QtCore.QRect(x, y, xl, yl))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        label_place.setFont(font)
+        label_place.setStyleSheet("color: rgb" + color + "; \n padding: .0em; \n border: 0px;")
+        label_place.setScaledContents(False)
+        label_place.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
+        label_place.setObjectName("label_place")
+
+    def pokaz(self, group, x, y, xl, yl, color, grad_1, grad_2):
+        lineEdit_pokaz = QtWidgets.QLineEdit(group)
+        lineEdit_pokaz.setGeometry(QtCore.QRect(x, y, xl, yl))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        font.setWeight(75)
+        lineEdit_pokaz.setFont(font)
+        lineEdit_pokaz.setStyleSheet("border-radius: 4px; \n color: rgb" + color + "; \n "
+                                     "border: 1px solid rgba(50, 50, 50, 240); \n "
+                                     "background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, "
+                                     "stop:0 rgba(125, 126, 131, 255), stop:0.01 rgba" + grad_1 + ", "
+                                     "stop:0.99 rgba" + grad_2 + ", stop:1 rgba(125, 126, 131, 255));")
+        lineEdit_pokaz.setAlignment(QtCore.Qt.AlignCenter)
+        lineEdit_pokaz.setReadOnly(True)
+        lineEdit_pokaz.setObjectName("lineEdit_pokaz")
+
+        return lineEdit_pokaz
+
+        # self.label_schetchik = QtWidgets.QLabel("счетчик", self.groupBox)
+        # self.label_schetchik.setGeometry(QtCore.QRect(10, 55, 100, 25))
         # font = QtGui.QFont()
         # font.setPointSize(10)
-        # self.label_W2.setFont(font)
-        # self.label_W2.setStyleSheet("font-weight: 600; \n color: rgb(209, 209, 217); \n padding: .3em; \n border: 0px;")
-        # self.label_W2.setAlignment(QtCore.Qt.AlignCenter)
-        # self.label_W2.setObjectName("label_W2")
-        #
-        # self.label_W3 = QtWidgets.QLabel("предыдущие", self.groupWaterBox)
-        # self.label_W3.setGeometry(QtCore.QRect(110, 55, 100, 25))
+        # self.label_schetchik.setFont(font)
+        # self.label_schetchik.setStyleSheet("font-weight: 600; \n color: rgb(209, 209, 217); \n padding: .3em; \n "
+        #                                    "border: 0px;")
+        # self.label_schetchik.setAlignment(QtCore.Qt.AlignCenter)
+        # self.label_schetchik.setObjectName("label_schetchik")
+
+        # self.label_pred = QtWidgets.QLabel("предыдущие", self.groupBox)
+        # self.label_pred.setGeometry(QtCore.QRect(110, 55, 100, 25))
         # font = QtGui.QFont()
         # font.setPointSize(10)
-        # self.label_W3.setFont(font)
-        # self.label_W3.setStyleSheet("font-weight: 600; \n color: rgb(209, 209, 217); \n padding: .3em; \n border: 0px;")
-        # self.label_W3.setAlignment(QtCore.Qt.AlignCenter)
-        # self.label_W3.setObjectName("label_W3")
-        #
-        # self.label_W4 = QtWidgets.QLabel("последние", self.groupWaterBox)
-        # self.label_W4.setGeometry(QtCore.QRect(210, 55, 80, 25))
+        # self.label_pred.setFont(font)
+        # self.label_pred.setStyleSheet("font-weight: 600; \n color: rgb(209, 209, 217); \n padding: .3em; \n border: 0px;")
+        # self.label_pred.setAlignment(QtCore.Qt.AlignCenter)
+        # self.label_pred.setObjectName("label_pred")
+
+        # self.label_posl = QtWidgets.QLabel("последние", self.groupBox)
+        # self.label_posl.setGeometry(QtCore.QRect(210, 55, 80, 25))
         # font = QtGui.QFont()
         # font.setPointSize(10)
-        # self.label_W4.setFont(font)
-        # self.label_W4.setStyleSheet("font-weight: 600; \n color: rgb(209, 209, 217); \n "
-        #                             "padding: .3em; \n border: 0px;")
-        # self.label_W4.setAlignment(QtCore.Qt.AlignCenter)
-        # self.label_W4.setObjectName("label_W4")
-        #
-        # self.label_W5_1 = QtWidgets.QLabel("№1", self.groupWaterBox)
-        # self.label_W5_1.setGeometry(QtCore.QRect(10, 80, 25, 30))
+        # self.label_posl.setFont(font)
+        # self.label_posl.setStyleSheet("font-weight: 600; \n color: rgb(209, 209, 217); \n padding: .3em; \n "
+        #                               "border: 0px;")
+        # self.label_posl.setAlignment(QtCore.Qt.AlignCenter)
+        # self.label_posl.setObjectName("label_posl")
+        # label_nomer_1 = QtWidgets.QLabel("№1", self.groupBox)
+        # label_nomer_1.setGeometry(QtCore.QRect(10, 80, 25, 30))
         # font = QtGui.QFont()
         # font.setPointSize(10)
-        # self.label_W5_1.setFont(font)
-        # self.label_W5_1.setStyleSheet("font-weight: 600; \n color: rgb(209, 209, 217); \n "
-        #                               "padding: .1em; \n border: 0px;")
-        # self.label_W5_1.setAlignment(QtCore.Qt.AlignCenter)
-        # self.label_W5_1.setObjectName("label_W5_1")
-        #
-        # self.label_W5_2 = QtWidgets.QLabel("Туалет (хл)", self.groupWaterBox)
-        # self.label_W5_2.setGeometry(QtCore.QRect(40, 80, 80, 30))
+        # label_nomer_1.setFont(font)
+        # label_nomer_1.setStyleSheet("font-weight: 600; \n color: rgb(209, 209, 217); \n padding: .1em; \n "
+        #                             "border: 0px;")
+        # label_nomer_1.setAlignment(QtCore.Qt.AlignCenter)
+        # label_nomer_1.setObjectName("label_nomer_1")
+
+        # self.label_restroom_cold = QtWidgets.QLabel("Туалет (хл)", self.groupBox)
+        # self.label_restroom_cold.setGeometry(QtCore.QRect(40, 80, 80, 30))
         # font = QtGui.QFont()
         # font.setPointSize(10)
-        # self.label_W5_2.setFont(font)
-        # self.label_W5_2.setStyleSheet("color: rgb(0, 170, 255); \n padding: .0em; \n border: 0px;")
-        # self.label_W5_2.setScaledContents(False)
-        # self.label_W5_2.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
-        # self.label_W5_2.setObjectName("label_W5_2")
-        #
-        # self.label_W6_1 = QtWidgets.QLabel("№2", self.groupWaterBox)
-        # self.label_W6_1.setGeometry(QtCore.QRect(10, 120, 25, 30))
+        # self.label_restroom_cold.setFont(font)
+        # self.label_restroom_cold.setStyleSheet("color: rgb(0, 170, 255); \n padding: .0em; \n border: 0px;")
+        # self.label_restroom_cold.setScaledContents(False)
+        # self.label_restroom_cold.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
+        # self.label_restroom_cold.setObjectName("label_restroom_cold")
+
+        # self.label_nomer_2 = QtWidgets.QLabel("№2", self.groupBox)
+        # self.label_nomer_2.setGeometry(QtCore.QRect(10, 120, 25, 30))
         # font = QtGui.QFont()
         # font.setPointSize(10)
-        # self.label_W6_1.setFont(font)
-        # self.label_W6_1.setStyleSheet("font-weight: 600; \n color: rgb(209, 209, 217); \n "
-        #                               "padding: .1em; \n border: 0px;")
-        # self.label_W6_1.setAlignment(QtCore.Qt.AlignCenter)
-        # self.label_W6_1.setObjectName("label_W6_1")
-        #
-        # self.label_W6_2 = QtWidgets.QLabel("Туалет (гр)", self.groupWaterBox)
-        # self.label_W6_2.setGeometry(QtCore.QRect(40, 120, 80, 30))
+        # self.label_nomer_2.setFont(font)
+        # self.label_nomer_2.setStyleSheet("font-weight: 600; \n color: rgb(209, 209, 217); \n padding: .1em; \n "
+        #                                  "border: 0px;")
+        # self.label_nomer_2.setAlignment(QtCore.Qt.AlignCenter)
+        # self.label_nomer_2.setObjectName("label_nomer_2")
+
+        # self.label_restroom_hot = QtWidgets.QLabel("Туалет (гр)", self.groupBox)
+        # self.label_restroom_hot.setGeometry(QtCore.QRect(40, 120, 80, 30))
         # font = QtGui.QFont()
         # font.setPointSize(10)
-        # self.label_W6_2.setFont(font)
-        # self.label_W6_2.setStyleSheet("color: rgb(255, 140, 0); \n padding: .0em; \n border: 0px;")
-        # self.label_W6_2.setScaledContents(False)
-        # self.label_W6_2.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
-        # self.label_W6_2.setObjectName("label_W6_2")
-        #
-        # self.label_W7_1 = QtWidgets.QLabel("№3", self.groupWaterBox)
-        # self.label_W7_1.setGeometry(QtCore.QRect(10, 160, 25, 30))
+        # self.label_restroom_hot.setFont(font)
+        # self.label_restroom_hot.setStyleSheet("color: rgb(255, 140, 0); \n padding: .0em; \n border: 0px;")
+        # self.label_restroom_hot.setScaledContents(False)
+        # self.label_restroom_hot.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
+        # self.label_restroom_hot.setObjectName("label_restroom_hot")
+
+        # self.label_nomer_3 = QtWidgets.QLabel("№3", self.groupBox)
+        # self.label_nomer_3.setGeometry(QtCore.QRect(10, 160, 25, 30))
         # font = QtGui.QFont()
         # font.setPointSize(10)
-        # self.label_W7_1.setFont(font)
-        # self.label_W7_1.setStyleSheet("font-weight: 600; \n color: rgb(209, 209, 217); \n "
-        #                               "padding: .1em; \n border: 0px;")
-        # self.label_W7_1.setAlignment(QtCore.Qt.AlignCenter)
-        # self.label_W7_1.setObjectName("label_W7_1")
-        #
-        # self.label_W7_2 = QtWidgets.QLabel("Кухня (хл)", self.groupWaterBox)
-        # self.label_W7_2.setGeometry(QtCore.QRect(40, 160, 80, 30))
+        # self.label_nomer_3.setFont(font)
+        # self.label_nomer_3.setStyleSheet("font-weight: 600; \n color: rgb(209, 209, 217); \n "
+        #                                  "padding: .1em; \n border: 0px;")
+        # self.label_nomer_3.setAlignment(QtCore.Qt.AlignCenter)
+        # self.label_nomer_3.setObjectName("label_nomer_3")
+
+        # self.label_kitchen_cold = QtWidgets.QLabel("Кухня (хл)", self.groupBox)
+        # self.label_kitchen_cold.setGeometry(QtCore.QRect(40, 160, 80, 30))
         # font = QtGui.QFont()
         # font.setPointSize(10)
-        # self.label_W7_2.setFont(font)
-        # self.label_W7_2.setStyleSheet("color: rgb(0, 170, 255); \n padding: .0em; \n border: 0px;")
-        # self.label_W7_2.setScaledContents(False)
-        # self.label_W7_2.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
-        # self.label_W7_2.setObjectName("label_W7_2")
-        #
-        # self.label_W8_1 = QtWidgets.QLabel("№4", self.groupWaterBox)
-        # self.label_W8_1.setGeometry(QtCore.QRect(10, 200, 25, 30))
+        # self.label_kitchen_cold.setFont(font)
+        # self.label_kitchen_cold.setStyleSheet("color: rgb(0, 170, 255); \n padding: .0em; \n border: 0px;")
+        # self.label_kitchen_cold.setScaledContents(False)
+        # self.label_kitchen_cold.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
+        # self.label_kitchen_cold.setObjectName("label_kitchen_cold")
+
+        # self.label_nomer_4 = QtWidgets.QLabel("№4", self.groupBox)
+        # self.label_nomer_4.setGeometry(QtCore.QRect(10, 200, 25, 30))
         # font = QtGui.QFont()
         # font.setPointSize(10)
-        # self.label_W8_1.setFont(font)
-        # self.label_W8_1.setStyleSheet("font-weight: 600; \n color: rgb(209, 209, 217); \n "
-        #                               "padding: .1em; \n border: 0px;")
-        # self.label_W8_1.setAlignment(QtCore.Qt.AlignCenter)
-        # self.label_W8_1.setObjectName("label_W8_1")
-        #
-        # self.label_W8_2 = QtWidgets.QLabel("Кухня (гр)", self.groupWaterBox)
-        # self.label_W8_2.setGeometry(QtCore.QRect(40, 200, 80, 30))
+        # self.label_nomer_4.setFont(font)
+        # self.label_nomer_4.setStyleSheet("font-weight: 600; \n color: rgb(209, 209, 217); \n padding: .1em; \n "
+        #                                  "border: 0px;")
+        # self.label_nomer_4.setAlignment(QtCore.Qt.AlignCenter)
+        # self.label_nomer_4.setObjectName("label_nomer_4")
+
+        # self.label_kitchen_hot = QtWidgets.QLabel("Кухня (гр)", self.groupBox)
+        # self.label_kitchen_hot.setGeometry(QtCore.QRect(40, 200, 80, 30))
         # font = QtGui.QFont()
         # font.setPointSize(10)
-        # self.label_W8_2.setFont(font)
-        # self.label_W8_2.setStyleSheet("color: rgb(255, 140, 0); \n padding: .0em; \n border: 0px;")
-        # self.label_W8_2.setScaledContents(False)
-        # self.label_W8_2.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
-        # self.label_W8_2.setObjectName("label_W8_2")
-        #
-        # self.lineEdit_pokaz_W1 = QtWidgets.QLineEdit(self.groupWaterBox)
+        # self.label_kitchen_hot.setFont(font)
+        # self.label_kitchen_hot.setStyleSheet("color: rgb(255, 140, 0); \n padding: .0em; \n border: 0px;")
+        # self.label_kitchen_hot.setScaledContents(False)
+        # self.label_kitchen_hot.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
+        # self.label_kitchen_hot.setObjectName("label_kitchen_hot")
+
+        # self.lineEdit_pokaz_W1 = QtWidgets.QLineEdit(self.groupBox)
         # self.lineEdit_pokaz_W1.setGeometry(QtCore.QRect(120, 80, 80, 30))
         # font = QtGui.QFont()
         # font.setPointSize(12)
@@ -360,7 +378,7 @@ class UiWinPokazanya(object):
         # self.lineEdit_pokaz_W1.setReadOnly(True)
         # self.lineEdit_pokaz_W1.setObjectName("label_pokaz_W1")
         #
-        # self.lineEdit_pokaz_W2 = QtWidgets.QLineEdit(self.groupWaterBox)
+        # self.lineEdit_pokaz_W2 = QtWidgets.QLineEdit(self.groupBox)
         # self.lineEdit_pokaz_W2.setGeometry(QtCore.QRect(120, 120, 80, 30))
         # font = QtGui.QFont()
         # font.setPointSize(12)
@@ -375,7 +393,7 @@ class UiWinPokazanya(object):
         # self.lineEdit_pokaz_W2.setReadOnly(True)
         # self.lineEdit_pokaz_W2.setObjectName("label_pokaz_W2")
         #
-        # self.lineEdit_pokaz_W3 = QtWidgets.QLineEdit(self.groupWaterBox)
+        # self.lineEdit_pokaz_W3 = QtWidgets.QLineEdit(self.groupBox)
         # self.lineEdit_pokaz_W3.setGeometry(QtCore.QRect(120, 160, 80, 30))
         # font = QtGui.QFont()
         # font.setPointSize(12)
@@ -390,7 +408,7 @@ class UiWinPokazanya(object):
         # self.lineEdit_pokaz_W3.setReadOnly(True)
         # self.lineEdit_pokaz_W3.setObjectName("label_pokaz_W3")
         #
-        # self.lineEdit_pokaz_W4 = QtWidgets.QLineEdit(self.groupWaterBox)
+        # self.lineEdit_pokaz_W4 = QtWidgets.QLineEdit(self.groupBox)
         # self.lineEdit_pokaz_W4.setGeometry(QtCore.QRect(120, 200, 80, 30))
         # font = QtGui.QFont()
         # font.setPointSize(12)
@@ -404,8 +422,8 @@ class UiWinPokazanya(object):
         # self.lineEdit_pokaz_W4.setAlignment(QtCore.Qt.AlignCenter)
         # self.lineEdit_pokaz_W4.setReadOnly(True)
         # self.lineEdit_pokaz_W4.setObjectName("label_pokaz_W4")
-        #
-        # self.lineEdit_W1 = QtWidgets.QLineEdit(self.groupWaterBox)
+
+        # self.lineEdit_W1 = QtWidgets.QLineEdit(self.groupBox)
         # self.lineEdit_W1.setGeometry(QtCore.QRect(210, 80, 80, 30))
         # self.lineEdit_W1.setAlignment(QtCore.Qt.AlignCenter)
         # font = QtGui.QFont()
@@ -420,7 +438,7 @@ class UiWinPokazanya(object):
         #                                "stop:0.99 rgba(91, 92, 96, 255), stop:1 rgba(125, 126, 131, 255));")
         # self.lineEdit_W1.setObjectName("lineEdit_W1")
         #
-        # self.lineEdit_W2 = QtWidgets.QLineEdit(self.groupWaterBox)
+        # self.lineEdit_W2 = QtWidgets.QLineEdit(self.groupBox)
         # self.lineEdit_W2.setGeometry(QtCore.QRect(210, 120, 80, 30))
         # self.lineEdit_W2.setAlignment(QtCore.Qt.AlignCenter)
         # font = QtGui.QFont()
@@ -435,7 +453,7 @@ class UiWinPokazanya(object):
         #                                "stop:0.99 rgba(91, 92, 96, 255), stop:1 rgba(125, 126, 131, 255));")
         # self.lineEdit_W2.setObjectName("lineEdit_W2")
         #
-        # self.lineEdit_W3 = QtWidgets.QLineEdit(self.groupWaterBox)
+        # self.lineEdit_W3 = QtWidgets.QLineEdit(self.groupBox)
         # self.lineEdit_W3.setGeometry(QtCore.QRect(210, 160, 80, 30))
         # self.lineEdit_W3.setAlignment(QtCore.Qt.AlignCenter)
         # font = QtGui.QFont()
@@ -450,7 +468,7 @@ class UiWinPokazanya(object):
         #                                "stop:0.99 rgba(91, 92, 96, 255), stop:1 rgba(125, 126, 131, 255));")
         # self.lineEdit_W3.setObjectName("lineEdit_W3")
         #
-        # self.lineEdit_W4 = QtWidgets.QLineEdit(self.groupWaterBox)
+        # self.lineEdit_W4 = QtWidgets.QLineEdit(self.groupBox)
         # self.lineEdit_W4.setGeometry(QtCore.QRect(210, 200, 80, 30))
         # self.lineEdit_W4.setAlignment(QtCore.Qt.AlignCenter)
         # font = QtGui.QFont()
@@ -465,23 +483,31 @@ class UiWinPokazanya(object):
         #                                "stop:0.99 rgba(91, 92, 96, 255), stop:1 rgba(125, 126, 131, 255));")
         # self.lineEdit_W4.setObjectName("lineEdit_W4")
 
-        # self.label_WM_1 = QtWidgets.QLabel("месячный расход", self.groupWaterBox)
-        # self.label_WM_1.setGeometry(QtCore.QRect(10, 235, 280, 25))
-        # font = QtGui.QFont()
-        # font.setPointSize(10)
-        # self.label_WM_1.setFont(font)
-        # self.label_WM_1.setStyleSheet("font-weight: 600; \n color: rgb(209, 209, 217); \n "
-        #                               "padding: .3em; \n border: 0px;")
-        # self.label_WM_1.setAlignment(QtCore.Qt.AlignCenter)
-        # self.label_WM_1.setObjectName("label_WM_1")
-
-        self.horizontalLayoutWidget = QtWidgets.QWidget(self.groupWaterBox)
+        self.horizontalLayoutWidget = QtWidgets.QWidget(self.groupBox)
         self.horizontalLayoutWidget.setGeometry(QtCore.QRect(10, 260, 280, 30))
         self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
         self.horizontalLayoutWidget.setStyleSheet("border: 0px;")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout.setObjectName("horizontalLayout")
+
+
+        # self.label_WM_1 = QtWidgets.QLabel("месячный расход", self.groupBox)
+        # self.label_WM_1.setGeometry(QtCore.QRect(10, 235, 280, 25))
+        # font = QtGui.QFont()
+        # font.setPointSize(10)
+        # self.label_WM_1.setFont(font)
+        # self.label_WM_1.setStyleSheet("font-weight: 600; \n color: rgb(209, 209, 217); \n padding: .3em; \n border: 0px;")
+        # self.label_WM_1.setAlignment(QtCore.Qt.AlignCenter)
+        # self.label_WM_1.setObjectName("label_WM_1")
+
+        color_1 = "(0, 170, 255)"
+        color_2 = "(255, 140, 0)"
+
+        grad_1 = "(91, 92, 96, 255)"
+        grad_2 = "(108, 109, 114, 255)"
+
+        self.label_WM_2 = self.pokaz(self.horizontalLayoutWidget, 0, 0, 90, 30, color_1, grad_1, grad_2)
 
         self.label_WM_2 = QtWidgets.QLabel(self.horizontalLayoutWidget)
         self.label_WM_2.setMaximumSize(QtCore.QSize(90, 30))
@@ -562,121 +588,90 @@ class UiWinPokazanya(object):
         self.groupGazBox.setAlignment(QtCore.Qt.AlignCenter)
         self.groupGazBox.setObjectName("groupGazBox")
 
-        self.label_G = self.label("Р/С 171 269 - 5", self.groupGazBox, 10, 30, 210, 25)
+        self.label_G1 = QtWidgets.QLabel("Р/С 171 269 - 5", self.groupGazBox)
+        self.label_G1.setGeometry(QtCore.QRect(10, 30, 210, 25))
         font = QtGui.QFont()
         font.setPointSize(12)
-        self.label_G.setFont(font)
-        self.label_G.setStyleSheet("color: rgb(80, 80, 80); \n background-color: rgb(255, 85, 255); \n "
-                                   "font-weight: 700; \n padding: .4em; \n "
-                                   "border: 1px solid rgba(50, 50, 50, 240); \n border-radius: 4px; \n ")
+        self.label_G1.setFont(font)
+        self.label_G1.setStyleSheet("color: rgb(80, 80, 80); \n background-color: rgb(255, 85, 255); \n "
+                                    "font-weight: 700; \n padding: .4em; \n "
+                                    "border: 1px solid rgba(50, 50, 50, 240); \n border-radius: 4px; \n ")
+        self.label_G1.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_G1.setObjectName("label_G1")
 
-        self.label("предыдущие", self.groupGazBox, 10, 55, 100, 25)
-        self.label("последние", self.groupGazBox, 120, 55, 100, 25)
-        self.label("месячный расход", self.groupGazBox, 10, 235, 210, 25)
+        self.label_G2 = QtWidgets.QLabel("предыдущие", self.groupGazBox)
+        self.label_G2.setGeometry(QtCore.QRect(10, 55, 100, 25))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.label_G2.setFont(font)
+        self.label_G2.setStyleSheet("font-weight: 600; \n color: rgb(209, 209, 217); \n padding: .3em; \n border: 0px;")
+        self.label_G2.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_G2.setObjectName("label_G2")
 
-        color = "(150, 0, 150)"
-        grad_1 = "(91, 92, 96, 255)"
-        grad_2 = "(108, 109, 114, 255)"
+        self.label_G3 = QtWidgets.QLabel("последние", self.groupGazBox)
+        self.label_G3.setGeometry(QtCore.QRect(120, 55, 100, 25))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.label_G3.setFont(font)
+        self.label_G3.setStyleSheet("font-weight: 600; \n color: rgb(209, 209, 217); \n padding: .3em; \n border: 0px;")
+        self.label_G3.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_G3.setObjectName("label_G3")
 
-        self.lineEdit_pred_pokaz_G = self.pokaz(self.groupGazBox, 10, 80, 100, 150, color, grad_1, grad_2)
-        self.lineEdit_post_pokaz_G = self.pokaz(self.groupGazBox, 120, 80, 100, 150, color, grad_2, grad_1)
-
-        self.label_month_ras_G = self.label("", self.groupGazBox, 10, 260, 210, 30)
+        self.lineEdit_pokaz_G1 = QtWidgets.QLineEdit(self.groupGazBox)
+        self.lineEdit_pokaz_G1.setGeometry(QtCore.QRect(10, 80, 100, 150))
         font = QtGui.QFont()
         font.setPointSize(12)
         font.setWeight(75)
-        self.label_month_ras_G.setFont(font)
-        self.label_month_ras_G.setStyleSheet("border-radius: 4px; \n color: rgb(150, 0, 150); \n "
+        self.lineEdit_pokaz_G1.setFont(font)
+        self.lineEdit_pokaz_G1.setStyleSheet("border-radius: 4px; \n color: rgb(150, 0, 150); \n "
                                              "border: 1px solid rgba(50, 50, 50, 240); \n "
                                              "background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, "
-                                             "stop:0 rgba(125, 126, 131, 255), stop:0.02 rgba(91, 92, 96, 255), "
-                                             "stop:0.98 rgba(108, 109, 114, 255), stop:1 rgba(125, 126, 131, 255));")
+                                             "stop:0 rgba(125, 126, 131, 255), stop:0.01 rgba(91, 92, 96, 255), "
+                                             "stop:0.99 rgba(108, 109, 114, 255), stop:1 rgba(125, 126, 131, 255));")
+        self.lineEdit_pokaz_G1.setAlignment(QtCore.Qt.AlignCenter)
+        self.lineEdit_pokaz_G1.setReadOnly(True)
+        self.lineEdit_pokaz_G1.setObjectName("label_pokaz_G1")
 
-        # self.label_G1 = QtWidgets.QLabel("Р/С 171 269 - 5", self.groupGazBox)
-        # self.label_G1.setGeometry(QtCore.QRect(10, 30, 210, 25))
-        # font = QtGui.QFont()
-        # font.setPointSize(12)
-        # self.label_G1.setFont(font)
-        # self.label_G1.setStyleSheet("color: rgb(80, 80, 80); \n background-color: rgb(255, 85, 255); \n "
-        #                             "font-weight: 700; \n padding: .4em; \n "
-        #                             "border: 1px solid rgba(50, 50, 50, 240); \n border-radius: 4px; \n ")
-        # self.label_G1.setAlignment(QtCore.Qt.AlignCenter)
-        # self.label_G1.setObjectName("label_G1")
-        #
-        # self.label_G2 = QtWidgets.QLabel("предыдущие", self.groupGazBox)
-        # self.label_G2.setGeometry(QtCore.QRect(10, 55, 100, 25))
-        # font = QtGui.QFont()
-        # font.setPointSize(10)
-        # self.label_G2.setFont(font)
-        # self.label_G2.setStyleSheet("font-weight: 600; \n color: rgb(209, 209, 217); \n padding: .3em; \n border: 0px;")
-        # self.label_G2.setAlignment(QtCore.Qt.AlignCenter)
-        # self.label_G2.setObjectName("label_G2")
-        #
-        # self.label_G3 = QtWidgets.QLabel("последние", self.groupGazBox)
-        # self.label_G3.setGeometry(QtCore.QRect(120, 55, 100, 25))
-        # font = QtGui.QFont()
-        # font.setPointSize(10)
-        # self.label_G3.setFont(font)
-        # self.label_G3.setStyleSheet("font-weight: 600; \n color: rgb(209, 209, 217); \n padding: .3em; \n border: 0px;")
-        # self.label_G3.setAlignment(QtCore.Qt.AlignCenter)
-        # self.label_G3.setObjectName("label_G3")
+        self.lineEdit_G1 = QtWidgets.QLineEdit(self.groupGazBox)
+        self.lineEdit_G1.setGeometry(QtCore.QRect(120, 80, 100, 150))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        font.setWeight(75)
+        self.lineEdit_G1.setFont(font)
+        self.lineEdit_G1.setMaxLength(4)
+        self.lineEdit_G1.setStyleSheet("border-radius: 4px; \n color: rgb(150, 0, 150); \n "
+                                       "border: 1px solid rgba(50, 50, 50, 240); \n "
+                                       "background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, "
+                                       "stop:0 rgba(125, 126, 131, 255), stop:0.01 rgba(108, 109, 114, 255), "
+                                       "stop:0.99 rgba(91, 92, 96, 255), stop:1 rgba(125, 126, 131, 255));")
+        self.lineEdit_G1.setAlignment(QtCore.Qt.AlignCenter)
+        self.lineEdit_G1.setObjectName("lineEdit_G1")
 
-        # self.lineEdit_pokaz_G1 = QtWidgets.QLineEdit(self.groupGazBox)
-        # self.lineEdit_pokaz_G1.setGeometry(QtCore.QRect(10, 80, 100, 150))
-        # font = QtGui.QFont()
-        # font.setPointSize(12)
-        # font.setWeight(75)
-        # self.lineEdit_pokaz_G1.setFont(font)
-        # self.lineEdit_pokaz_G1.setStyleSheet("border-radius: 4px; \n color: rgb(150, 0, 150); \n "
-        #                                      "border: 1px solid rgba(50, 50, 50, 240); \n "
-        #                                      "background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, "
-        #                                      "stop:0 rgba(125, 126, 131, 255), stop:0.01 rgba(91, 92, 96, 255), "
-        #                                      "stop:0.99 rgba(108, 109, 114, 255), stop:1 rgba(125, 126, 131, 255));")
-        # self.lineEdit_pokaz_G1.setAlignment(QtCore.Qt.AlignCenter)
-        # self.lineEdit_pokaz_G1.setReadOnly(True)
-        # self.lineEdit_pokaz_G1.setObjectName("label_pokaz_G1")
-        #
-        # self.lineEdit_G1 = QtWidgets.QLineEdit(self.groupGazBox)
-        # self.lineEdit_G1.setGeometry(QtCore.QRect(120, 80, 100, 150))
-        # font = QtGui.QFont()
-        # font.setPointSize(12)
-        # font.setWeight(75)
-        # self.lineEdit_G1.setFont(font)
-        # self.lineEdit_G1.setMaxLength(4)
-        # self.lineEdit_G1.setStyleSheet("border-radius: 4px; \n color: rgb(150, 0, 150); \n "
-        #                                "border: 1px solid rgba(50, 50, 50, 240); \n "
-        #                                "background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, "
-        #                                "stop:0 rgba(125, 126, 131, 255), stop:0.01 rgba(108, 109, 114, 255), "
-        #                                "stop:0.99 rgba(91, 92, 96, 255), stop:1 rgba(125, 126, 131, 255));")
-        # self.lineEdit_G1.setAlignment(QtCore.Qt.AlignCenter)
-        # self.lineEdit_G1.setObjectName("lineEdit_G1")
+        self.label_GM_1 = QtWidgets.QLabel("месячный расход", self.groupGazBox)
+        self.label_GM_1.setGeometry(QtCore.QRect(10, 235, 210, 25))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.label_GM_1.setFont(font)
+        self.label_GM_1.setStyleSheet("font-weight: 600; \n color: rgb(209, 209, 217); \n "
+                                      "padding: .3em; \n border: 0px;")
+        self.label_GM_1.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_GM_1.setObjectName("label_GM_1")
 
-        # self.label_GM_1 = QtWidgets.QLabel("месячный расход", self.groupGazBox)
-        # self.label_GM_1.setGeometry(QtCore.QRect(10, 235, 210, 25))
-        # font = QtGui.QFont()
-        # font.setPointSize(10)
-        # self.label_GM_1.setFont(font)
-        # self.label_GM_1.setStyleSheet("font-weight: 600; \n color: rgb(209, 209, 217); \n "
-        #                               "padding: .3em; \n border: 0px;")
-        # self.label_GM_1.setAlignment(QtCore.Qt.AlignCenter)
-        # self.label_GM_1.setObjectName("label_GM_1")
-
-        # self.label_GM_2 = QtWidgets.QLabel(self.groupGazBox)
-        # self.label_GM_2.setGeometry(QtCore.QRect(10, 260, 210, 30))
-        # font = QtGui.QFont()
-        # font.setPointSize(12)
-        # font.setWeight(75)
-        # self.label_GM_2.setFont(font)
-        # self.label_GM_2.setStyleSheet("border-radius: 4px; \n color: rgb(150, 0, 150); \n "
-        #                               "border: 1px solid rgba(50, 50, 50, 240); \n "
-        #                               "background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, "
-        #                               "stop:0 rgba(125, 126, 131, 255), stop:0.02 rgba(91, 92, 96, 255), "
-        #                               "stop:0.98 rgba(108, 109, 114, 255), stop:1 rgba(125, 126, 131, 255));")
-        # self.label_GM_2.setAlignment(QtCore.Qt.AlignCenter)
-        # self.label_GM_2.setObjectName("label_GM_2")
+        self.label_GM_2 = QtWidgets.QLabel(self.groupGazBox)
+        self.label_GM_2.setGeometry(QtCore.QRect(10, 260, 210, 30))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        font.setWeight(75)
+        self.label_GM_2.setFont(font)
+        self.label_GM_2.setStyleSheet("border-radius: 4px; \n color: rgb(150, 0, 150); \n "
+                                      "border: 1px solid rgba(50, 50, 50, 240); \n "
+                                      "background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, "
+                                      "stop:0 rgba(125, 126, 131, 255), stop:0.02 rgba(91, 92, 96, 255), "
+                                      "stop:0.98 rgba(108, 109, 114, 255), stop:1 rgba(125, 126, 131, 255));")
+        self.label_GM_2.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_GM_2.setObjectName("label_GM_2")
 
         # выбор месяца
-
         self.comboBox_month_PS = QtWidgets.QComboBox(self.WinPokazanya)
         self.comboBox_month_PS.setGeometry(QtCore.QRect(10, 360, 130, 30))
         font = QtGui.QFont()
@@ -733,73 +728,21 @@ class UiWinPokazanya(object):
         self.pushButton_Cancel_PS.setFont(font)
         self.pushButton_Cancel_PS.setStyleSheet("font-weight: 700;\n color: rgb(209, 209, 217);\n padding: .5em 1em;")
         self.pushButton_Cancel_PS.setObjectName("pushButton_Cancel")
-
-        QtCore.QMetaObject.connectSlotsByName(self.WinPokazanya)
-        self.WinPokazanya.setTabOrder(self.lineEdit_post_pokaz_P, self.lineEdit_post_pokaz_W1)
-        self.WinPokazanya.setTabOrder(self.lineEdit_post_pokaz_W1, self.lineEdit_post_pokaz_W2)
-        self.WinPokazanya.setTabOrder(self.lineEdit_post_pokaz_W2, self.lineEdit_post_pokaz_W3)
-        self.WinPokazanya.setTabOrder(self.lineEdit_post_pokaz_W3, self.lineEdit_post_pokaz_W4)
-        self.WinPokazanya.setTabOrder(self.lineEdit_post_pokaz_W4, self.lineEdit_post_pokaz_G)
-        self.WinPokazanya.setTabOrder(self.lineEdit_post_pokaz_G, self.pushButton_Save_PS)
-        self.WinPokazanya.setTabOrder(self.pushButton_Save_PS, self.pushButton_Cancel_PS)
-        self.WinPokazanya.setTabOrder(self.pushButton_Cancel_PS, self.checkBox_Edit_PS)
-        self.WinPokazanya.setTabOrder(self.checkBox_Edit_PS, self.comboBox_month_PS)
-        self.WinPokazanya.setTabOrder(self.comboBox_month_PS, self.comboBox_year_PS)
-        self.WinPokazanya.setTabOrder(self.comboBox_year_PS, self.lineEdit_pred_pokaz_P)
-        self.WinPokazanya.setTabOrder(self.lineEdit_pred_pokaz_P, self.lineEdit_pred_pokaz_W1)
-        self.WinPokazanya.setTabOrder(self.lineEdit_pred_pokaz_W1, self.lineEdit_pred_pokaz_W2)
-        self.WinPokazanya.setTabOrder(self.lineEdit_pred_pokaz_W2, self.lineEdit_pred_pokaz_W3)
-        self.WinPokazanya.setTabOrder(self.lineEdit_pred_pokaz_W3, self.lineEdit_pred_pokaz_W4)
-        self.WinPokazanya.setTabOrder(self.lineEdit_pred_pokaz_W4, self.lineEdit_pred_pokaz_G)
-
-    def label(self, label_name, group, x, y, xl, yl):
-        label = QtWidgets.QLabel(label_name, group)
-        label.setGeometry(QtCore.QRect(x, y, xl, yl))
-        label.setMaximumSize(QtCore.QSize(xl, yl))
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        label.setFont(font)
-        label.setStyleSheet("font-weight: 600; \n color: rgb(209, 209, 217); \n padding: .3em; \n border: 0px;")
-        label.setAlignment(QtCore.Qt.AlignCenter)
-        label.setObjectName("label_name")
-
-        return label
-
-    def number(self, num, group, x, y, xl, yl):
-        label_nomer = QtWidgets.QLabel(num, group)
-        label_nomer.setGeometry(QtCore.QRect(x, y, xl, yl))
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        label_nomer.setFont(font)
-        label_nomer.setStyleSheet("font-weight: 600; \n color: rgb(209, 209, 217); \n padding: .1em; \n border: 0px;")
-        label_nomer.setAlignment(QtCore.Qt.AlignCenter)
-        label_nomer.setObjectName("label_nomer")
-
-    def place(self, place, group, x, y, xl, yl, color):
-        label_place = QtWidgets.QLabel(place, group)
-        label_place.setGeometry(QtCore.QRect(x, y, xl, yl))
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        label_place.setFont(font)
-        label_place.setStyleSheet("color: rgb" + color + "; \n padding: .0em; \n border: 0px;")
-        label_place.setScaledContents(False)
-        label_place.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
-        label_place.setObjectName("label_place")
-
-    def pokaz(self, group, x, y, xl, yl, color, grad_1, grad_2):
-        lineEdit_pokaz = QtWidgets.QLineEdit(group)
-        lineEdit_pokaz.setGeometry(QtCore.QRect(x, y, xl, yl))
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        font.setWeight(75)
-        lineEdit_pokaz.setFont(font)
-        lineEdit_pokaz.setStyleSheet("border-radius: 4px; \n color: rgb" + color + "; \n "
-                                     "border: 1px solid rgba(50, 50, 50, 240); \n "
-                                     "background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, "
-                                     "stop:0 rgba(125, 126, 131, 255), stop:0.01 rgba" + grad_1 + ", "
-                                     "stop:0.99 rgba" + grad_2 + ", stop:1 rgba(125, 126, 131, 255));")
-        lineEdit_pokaz.setAlignment(QtCore.Qt.AlignCenter)
-        lineEdit_pokaz.setReadOnly(True)
-        lineEdit_pokaz.setObjectName("lineEdit_pokaz")
-
-        return lineEdit_pokaz
+        #
+        # QtCore.QMetaObject.connectSlotsByName(self.WinPokazanya)
+        # self.WinPokazanya.setTabOrder(self.lineEdit_P1, self.lineEdit_W1)
+        # self.WinPokazanya.setTabOrder(self.lineEdit_W1, self.lineEdit_W2)
+        # self.WinPokazanya.setTabOrder(self.lineEdit_W2, self.lineEdit_W3)
+        # self.WinPokazanya.setTabOrder(self.lineEdit_W3, self.lineEdit_W4)
+        # self.WinPokazanya.setTabOrder(self.lineEdit_W4, self.lineEdit_G1)
+        # self.WinPokazanya.setTabOrder(self.lineEdit_G1, self.pushButton_Save_PS)
+        # self.WinPokazanya.setTabOrder(self.pushButton_Save_PS, self.pushButton_Cancel_PS)
+        # self.WinPokazanya.setTabOrder(self.pushButton_Cancel_PS, self.checkBox_Edit_PS)
+        # self.WinPokazanya.setTabOrder(self.checkBox_Edit_PS, self.comboBox_month_PS)
+        # self.WinPokazanya.setTabOrder(self.comboBox_month_PS, self.comboBox_year_PS)
+        # self.WinPokazanya.setTabOrder(self.comboBox_year_PS, self.lineEdit_pokaz_P1)
+        # self.WinPokazanya.setTabOrder(self.lineEdit_pokaz_P1, self.lineEdit_pokaz_W1)
+        # self.WinPokazanya.setTabOrder(self.lineEdit_pokaz_W1, self.lineEdit_pokaz_W2)
+        # self.WinPokazanya.setTabOrder(self.lineEdit_pokaz_W2, self.lineEdit_pokaz_W3)
+        # self.WinPokazanya.setTabOrder(self.lineEdit_pokaz_W3, self.lineEdit_pokaz_W4)
+        # self.WinPokazanya.setTabOrder(self.lineEdit_pokaz_W4, self.lineEdit_pokaz_G1)

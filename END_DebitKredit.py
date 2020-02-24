@@ -6,6 +6,7 @@ import win32api
 from PyQt5.QtWidgets import QApplication
 
 from FUN_KOMMUNAL import *
+from END_CLASS_KOMMUNAL import *
 from END_KommunalPlateg import KommunalPlateg
 from UI_KommunalPlateg import UiWinPlateg
 
@@ -19,7 +20,7 @@ class DebitKredit(QtWidgets.QWidget, UiWinPlateg):
 
         self.setupUi_DK()
 
-        # center(self.WinPlateg)
+        self.period_db = Period(self.comboBox_month_KP, self.comboBox_year_KP, self.label_month_year_KP)
 
         current_month = convert_month(dt_month)  # Текущий месяц ("Январь")
         current_year = dt_year  # Текущий год ("2020")
@@ -42,11 +43,11 @@ class DebitKredit(QtWidgets.QWidget, UiWinPlateg):
         self.pushButton_Cancel_KP.clicked.connect(self.btn_cancel_db)
 
         # ВЫБИРАЕМ период
-        self.comboBox_month_KP.activated.connect(self.label_sel_period)
-        self.comboBox_year_KP.activated.connect(self.label_sel_period)
+        self.comboBox_month_KP.activated.connect(self.label_period)
+        self.comboBox_year_KP.activated.connect(self.label_period)
 
-        self.btn_Left.clicked.connect(self.click_btn_left)
-        self.btn_Right.clicked.connect(self.click_btn_right)
+        self.btn_Left.clicked.connect(self.btn_period_left)
+        self.btn_Right.clicked.connect(self.btn_period_right)
 
         # ДОБАВЛЕНИЕ ЗНАЧЕНИЙ
         self.pushButton_add_Plateg_KP.clicked.connect(self.btn_add_plateg)
@@ -67,7 +68,7 @@ class DebitKredit(QtWidgets.QWidget, UiWinPlateg):
         # ЧИТАЕТ платежи из базы данных
         self.read_debit_kredit()
 
-        # self.show()
+        self.show()
 
     # окно приложения "ДОХОДЫ/РАСХОДЫ"
     def setupUi_DK(self):
@@ -155,6 +156,21 @@ class DebitKredit(QtWidgets.QWidget, UiWinPlateg):
         self.lineEdit_IS_K_sum.setReadOnly(True)
         self.lineEdit_IS_K_sum.setObjectName("lineEdit_IS_K_sum")
 
+    # показывает в заголовке выбранный месяц и год
+    def label_period(self):
+        self.month_index = self.period_db.label_sel_period()
+        self.read_debit_kredit()
+
+    # прокрутка переиода в лево
+    def btn_period_left(self):
+        self.month_index = self.period_db.click_btn_left(self.month_index)
+        self.read_debit_kredit()
+
+    # прокрутка переиода в право
+    def btn_period_right(self):
+        self.month_index = self.period_db.click_btn_right(self.month_index)
+        self.read_debit_kredit()
+
     # значения по умолчанию
     def default_win(self, y=0):
         self.WinPlateg.resize(800, 400)
@@ -163,52 +179,54 @@ class DebitKredit(QtWidgets.QWidget, UiWinPlateg):
         self.frame_Debit.setGeometry(QtCore.QRect(20, 85, 760, 0 + y))
         self.frame_Kredit.setGeometry(QtCore.QRect(20, 190, 760, 0 + y))
 
-    # показывает в заголовке выбранный месяц и год
-    def label_sel_period(self):
-        m_sel = self.comboBox_month_KP.currentText()  # выбранный в comboBox месяц
-        y_sel = self.comboBox_year_KP.currentText()  # выбранный в comboBox год
-        self.label_month_year_KP.setText(m_sel + " " + y_sel)  # заголовок ("Январь 2020")
-        self.month_index = month.index(m_sel)
 
-        # self.read_kommunal_plateg()
 
-    # прокрутка переиода в лево
-    def click_btn_left(self):
-        if self.month_index > 0:
-            self.month_index = self.comboBox_month_KP.currentIndex() - 1
-            select_mount = month[self.month_index]
-            self.comboBox_month_KP.setCurrentText(select_mount)
-            self.year_index = str(self.comboBox_year_KP.currentText())
-            self.label_month_year_KP.setText(select_mount + " " + self.year_index)
-        else:
-            self.month_index = 11
-            select_mount = month[self.month_index]
-            self.comboBox_month_KP.setCurrentText(select_mount)
-            self.year_index = str(int(self.comboBox_year_KP.currentText()) - 1)
-            self.comboBox_year_KP.setCurrentText(self.year_index)
-            self.label_month_year_KP.setText(select_mount + " " + self.year_index)
-
-        # self.default_win()
-        # self.read_kommunal_plateg()
-
-    # прокрутка переиода в право
-    def click_btn_right(self):
-        if self.month_index < 11:
-            self.month_index = self.comboBox_month_KP.currentIndex() + 1
-            select_mount = month[self.month_index]
-            self.comboBox_month_KP.setCurrentText(select_mount)
-            self.year_index = str(self.comboBox_year_KP.currentText())
-            self.label_month_year_KP.setText(select_mount + " " + self.year_index)
-        else:
-            self.month_index = 0
-            select_mount = month[self.month_index]
-            self.comboBox_month_KP.setCurrentText(select_mount)
-            self.year_index = str(int(self.comboBox_year_KP.currentText()) + 1)
-            self.comboBox_year_KP.setCurrentText(self.year_index)
-            self.label_month_year_KP.setText(select_mount + " " + self.year_index)
-
-        # self.default_win()
-        # self.read_kommunal_plateg()
+    # # показывает в заголовке выбранный месяц и год
+    # def label_sel_period(self):
+    #     m_sel = self.comboBox_month_KP.currentText()  # выбранный в comboBox месяц
+    #     y_sel = self.comboBox_year_KP.currentText()  # выбранный в comboBox год
+    #     self.label_month_year_KP.setText(m_sel + " " + y_sel)  # заголовок ("Январь 2020")
+    #     self.month_index = month.index(m_sel)
+    #
+    #     # self.read_kommunal_plateg()
+    #
+    # # прокрутка переиода в лево
+    # def click_btn_left(self):
+    #     if self.month_index > 0:
+    #         self.month_index = self.comboBox_month_KP.currentIndex() - 1
+    #         select_mount = month[self.month_index]
+    #         self.comboBox_month_KP.setCurrentText(select_mount)
+    #         self.year_index = str(self.comboBox_year_KP.currentText())
+    #         self.label_month_year_KP.setText(select_mount + " " + self.year_index)
+    #     else:
+    #         self.month_index = 11
+    #         select_mount = month[self.month_index]
+    #         self.comboBox_month_KP.setCurrentText(select_mount)
+    #         self.year_index = str(int(self.comboBox_year_KP.currentText()) - 1)
+    #         self.comboBox_year_KP.setCurrentText(self.year_index)
+    #         self.label_month_year_KP.setText(select_mount + " " + self.year_index)
+    #
+    #     # self.default_win()
+    #     # self.read_kommunal_plateg()
+    #
+    # # прокрутка переиода в право
+    # def click_btn_right(self):
+    #     if self.month_index < 11:
+    #         self.month_index = self.comboBox_month_KP.currentIndex() + 1
+    #         select_mount = month[self.month_index]
+    #         self.comboBox_month_KP.setCurrentText(select_mount)
+    #         self.year_index = str(self.comboBox_year_KP.currentText())
+    #         self.label_month_year_KP.setText(select_mount + " " + self.year_index)
+    #     else:
+    #         self.month_index = 0
+    #         select_mount = month[self.month_index]
+    #         self.comboBox_month_KP.setCurrentText(select_mount)
+    #         self.year_index = str(int(self.comboBox_year_KP.currentText()) + 1)
+    #         self.comboBox_year_KP.setCurrentText(self.year_index)
+    #         self.label_month_year_KP.setText(select_mount + " " + self.year_index)
+    #
+    #     # self.default_win()
+    #     # self.read_kommunal_plateg()
 
     # открывает окно "добавление нового платежа"
     def btn_add_plateg(self):

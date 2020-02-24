@@ -6,6 +6,8 @@ import win32api
 from PyQt5.QtWidgets import QApplication
 
 from FUN_KOMMUNAL import *
+from END_CLASS_KOMMUNAL import *
+
 from UI_PokazSchet import UiWinPokazanya
 
 
@@ -15,6 +17,8 @@ class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
         super(PokazSchet, self).__init__(parent)
 
         self.setupUi_PS(self)
+
+        self.period_ps = Period(self.comboBox_month_PS, self.comboBox_year_PS, self.label_month_year_PS)
 
         current_month = convert_month(dt_month)  # Текущий месяц ("Месяц")
         current_year = dt_year  # Текущий год ("Год")
@@ -34,11 +38,11 @@ class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
         self.comboBox_year_PS.setCurrentText(current_year)  # устанавливает текущий год ("Год")
 
         # ВЫБИРАЕМ период
-        self.comboBox_month_PS.activated.connect(self.label_sel_period)  # месяц
-        self.comboBox_year_PS.activated.connect(self.label_sel_period)  # год
+        self.comboBox_month_PS.activated.connect(self.label_period)  # месяц
+        self.comboBox_year_PS.activated.connect(self.label_period)  # год
 
-        self.btn_Left.clicked.connect(self.click_btn_left)  # прокрутка в лево
-        self.btn_Right.clicked.connect(self.click_btn_right)  # прокрутка в право
+        self.btn_Left.clicked.connect(self.btn_period_left)  # прокрутка в лево
+        self.btn_Right.clicked.connect(self.btn_period_right)  # прокрутка в право
 
         # режим РЕДАКТИРОВАНИЯ значений
         self.checkBox_Edit_PS.setChecked(False)
@@ -53,50 +57,24 @@ class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
         # ЧИТАЕТ показания из базы данных
         self.read_pokaz_schet()
 
-        # self.show()
+        self.show()
 
-    def label_sel_period(self):  # показывает в заголовке выбранный месяц и год
-        m_sel = self.comboBox_month_PS.currentText()  # выбранный в comboBox месяц
-        y_sel = self.comboBox_year_PS.currentText()  # выбранный в comboBox год
-        self.label_month_year_PS.setText(m_sel + " " + y_sel)  # заголовок ("Январь 2020")
-        self.month_index = month.index(m_sel)
-
+    # показывает в заголовке выбранный месяц и год
+    def label_period(self):
+        self.month_index = self.period_ps.label_sel_period()
         self.read_pokaz_schet()
 
-    def click_btn_left(self):  # прокрутка переиода в лево
-        if self.month_index > 0:
-            self.month_index = self.comboBox_month_PS.currentIndex() - 1
-            select_mount = month[self.month_index]
-            self.comboBox_month_PS.setCurrentText(select_mount)
-            self.year_index = self.comboBox_year_PS.currentText()
-            self.label_month_year_PS.setText(select_mount + " " + self.year_index)
-        else:
-            self.month_index = 11
-            select_mount = month[self.month_index]
-            self.comboBox_month_PS.setCurrentText(select_mount)
-            self.year_index = str(int(self.comboBox_year_PS.currentText()) - 1)
-            self.comboBox_year_PS.setCurrentText(self.year_index)
-            self.label_month_year_PS.setText(select_mount + " " + self.year_index)
-
+    # прокрутка переиода в лево
+    def btn_period_left(self):
+        self.month_index = self.period_ps.click_btn_left(self.month_index)
         self.read_pokaz_schet()
 
-    def click_btn_right(self):  # прокрутка переиода в право
-        if self.month_index < 11:
-            self.month_index = self.comboBox_month_PS.currentIndex() + 1
-            select_mount = month[self.month_index]
-            self.comboBox_month_PS.setCurrentText(select_mount)
-            self.year_index = self.comboBox_year_PS.currentText()
-            self.label_month_year_PS.setText(select_mount + " " + self.year_index)
-        else:
-            self.month_index = 0
-            select_mount = month[self.month_index]
-            self.comboBox_month_PS.setCurrentText(select_mount)
-            self.year_index = str(int(self.comboBox_year_PS.currentText()) + 1)
-            self.comboBox_year_PS.setCurrentText(self.year_index)
-            self.label_month_year_PS.setText(select_mount + " " + self.year_index)
-
+    # прокрутка переиода в право
+    def btn_period_right(self):
+        self.month_index = self.period_ps.click_btn_right(self.month_index)
         self.read_pokaz_schet()
 
+    # читаем сохраненые данные из базы данных
     def read_pokaz_schet(self):
         if win32api.GetKeyboardLayout() == 68748313:  # 67699721 - английский 00000409
             win32api.LoadKeyboardLayout("00000409", 1)  # 68748313 - русский    00000419
@@ -117,10 +95,13 @@ class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
         sqlite3_create_db(data_base, table, heading)  # создаем таблицу в базе данных
 
         # очищаем поля окна ПОКАЗАНИЯ СЧЕТЧИКОВ
-        win_pole = [self.lineEdit_pokaz_P1, self.lineEdit_P1, self.lineEdit_pokaz_W1, self.lineEdit_W1,
-                    self.lineEdit_pokaz_W2, self.lineEdit_W2, self.lineEdit_pokaz_W3, self.lineEdit_W3,
-                    self.lineEdit_pokaz_W4, self.lineEdit_W4, self.lineEdit_pokaz_G1, self.lineEdit_G1,
-                    self.label_PM_2, self.label_WM_2, self.label_WM_4, self.label_WM_6, self.label_GM_2,
+        win_pole = [self.lineEdit_pred_pokaz_P, self.lineEdit_post_pokaz_P,
+                    self.lineEdit_pred_pokaz_W1, self.lineEdit_post_pokaz_W1,
+                    self.lineEdit_pred_pokaz_W2, self.lineEdit_post_pokaz_W2,
+                    self.lineEdit_pred_pokaz_W3, self.lineEdit_post_pokaz_W3,
+                    self.lineEdit_pred_pokaz_W4, self.lineEdit_post_pokaz_W4,
+                    self.lineEdit_pred_pokaz_G, self.lineEdit_post_pokaz_G,
+                    self.label_month_ras_P, self.label_WM_2, self.label_WM_4, self.label_WM_6, self.label_month_ras_G,
                     self.label_ERROR, self.label_OK_1]
 
         for i in win_pole:
@@ -155,60 +136,60 @@ class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
                     for j in win_pole[1: 12: 2] + win_pole[12: 17]:
                         j.setText("0")
 
-        if self.lineEdit_P1.textEdited[str].connect(lambda: self.text_editing(self.label_PM_2)): pass  # ЭЛЕКТРИЧЕСТВО
-        if self.lineEdit_pokaz_P1.textEdited[str].connect(lambda: self.text_editing(self.label_PM_2)): pass
-        if self.lineEdit_W1.textEdited[str].connect(lambda: self.text_editing(self.label_WM_2)): pass  # ХОЛОД. ВОДА № 1
-        if self.lineEdit_pokaz_W1.textEdited[str].connect(lambda: self.text_editing(self.label_WM_2)): pass
-        if self.lineEdit_W2.textEdited[str].connect(lambda: self.text_editing(self.label_WM_4)): pass  # ГОРЯЧ. ВОДА № 2
-        if self.lineEdit_pokaz_W2.textEdited[str].connect(lambda: self.text_editing(self.label_WM_4)): pass
-        if self.lineEdit_W3.textEdited[str].connect(lambda: self.text_editing(self.label_WM_2)): pass  # ХОЛОД. ВОДА № 3
-        if self.lineEdit_pokaz_W3.textEdited[str].connect(lambda: self.text_editing(self.label_WM_2)): pass
-        if self.lineEdit_W4.textEdited[str].connect(lambda: self.text_editing(self.label_WM_4)): pass  # ГОРЯЧ. ВОДА № 4
-        if self.lineEdit_pokaz_W4.textEdited[str].connect(lambda: self.text_editing(self.label_WM_4)): pass
-        if self.lineEdit_G1.textEdited[str].connect(lambda: self.text_editing(self.label_GM_2)): pass  # ГАЗ
-        if self.lineEdit_pokaz_G1.textEdited[str].connect(lambda: self.text_editing(self.label_GM_2)): pass
+        if self.lineEdit_post_pokaz_P.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_P)): pass
+        if self.lineEdit_pred_pokaz_P.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_P)): pass
+        if self.lineEdit_post_pokaz_W1.textEdited[str].connect(lambda: self.text_editing(self.label_WM_2)): pass
+        if self.lineEdit_pred_pokaz_W1.textEdited[str].connect(lambda: self.text_editing(self.label_WM_2)): pass
+        if self.lineEdit_post_pokaz_W2.textEdited[str].connect(lambda: self.text_editing(self.label_WM_4)): pass
+        if self.lineEdit_pred_pokaz_W2.textEdited[str].connect(lambda: self.text_editing(self.label_WM_4)): pass
+        if self.lineEdit_post_pokaz_W3.textEdited[str].connect(lambda: self.text_editing(self.label_WM_2)): pass
+        if self.lineEdit_pred_pokaz_W3.textEdited[str].connect(lambda: self.text_editing(self.label_WM_2)): pass
+        if self.lineEdit_post_pokaz_W4.textEdited[str].connect(lambda: self.text_editing(self.label_WM_4)): pass
+        if self.lineEdit_pred_pokaz_W4.textEdited[str].connect(lambda: self.text_editing(self.label_WM_4)): pass
+        if self.lineEdit_post_pokaz_G.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_G)): pass
+        if self.lineEdit_pred_pokaz_G.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_G)): pass
 
     def read_only(self):  # режим РЕДАКТИРОВАНИЯ значений
         if self.checkBox_Edit_PS.isChecked():
-            self.lineEdit_pokaz_P1.setReadOnly(False)
-            self.lineEdit_pokaz_W1.setReadOnly(False)
-            self.lineEdit_pokaz_W2.setReadOnly(False)
-            self.lineEdit_pokaz_W3.setReadOnly(False)
-            self.lineEdit_pokaz_W4.setReadOnly(False)
-            self.lineEdit_pokaz_G1.setReadOnly(False)
+            self.lineEdit_pred_pokaz_P.setReadOnly(False)
+            self.lineEdit_pred_pokaz_W1.setReadOnly(False)
+            self.lineEdit_pred_pokaz_W2.setReadOnly(False)
+            self.lineEdit_pred_pokaz_W3.setReadOnly(False)
+            self.lineEdit_pred_pokaz_W4.setReadOnly(False)
+            self.lineEdit_pred_pokaz_G.setReadOnly(False)
         else:
-            self.lineEdit_pokaz_P1.setReadOnly(True)
-            self.lineEdit_pokaz_W1.setReadOnly(True)
-            self.lineEdit_pokaz_W2.setReadOnly(True)
-            self.lineEdit_pokaz_W3.setReadOnly(True)
-            self.lineEdit_pokaz_W4.setReadOnly(True)
-            self.lineEdit_pokaz_G1.setReadOnly(True)
+            self.lineEdit_pred_pokaz_P.setReadOnly(True)
+            self.lineEdit_pred_pokaz_W1.setReadOnly(True)
+            self.lineEdit_pred_pokaz_W2.setReadOnly(True)
+            self.lineEdit_pred_pokaz_W3.setReadOnly(True)
+            self.lineEdit_pred_pokaz_W4.setReadOnly(True)
+            self.lineEdit_pred_pokaz_G.setReadOnly(True)
 
     def text_editing(self, label):
         try:
             self.label_ERROR.clear()
             self.checkBox_Edit_PS.show()
             label.setText('0')
-            if label == self.label_PM_2:  # количество израсходованного за период ЭЛЕКТРИЧЕСТВА
-                if int(self.lineEdit_P1.text()) != 0:
+            if label == self.label_month_ras_P:  # количество израсходованного за период ЭЛЕКТРИЧЕСТВА
+                if int(self.lineEdit_post_pokaz_P.text()) != 0:
                     label.clear()
-                    label.setText(str(int(self.lineEdit_P1.text()) - int(self.lineEdit_pokaz_P1.text())))
+                    label.setText(str(int(self.lineEdit_post_pokaz_P.text()) - int(self.lineEdit_pred_pokaz_P.text())))
             elif label == self.label_WM_2:  # количество израсходованного за период ХОЛОДНОЙ ВОДЫ
-                if int(self.lineEdit_W1.text()) or int(self.lineEdit_W3.text()) != 0:
+                if int(self.lineEdit_post_pokaz_W1.text()) or int(self.lineEdit_post_pokaz_W3.text()) != 0:
                     label.clear()
-                    label.setText(str((int(self.lineEdit_W1.text()) - int(self.lineEdit_pokaz_W1.text())) +
-                                      (int(self.lineEdit_W3.text()) - int(self.lineEdit_pokaz_W3.text()))))
+                    label.setText(str((int(self.lineEdit_post_pokaz_W1.text()) - int(self.lineEdit_pred_pokaz_W1.text())) +
+                                      (int(self.lineEdit_post_pokaz_W3.text()) - int(self.lineEdit_pred_pokaz_W3.text()))))
                     self.label_WM_6.setText(str(int(self.label_WM_2.text()) + int(self.label_WM_4.text())))
             elif label == self.label_WM_4:  # количество израсходованного за период ГОРЯЧЕЙ ВОДЫ
-                if int(self.lineEdit_W2.text()) or int(self.lineEdit_W4.text()) != 0:
+                if int(self.lineEdit_post_pokaz_W2.text()) or int(self.lineEdit_post_pokaz_W4.text()) != 0:
                     label.clear()
-                    label.setText(str((int(self.lineEdit_W2.text()) - int(self.lineEdit_pokaz_W2.text())) +
-                                      (int(self.lineEdit_W4.text()) - int(self.lineEdit_pokaz_W4.text()))))
+                    label.setText(str((int(self.lineEdit_post_pokaz_W2.text()) - int(self.lineEdit_pred_pokaz_W2.text())) +
+                                      (int(self.lineEdit_post_pokaz_W4.text()) - int(self.lineEdit_pred_pokaz_W4.text()))))
                     self.label_WM_6.setText(str(int(self.label_WM_2.text()) + int(self.label_WM_4.text())))
-            elif label == self.label_GM_2:  # количество израсходованного за период ГАЗА
-                if int(self.lineEdit_G1.text()) != 0:
+            elif label == self.label_month_ras_G:  # количество израсходованного за период ГАЗА
+                if int(self.lineEdit_post_pokaz_G.text()) != 0:
                     label.clear()
-                    label.setText(str(int(self.lineEdit_G1.text()) - int(self.lineEdit_pokaz_G1.text())))
+                    label.setText(str(int(self.lineEdit_post_pokaz_G.text()) - int(self.lineEdit_pred_pokaz_G.text())))
         except ValueError:
             self.checkBox_Edit_PS.hide()
             self.label_ERROR.setText('Должно быдь значение!')
@@ -216,24 +197,24 @@ class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
         self.create_list_pokaz_schet()
 
     def create_list_pokaz_schet(self):
-        ppw = self.lineEdit_pokaz_P1.text()  # ПРЕДЫДУЩИЕ значение ЭЛЕКТРИЧЕСТВО
-        apw = self.lineEdit_P1.text()  # ПОСЛЕДНЕЕ значение ЭЛЕКТРИЧЕСТВО
-        pwa_1 = self.lineEdit_pokaz_W1.text()  # ПРЕДЫДУЩИЕ значение ВОДА № 1
-        awa_1 = self.lineEdit_W1.text()  # ПОСЛЕДНЕЕ значение ВОДА № 1
-        pwa_2 = self.lineEdit_pokaz_W2.text()  # ПРЕДЫДУЩИЕ значение ВОДА № 2
-        awa_2 = self.lineEdit_W2.text()  # ПОСЛЕДНЕЕ значение ВОДА № 2
-        pwa_3 = self.lineEdit_pokaz_W3.text()  # ПРЕДЫДУЩИЕ значение ВОДА № 3
-        awa_3 = self.lineEdit_W3.text()  # ПОСЛЕДНЕЕ значение ВОДА № 3
-        pwa_4 = self.lineEdit_pokaz_W4.text()  # ПРЕДЫДУЩИЕ значение ВОДА № 4
-        awa_4 = self.lineEdit_W4.text()  # ПОСЛЕДНЕЕ значение ВОДА № 4
-        pgz = self.lineEdit_pokaz_G1.text()  # ПРЕДЫДУЩИЕ значение ГАЗ
-        agz = self.lineEdit_G1.text()  # ПОСЛЕДНЕЕ значение ГАЗ
+        ppw = self.lineEdit_pred_pokaz_P.text()  # ПРЕДЫДУЩИЕ значение ЭЛЕКТРИЧЕСТВО
+        apw = self.lineEdit_post_pokaz_P.text()  # ПОСЛЕДНЕЕ значение ЭЛЕКТРИЧЕСТВО
+        pwa_1 = self.lineEdit_pred_pokaz_W1.text()  # ПРЕДЫДУЩИЕ значение ВОДА № 1
+        awa_1 = self.lineEdit_post_pokaz_W1.text()  # ПОСЛЕДНЕЕ значение ВОДА № 1
+        pwa_2 = self.lineEdit_pred_pokaz_W2.text()  # ПРЕДЫДУЩИЕ значение ВОДА № 2
+        awa_2 = self.lineEdit_post_pokaz_W2.text()  # ПОСЛЕДНЕЕ значение ВОДА № 2
+        pwa_3 = self.lineEdit_pred_pokaz_W3.text()  # ПРЕДЫДУЩИЕ значение ВОДА № 3
+        awa_3 = self.lineEdit_post_pokaz_W3.text()  # ПОСЛЕДНЕЕ значение ВОДА № 3
+        pwa_4 = self.lineEdit_pred_pokaz_W4.text()  # ПРЕДЫДУЩИЕ значение ВОДА № 4
+        awa_4 = self.lineEdit_post_pokaz_W4.text()  # ПОСЛЕДНЕЕ значение ВОДА № 4
+        pgz = self.lineEdit_pred_pokaz_G.text()  # ПРЕДЫДУЩИЕ значение ГАЗ
+        agz = self.lineEdit_post_pokaz_G.text()  # ПОСЛЕДНЕЕ значение ГАЗ
 
-        pow_mount_ras = self.label_PM_2.text()  # МЕСЯЧНЫЙ расход ЭЛЕКТРИЧЕСТВО
+        pow_mount_ras = self.label_month_ras_P.text()  # МЕСЯЧНЫЙ расход ЭЛЕКТРИЧЕСТВО
         w_cold_mount_ras = self.label_WM_2.text()  # МЕСЯЧНЫЙ расход ХОЛОДНАЯ ВОДА
         w_hot_mount_ras = self.label_WM_4.text()  # МЕСЯЧНЫЙ расход ГОРЯЧАЯ ВОДА
         w_mount_ras = self.label_WM_6.text()  # МЕСЯЧНЫЙ расход ВСЕГО ВОДА
-        gaz_mount_ras = self.label_GM_2.text()  # МЕСЯЧНЫЙ расход ГАЗ
+        gaz_mount_ras = self.label_month_ras_G.text()  # МЕСЯЧНЫЙ расход ГАЗ
 
         # СОЗДАЕМ СПИСОК ПОКАЗАНИЙ ЗА МЕСЯЦ
         # номер месяца ("Январь" = 1)
