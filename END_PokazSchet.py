@@ -6,7 +6,7 @@ import win32api
 from PyQt5.QtWidgets import QApplication
 
 from FUN_KOMMUNAL import *
-from END_CLASS_KOMMUNAL import *
+from END_CLASS_KOMM import *
 
 from UI_PokazSchet import UiWinPokazanya
 
@@ -41,8 +41,8 @@ class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
         self.comboBox_month_PS.activated.connect(self.label_period)  # месяц
         self.comboBox_year_PS.activated.connect(self.label_period)  # год
 
-        self.btn_Left.clicked.connect(self.btn_period_left)  # прокрутка в лево
-        self.btn_Right.clicked.connect(self.btn_period_right)  # прокрутка в право
+        self.btn_Left_PS.clicked.connect(self.btn_period_left)  # прокрутка в лево
+        self.btn_Right_PS.clicked.connect(self.btn_period_right)  # прокрутка в право
 
         # режим РЕДАКТИРОВАНИЯ значений
         self.checkBox_Edit_PS.setChecked(False)
@@ -101,8 +101,8 @@ class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
                     self.lineEdit_pred_pokaz_W3, self.lineEdit_post_pokaz_W3,
                     self.lineEdit_pred_pokaz_W4, self.lineEdit_post_pokaz_W4,
                     self.lineEdit_pred_pokaz_G, self.lineEdit_post_pokaz_G,
-                    self.label_month_ras_P, self.label_WM_2, self.label_WM_4, self.label_WM_6, self.label_month_ras_G,
-                    self.label_ERROR, self.label_OK_1]
+                    self.label_month_ras_P, self.label_month_ras_WC, self.label_month_ras_WH, self.label_month_ras,
+                    self.label_month_ras_G, self.label_ERROR_PS, self.label_OK_PS]
 
         for i in win_pole:
             i.clear()
@@ -110,7 +110,7 @@ class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
         self.checkBox_Edit_PS.show()
 
         if self.comboBox_month_PS.currentIndex() + 1 in sqlite3_read_db(data_base, table, col_name)[0]:
-            self.label_OK_1.setPixmap(QtGui.QPixmap("./Resource/img/Galochka.png"))
+            self.label_OK_PS.setPixmap(QtGui.QPixmap("./Resource/img/Galochka.png"))
 
         if not sqlite3_read_db(data_base, table)[0] and month[self.comboBox_month_PS.currentIndex()] == "Январь":
             table = 'Pokazanya_year_' + str(int(self.comboBox_year_PS.currentText()) - 1)
@@ -138,14 +138,14 @@ class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
 
         if self.lineEdit_post_pokaz_P.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_P)): pass
         if self.lineEdit_pred_pokaz_P.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_P)): pass
-        if self.lineEdit_post_pokaz_W1.textEdited[str].connect(lambda: self.text_editing(self.label_WM_2)): pass
-        if self.lineEdit_pred_pokaz_W1.textEdited[str].connect(lambda: self.text_editing(self.label_WM_2)): pass
-        if self.lineEdit_post_pokaz_W2.textEdited[str].connect(lambda: self.text_editing(self.label_WM_4)): pass
-        if self.lineEdit_pred_pokaz_W2.textEdited[str].connect(lambda: self.text_editing(self.label_WM_4)): pass
-        if self.lineEdit_post_pokaz_W3.textEdited[str].connect(lambda: self.text_editing(self.label_WM_2)): pass
-        if self.lineEdit_pred_pokaz_W3.textEdited[str].connect(lambda: self.text_editing(self.label_WM_2)): pass
-        if self.lineEdit_post_pokaz_W4.textEdited[str].connect(lambda: self.text_editing(self.label_WM_4)): pass
-        if self.lineEdit_pred_pokaz_W4.textEdited[str].connect(lambda: self.text_editing(self.label_WM_4)): pass
+        if self.lineEdit_post_pokaz_W1.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_WC)): pass
+        if self.lineEdit_pred_pokaz_W1.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_WC)): pass
+        if self.lineEdit_post_pokaz_W2.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_WH)): pass
+        if self.lineEdit_pred_pokaz_W2.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_WH)): pass
+        if self.lineEdit_post_pokaz_W3.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_WC)): pass
+        if self.lineEdit_pred_pokaz_W3.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_WC)): pass
+        if self.lineEdit_post_pokaz_W4.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_WH)): pass
+        if self.lineEdit_pred_pokaz_W4.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_WH)): pass
         if self.lineEdit_post_pokaz_G.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_G)): pass
         if self.lineEdit_pred_pokaz_G.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_G)): pass
 
@@ -167,32 +167,38 @@ class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
 
     def text_editing(self, label):
         try:
-            self.label_ERROR.clear()
+            self.label_ERROR_PS.clear()
             self.checkBox_Edit_PS.show()
             label.setText('0')
             if label == self.label_month_ras_P:  # количество израсходованного за период ЭЛЕКТРИЧЕСТВА
                 if int(self.lineEdit_post_pokaz_P.text()) != 0:
                     label.clear()
                     label.setText(str(int(self.lineEdit_post_pokaz_P.text()) - int(self.lineEdit_pred_pokaz_P.text())))
-            elif label == self.label_WM_2:  # количество израсходованного за период ХОЛОДНОЙ ВОДЫ
+            elif label == self.label_month_ras_WC:  # количество израсходованного за период ХОЛОДНОЙ ВОДЫ
                 if int(self.lineEdit_post_pokaz_W1.text()) or int(self.lineEdit_post_pokaz_W3.text()) != 0:
                     label.clear()
-                    label.setText(str((int(self.lineEdit_post_pokaz_W1.text()) - int(self.lineEdit_pred_pokaz_W1.text())) +
-                                      (int(self.lineEdit_post_pokaz_W3.text()) - int(self.lineEdit_pred_pokaz_W3.text()))))
-                    self.label_WM_6.setText(str(int(self.label_WM_2.text()) + int(self.label_WM_4.text())))
-            elif label == self.label_WM_4:  # количество израсходованного за период ГОРЯЧЕЙ ВОДЫ
+                    label.setText(str((int(self.lineEdit_post_pokaz_W1.text()) -
+                                       int(self.lineEdit_pred_pokaz_W1.text())) +
+                                      (int(self.lineEdit_post_pokaz_W3.text()) -
+                                       int(self.lineEdit_pred_pokaz_W3.text()))))
+                    self.label_month_ras.setText(str(int(self.label_month_ras_WC.text()) +
+                                                     int(self.label_month_ras_WH.text())))
+            elif label == self.label_month_ras_WH:  # количество израсходованного за период ГОРЯЧЕЙ ВОДЫ
                 if int(self.lineEdit_post_pokaz_W2.text()) or int(self.lineEdit_post_pokaz_W4.text()) != 0:
                     label.clear()
-                    label.setText(str((int(self.lineEdit_post_pokaz_W2.text()) - int(self.lineEdit_pred_pokaz_W2.text())) +
-                                      (int(self.lineEdit_post_pokaz_W4.text()) - int(self.lineEdit_pred_pokaz_W4.text()))))
-                    self.label_WM_6.setText(str(int(self.label_WM_2.text()) + int(self.label_WM_4.text())))
+                    label.setText(str((int(self.lineEdit_post_pokaz_W2.text()) -
+                                       int(self.lineEdit_pred_pokaz_W2.text())) +
+                                      (int(self.lineEdit_post_pokaz_W4.text()) -
+                                       int(self.lineEdit_pred_pokaz_W4.text()))))
+                    self.label_month_ras.setText(str(int(self.label_month_ras_WC.text()) +
+                                                     int(self.label_month_ras_WH.text())))
             elif label == self.label_month_ras_G:  # количество израсходованного за период ГАЗА
                 if int(self.lineEdit_post_pokaz_G.text()) != 0:
                     label.clear()
                     label.setText(str(int(self.lineEdit_post_pokaz_G.text()) - int(self.lineEdit_pred_pokaz_G.text())))
         except ValueError:
             self.checkBox_Edit_PS.hide()
-            self.label_ERROR.setText('Должно быдь значение!')
+            self.label_ERROR_PS.setText('Должно быдь значение!')
 
         self.create_list_pokaz_schet()
 
@@ -211,9 +217,9 @@ class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
         agz = self.lineEdit_post_pokaz_G.text()  # ПОСЛЕДНЕЕ значение ГАЗ
 
         pow_mount_ras = self.label_month_ras_P.text()  # МЕСЯЧНЫЙ расход ЭЛЕКТРИЧЕСТВО
-        w_cold_mount_ras = self.label_WM_2.text()  # МЕСЯЧНЫЙ расход ХОЛОДНАЯ ВОДА
-        w_hot_mount_ras = self.label_WM_4.text()  # МЕСЯЧНЫЙ расход ГОРЯЧАЯ ВОДА
-        w_mount_ras = self.label_WM_6.text()  # МЕСЯЧНЫЙ расход ВСЕГО ВОДА
+        w_cold_mount_ras = self.label_month_ras_WC.text()  # МЕСЯЧНЫЙ расход ХОЛОДНАЯ ВОДА
+        w_hot_mount_ras = self.label_month_ras_WH.text()  # МЕСЯЧНЫЙ расход ГОРЯЧАЯ ВОДА
+        w_mount_ras = self.label_month_ras.text()  # МЕСЯЧНЫЙ расход ВСЕГО ВОДА
         gaz_mount_ras = self.label_month_ras_G.text()  # МЕСЯЧНЫЙ расход ГАЗ
 
         # СОЗДАЕМ СПИСОК ПОКАЗАНИЙ ЗА МЕСЯЦ
@@ -257,7 +263,7 @@ class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
 
         except sqlite3.IntegrityError:
             self.checkBox_Edit_PS.hide()
-            self.label_ERROR.setText('Такая запись уже существует!')
+            self.label_ERROR_PS.setText('Такая запись уже существует!')
 
     def save_yes_or_not(self):
         self.save_yn = UiWinAdd()

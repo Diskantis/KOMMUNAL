@@ -7,7 +7,8 @@ from PyQt5.QtWidgets import QApplication
 
 from FUN_KOMMUNAL import *
 from END_CLASS_KOMM import *
-from UI_KommunalPlateg import UiWinPlateg
+
+from UI_KommPlateg import UiWinPlateg
 
 
 # ОКНО КОММУНАЛЬНЫХ ПЛАТЕЖЕЙ
@@ -42,25 +43,25 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
         self.comboBox_month_KP.activated.connect(self.label_period)
         self.comboBox_year_KP.activated.connect(self.label_period)
 
-        self.btn_Left.clicked.connect(self.btn_period_left)
-        self.btn_Right.clicked.connect(self.btn_period_right)
+        self.btn_Left_KP.clicked.connect(self.btn_period_left)
+        self.btn_Right_KP.clicked.connect(self.btn_period_right)
 
         # режим РЕДАКТИРОВАНИЯ значений
         self.checkBox_Edit_KP.setChecked(False)
         self.checkBox_Edit_KP.stateChanged.connect(self.read_only)
 
         # ДОБАВЛЕНИЕ ПЛАТЕЖА
-        self.pushButton_add_Plateg_KP.clicked.connect(self.btn_add_plateg)
-
-        # КНОПКИ окна ДОБАВЛЕНИЕ ПЛАТЕЖА
-        self.wa.btn_OK.clicked.connect(self.btn_ok_wa_name)  # кнопка OK
-        self.wa.btn_OK.setAutoDefault(True)  # click on <Enter>
-        self.wa.lineEdit.returnPressed.connect(self.wa.btn_OK.click)
-
-        self.wa.btn_Cancel.clicked.connect(self.btn_cancel_wa)  # кнопка CANCEL
+        # self.pushButton_add_Plateg_KP.clicked.connect(self.btn_add_plateg)
+        #
+        # # КНОПКИ окна ДОБАВЛЕНИЕ ПЛАТЕЖА
+        # self.wa.btn_OK.clicked.connect(self.btn_ok_wa_name)  # кнопка OK
+        # self.wa.btn_OK.setAutoDefault(True)  # click on <Enter>
+        # self.wa.lineEdit.returnPressed.connect(self.wa.btn_OK.click)
+        #
+        # self.wa.btn_Cancel.clicked.connect(self.btn_cancel_wa)  # кнопка CANCEL
 
         # СОХРАНЯЕМ показания
-        self.pushButton_Save_KP.clicked.connect(self.btn_save_kp)
+        # self.pushButton_Save_KP.clicked.connect(self.btn_save_kp)
 
         # ЗАКРЫВАЕТ окно ПЛАТЕЖИ
         self.pushButton_Cancel_KP.clicked.connect(self.btn_cancel_kp)
@@ -161,12 +162,12 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
         self.checkBox_Edit_KP.setChecked(False)
 
         # очищаем поля окна ПЛАТЕЖИ
-        self.dict_pole = {'Электричество': [self.lineEdit_P_sum, self.lineEdit_P_kol, self.lineEdit_P_trf],
+        self.dict_pole = {'Электричество': [self.lineEdit_sum_Power, self.lineEdit_kol_Power, self.lineEdit_trf_Power],
                           'Вода': [self.lineEdit_W_sum, self.lineEdit_W_kol, self.lineEdit_W_trf],
                           'Газ': [self.lineEdit_G_sum, self.lineEdit_G_kol, self.lineEdit_G_trf]}
 
-        self.list_pole = [self.lineEdit_P_trf, self.lineEdit_W_trf, self.lineEdit_G_trf,
-                          self.label_ERROR, self.label_OK_1, self.lineEdit_IS_sum]
+        self.list_pole = [self.lineEdit_trf_Power, self.lineEdit_W_trf, self.lineEdit_G_trf,
+                          self.label_ERROR_KP, self.label_OK_KP, self.lineEdit_IS_sum]
 
         for i in self.dict_pole.values():
             for j in i:
@@ -198,7 +199,7 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
                 if read_table_PS[i][0] == month.index(self.comboBox_month_KP.currentText()) + 1:
                     pred_pokaz = read_table_PS[i]
 
-                    self.lineEdit_P_kol.setText(str(pred_pokaz[14]))
+                    self.lineEdit_kol_Power.setText(str(pred_pokaz[14]))
                     self.lineEdit_W_kol.setText(str(pred_pokaz[17]))
                     self.lineEdit_G_kol.setText(str(pred_pokaz[18]))
 
@@ -207,7 +208,7 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
 
         # проверяем существует ли такая запись в таблице ПЛАТЕЖЕЙ, если ДА то помечаем галочкой
         if self.comboBox_month_KP.currentIndex() + 1 in sqlite3_read_db(data_base, table_plateg, col_name)[0]:
-            self.label_OK_1.setPixmap(QtGui.QPixmap("./Resource/img/Galochka.png"))
+            self.label_OK_KP.setPixmap(QtGui.QPixmap("./Resource/img/Galochka.png"))
 
         self.dop_plategi = {}  # словарь всех ПЛАТЕЖЕЙ
         self.plategi_trf = {}  # словарь только значений тарифов
@@ -271,7 +272,7 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
 
             try: #
                 if i[2] == 'Электричество':
-                    self.lineEdit_P_trf.setText(str(self.plategi_trf.get(i[2], "")))
+                    self.lineEdit_trf_Power.setText(str(self.plategi_trf.get(i[2], "")))
                     self.sum_platega(self.dict_pole, i[2], year)
                 elif i[2] == 'Вода':
                     self.lineEdit_W_trf.setText(str(self.plategi_trf.get(i[2], "")))
@@ -336,15 +337,15 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
     # включение режима редактирования
     def read_only(self):  # режим РЕДАКТИРОВАНИЯ значений
         if self.checkBox_Edit_KP.isChecked():
-            self.lineEdit_P_trf.setReadOnly(False)
+            self.lineEdit_trf_Power.setReadOnly(False)
             self.lineEdit_W_trf.setReadOnly(False)
             self.lineEdit_G_trf.setReadOnly(False)
         else:
-            self.lineEdit_P_trf.setReadOnly(True)
+            self.lineEdit_trf_Power.setReadOnly(True)
             self.lineEdit_W_trf.setReadOnly(True)
             self.lineEdit_G_trf.setReadOnly(True)
 
-        if self.lineEdit_P_trf.textEdited[str].connect(lambda: self.text_editing(self.lineEdit_P_sum)): pass
+        if self.lineEdit_trf_Power.textEdited[str].connect(lambda: self.text_editing(self.lineEdit_sum_Power)): pass
         if self.lineEdit_W_trf.textEdited[str].connect(lambda: self.text_editing(self.lineEdit_W_sum)): pass
         if self.lineEdit_G_trf.textEdited[str].connect(lambda: self.text_editing(self.lineEdit_G_sum)): pass
 
@@ -358,7 +359,7 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
             self.checkBox_Edit_KP.show()
             year = self.comboBox_year_KP.currentText()
 
-            if label == self.lineEdit_P_sum:
+            if label == self.lineEdit_sum_Power:
                 self.sum_platega(self.dict_pole, 'Электричество', year)
             elif label == self.lineEdit_W_sum:
                 self.sum_platega(self.dict_pole, 'Вода', year)
@@ -385,88 +386,7 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
 
         except ValueError:
             self.checkBox_Edit_KP.hide()
-            self.label_ERROR.setText('Должно быдь значение!')
-
-    # подготовка данных к сохранению
-    def create_list_plateg_kommun(self):
-        data = []
-
-        id_row = self.comboBox_month_KP.currentIndex() + 1
-        select_period = self.comboBox_month_KP.currentText() + " " + self.comboBox_year_KP.currentText()
-
-        for i, j in self.dop_plategi.items():
-            data.append((id_row, select_period, i, *j))
-
-        return data
-
-    # кнопка сохранения данных
-    def btn_save_kp(self):
-        data_base = 'Komunal.db'
-        data = self.create_list_plateg_kommun()
-        table = 'Plategi_year_' + data_convert(data[1])
-
-        col_name = 'id'  # Имя колонки
-        row_record = str(data[0][0])  # Имя записи
-        a = sqlite3_read_db(data_base, table, col_name)[0]
-
-        try:
-            if int(row_record) in a:
-                self.save_yes_or_not()
-            else:
-                for data_i in data:
-                    pass
-                    # sqlite3_insert_tbl(data_base, table, data_i)
-
-                self.read_kommunal_plateg()
-
-            # if self.comboBox_month_KP.currentIndex() + 2 != 13:
-            #     b = month[self.comboBox_month_KP.currentIndex() + 1]
-            #     c = self.comboBox_year_KP.currentText()
-            # else:
-            #     b = month[self.comboBox_month_KP.currentIndex() - 11]
-            #     c = str(int(self.comboBox_year_KP.currentText()) + 1)
-            #
-            # self.label_month_year_KP.setText(b + " " + c)  # устанавливает заголовок ("Месяц Год")
-            # self.comboBox_month_KP.setCurrentIndex(month.index(b))  # устанавливает текущий месяц ("Месяц")
-            # self.comboBox_year_KP.setCurrentText(c)  # устанавливает текущий год ("Год")
-
-        except sqlite3.IntegrityError:
-            self.checkBox_Edit_KP.hide()
-            self.label_ERROR.setText('Такая запись уже существует!')
-
-    # режим перезаписи сохраненных данных
-    def save_yes_or_not(self):
-        self.save_yn = UiWinAdd()
-        self.save_yn.name_plateg()
-        self.save_yn.setWindowTitle("Сохранение")
-        self.save_yn.lineEdit.close()
-        self.save_yn.label.setGeometry(QtCore.QRect(10, 0, 270, 70))
-        self.save_yn.label.setText("Вы действительно хотите \n презаписать эту запись?")
-
-        self.save_yn.btn_OK.clicked.connect(self.btn_ok_save_yn)
-        self.save_yn.btn_OK.setAutoDefault(True)
-        self.save_yn.btn_Cancel.clicked.connect(self.btn_cancel_save_yn)
-
-    # перезапись сохраненных данных
-    def btn_ok_save_yn(self):
-        data_base = 'Komunal.db'  # имя базы данных
-        data = self.create_list_plateg_kommun()  # список данных для записи
-        table = 'Plategi_year_' + data_convert(data[1])  # имя таблицы (период)
-        col_name = 'id'  # имя колонки
-        row_record = str(data[0][0])  # имя записи
-
-        for data_i in data:
-            pass
-            # sqlite3_delete_record(data_base, table, col_name, row_record)
-            # sqlite3_insert_tbl(data_base, table, data_i)
-
-        self.read_kommunal_plateg()
-
-        self.save_yn.close()
-
-    # кнопка отмены перезаписи
-    def btn_cancel_save_yn(self):
-        self.save_yn.close()
+            self.label_ERROR_KP.setText('Должно быдь значение!')
 
     # кнопка закрытия окна "Коммунальные платежи"
     def btn_cancel_kp(self):

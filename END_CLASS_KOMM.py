@@ -1,4 +1,3 @@
-
 # ВЫБОР ПЕРИОДА
 class Period:
     def __init__(self, cBox_month, cBox_year, label_month_year):
@@ -14,7 +13,6 @@ class Period:
         y_sel = self.comboBox_year.currentText()  # выбранный в comboBox год
         self.label_month_year.setText(m_sel + " " + y_sel)  # заголовок ("Январь 2020")
         month_index = self.month.index(m_sel)
-
         return month_index
 
     def click_btn_left(self, month_index):  # прокрутка переиода в лево
@@ -29,7 +27,6 @@ class Period:
             self.year_index = str(int(self.comboBox_year.currentText()) - 1)
             self.comboBox_year.setCurrentText(self.year_index)
             self.label_month_year.setText(self.month[month_index] + " " + self.year_index)
-
         return month_index
 
     def click_btn_right(self, month_index):  # прокрутка переиода в право
@@ -44,9 +41,4 @@ class Period:
             self.year_index = str(int(self.comboBox_year.currentText()) + 1)
             self.comboBox_year.setCurrentText(self.year_index)
             self.label_month_year.setText(self.month[month_index] + " " + self.year_index)
-
         return month_index
-
-# class :
-#     def __init__(self, ):
-#         pass

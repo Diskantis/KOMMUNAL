@@ -126,11 +126,11 @@ class UiWinPlateg(object):
         # ЭЛЕКТРИЧЕСТВО создаем виджет с полями
         self.widget_Power = QtWidgets.QWidget(self.frame_PWG_KP)
         self.widget_Power.setGeometry(QtCore.QRect(0, 60, 760, 34))
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.widget_Power.sizePolicy().hasHeightForWidth())
-        self.widget_Power.setSizePolicy(sizePolicy)
+        # sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        # sizePolicy.setHorizontalStretch(0)
+        # sizePolicy.setVerticalStretch(0)
+        # sizePolicy.setHeightForWidth(self.widget_Power.sizePolicy().hasHeightForWidth())
+        # self.widget_Power.setSizePolicy(sizePolicy)
         self.widget_Power.setObjectName("widget_Power")
 
         self.label_Power = QtWidgets.QLabel("Электричество", self.widget_Power)

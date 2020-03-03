@@ -6,7 +6,7 @@ import win32api
 from PyQt5.QtWidgets import QApplication
 
 from FUN_KOMMUNAL import *
-from END_CLASS_KOMMUNAL import *
+from END_CLASS_KOMM import *
 from END_KommunalPlateg import KommunalPlateg
 from UI_KommunalPlateg import UiWinPlateg
 
