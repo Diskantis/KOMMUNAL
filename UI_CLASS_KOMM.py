@@ -8,6 +8,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QWidget
 
 
 def ui_win_head(Win_app):
@@ -171,3 +172,45 @@ def btn_check_plateg(group, x, y, xl, yl):
     btn_check.setCheckable(True)
     btn_check.setObjectName("btn_check")
     return btn_check
+
+
+class UiWinAdd(QWidget):  # метод создания ДОЛНИТЕЛЬНЫХ ПЛАТЕЖЕЙ
+    def __init__(self):
+        super().__init__()
+
+        self.label = label_plateg("Имя платежа", self, 10, 5, 270, 30)
+        self.lineEdit = QtWidgets.QLineEdit(self)
+        self.btn_OK = btn("OK", self, 30, 80, 110, 30)
+        self.btn_Cancel = btn("Отмена", self, 150, 80, 110, 30)
+
+    def name_plateg(self):
+        self.setObjectName("Form")
+        self.setWindowModality(QtCore.Qt.ApplicationModal)
+        self.resize(290, 120)
+        self.setStyleSheet("background-color: rgb(78, 79, 84);")
+        self.setWindowTitle("Добавление платежа")
+
+        self.label.setStyleSheet("font-weight: 700; \n color: rgb(209, 209, 217); \n padding: .1em; \n border: 1px;")
+        self.label.setAlignment(QtCore.Qt.AlignCenter)
+
+        self.lineEdit.setGeometry(QtCore.QRect(10, 40, 270, 30))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        font.setWeight(75)
+        self.lineEdit.setFont(font)
+        self.lineEdit.setStyleSheet("border-radius: 4px; \n color: rgb(209, 209, 217); \n "
+                                    "border: 1px solid rgba(50, 50, 50, 240); \n "
+                                    "background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, "
+                                    "stop:0 rgba(125, 126, 131, 255), stop:0.01 rgba(108, 109, 114, 255), "
+                                    "stop:0.99 rgba(91, 92, 96, 255), stop:1 rgba(125, 126, 131, 255));")
+        self.lineEdit.setAlignment(QtCore.Qt.AlignCenter)
+        self.lineEdit.setFocus()
+        self.lineEdit.setObjectName("lineEdit")
+
+        self.btn_OK.setAutoDefault(True)
+        self.btn_OK.setStyleSheet("font-weight: 700;\n color: rgb(209, 209, 217);\n padding: .5em 1em;")
+
+        self.btn_Cancel.setStyleSheet("font-weight: 700;\n color: rgb(209, 209, 217);\n padding: .5em 1em;")
+
+        self.show()
+

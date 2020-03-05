@@ -591,10 +591,10 @@ class UiWinPlateg(object):
         self.btn_Pl_pdf.setStyleSheet("border: 0px solid;")
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("Resource/img/icon_delete.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        # icon.addPixmap(QtGui.QPixmap("Resource/img/PDF_O2.png"), QtGui.QIcon.Active, QtGui.QIcon.On)
         self.btn_Pl_pdf.setIcon(icon)
         self.btn_Pl_pdf.setIconSize(QtCore.QSize(30, 30))
-        # self.btn_Pl_pdf.setCheckable(True)
         self.btn_Pl_pdf.setObjectName("btn_Pl_pdf")
 
         self.gridLayout.addWidget(self.widget_Plat, position, 0, 1, 1)
+
+

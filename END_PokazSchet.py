@@ -3,10 +3,12 @@
 import sys
 import win32api
 
+from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtWidgets import QApplication
 
 from FUN_KOMMUNAL import *
 from END_CLASS_KOMM import *
+from UI_CLASS_KOMM import UiWinAdd
 
 from UI_PokazSchet import UiWinPokazanya
 

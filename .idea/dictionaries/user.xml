@@ -8,6 +8,7 @@
       <w>kommun</w>
       <w>kommunal</w>
       <w>komunal</w>
+      <w>kred</w>
       <w>kredit</w>
       <w>nomer</w>
       <w>plateg</w>
@@ -20,8 +21,10 @@
       <w>qlineargradient</w>
       <w>raschet</w>
       <w>rashod</w>
+      <w>razdel</w>
       <w>rgba</w>
       <w>schet</w>
+      <w>summ</w>
     </words>
   </dictionary>
 </component>
