@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import sys
-import win32api
 
-from PyQt5 import QtWidgets, QtGui, QtCore
 from PyQt5.QtWidgets import QApplication
 
-from FUN_KOMMUNAL import *
-from END_CLASS_KOMM import *
-from UI_CLASS_KOMM import UiWinAdd
+from Resource.FUN_KOMMUNAL import *
+from Resource.END_CLASS_KOMM import *
+from Resource.UI_CLASS_KOMM import UiWinAdd
 
 from UI_PokazSchet import UiWinPokazanya
 
@@ -167,37 +165,39 @@ class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
             self.lineEdit_pred_pokaz_W4.setReadOnly(True)
             self.lineEdit_pred_pokaz_G.setReadOnly(True)
 
-    def text_editing(self, label):
+    def text_editing(self, label_month):
         try:
             self.label_ERROR_PS.clear()
             self.checkBox_Edit_PS.show()
-            label.setText('0')
-            if label == self.label_month_ras_P:  # количество израсходованного за период ЭЛЕКТРИЧЕСТВА
+            label_month.setText('0')
+            if label_month == self.label_month_ras_P:  # количество израсходованного за период ЭЛЕКТРИЧЕСТВА
                 if int(self.lineEdit_post_pokaz_P.text()) != 0:
-                    label.clear()
-                    label.setText(str(int(self.lineEdit_post_pokaz_P.text()) - int(self.lineEdit_pred_pokaz_P.text())))
-            elif label == self.label_month_ras_WC:  # количество израсходованного за период ХОЛОДНОЙ ВОДЫ
+                    label_month.clear()
+                    label_month.setText(str(int(self.lineEdit_post_pokaz_P.text()) -
+                                            int(self.lineEdit_pred_pokaz_P.text())))
+            elif label_month == self.label_month_ras_WC:  # количество израсходованного за период ХОЛОДНОЙ ВОДЫ
                 if int(self.lineEdit_post_pokaz_W1.text()) or int(self.lineEdit_post_pokaz_W3.text()) != 0:
-                    label.clear()
-                    label.setText(str((int(self.lineEdit_post_pokaz_W1.text()) -
-                                       int(self.lineEdit_pred_pokaz_W1.text())) +
-                                      (int(self.lineEdit_post_pokaz_W3.text()) -
-                                       int(self.lineEdit_pred_pokaz_W3.text()))))
+                    label_month.clear()
+                    label_month.setText(str((int(self.lineEdit_post_pokaz_W1.text()) -
+                                             int(self.lineEdit_pred_pokaz_W1.text())) +
+                                            (int(self.lineEdit_post_pokaz_W3.text()) -
+                                             int(self.lineEdit_pred_pokaz_W3.text()))))
                     self.label_month_ras.setText(str(int(self.label_month_ras_WC.text()) +
                                                      int(self.label_month_ras_WH.text())))
-            elif label == self.label_month_ras_WH:  # количество израсходованного за период ГОРЯЧЕЙ ВОДЫ
+            elif label_month == self.label_month_ras_WH:  # количество израсходованного за период ГОРЯЧЕЙ ВОДЫ
                 if int(self.lineEdit_post_pokaz_W2.text()) or int(self.lineEdit_post_pokaz_W4.text()) != 0:
-                    label.clear()
-                    label.setText(str((int(self.lineEdit_post_pokaz_W2.text()) -
-                                       int(self.lineEdit_pred_pokaz_W2.text())) +
-                                      (int(self.lineEdit_post_pokaz_W4.text()) -
-                                       int(self.lineEdit_pred_pokaz_W4.text()))))
+                    label_month.clear()
+                    label_month.setText(str((int(self.lineEdit_post_pokaz_W2.text()) -
+                                             int(self.lineEdit_pred_pokaz_W2.text())) +
+                                            (int(self.lineEdit_post_pokaz_W4.text()) -
+                                             int(self.lineEdit_pred_pokaz_W4.text()))))
                     self.label_month_ras.setText(str(int(self.label_month_ras_WC.text()) +
                                                      int(self.label_month_ras_WH.text())))
-            elif label == self.label_month_ras_G:  # количество израсходованного за период ГАЗА
+            elif label_month == self.label_month_ras_G:  # количество израсходованного за период ГАЗА
                 if int(self.lineEdit_post_pokaz_G.text()) != 0:
-                    label.clear()
-                    label.setText(str(int(self.lineEdit_post_pokaz_G.text()) - int(self.lineEdit_pred_pokaz_G.text())))
+                    label_month.clear()
+                    label_month.setText(str(int(self.lineEdit_post_pokaz_G.text()) -
+                                            int(self.lineEdit_pred_pokaz_G.text())))
         except ValueError:
             self.checkBox_Edit_PS.hide()
             self.label_ERROR_PS.setText('Должно быдь значение!')

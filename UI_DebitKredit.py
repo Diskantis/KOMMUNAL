@@ -9,7 +9,7 @@
 from PyQt5.QtGui import QIcon
 # from PyQt5.QtWidgets import QCompleter
 
-from UI_CLASS_KOMM import *
+from Resource.UI_CLASS_KOMM import *
 
 
 # окно приложения "ДОХОДЫ/РАСХОДЫ"
@@ -56,17 +56,6 @@ class UiWinDebitKredit(object):
         self.frame_PWG_DK.setGeometry(QtCore.QRect(20, 52, 760, 210))
         self.frame_PWG_DK.setObjectName("frame_PWG_DK")
 
-        # виджет с полями для ДОХОДОВ
-        self.frame_Debit = QtWidgets.QFrame(self.WinDebKred)
-        self.frame_Debit.setGeometry(QtCore.QRect(20, 225, 760, 0))
-        self.frame_Debit.setObjectName("frame_Plategi_KP")
-
-        self.gLayout_Debit = QtWidgets.QGridLayout(self.frame_Debit)
-        self.gLayout_Debit.setSizeConstraint(QtWidgets.QLayout.SetDefaultConstraint)
-        self.gLayout_Debit.setVerticalSpacing(1)
-        self.gLayout_Debit.setContentsMargins(0, 0, 0, 0)
-        self.gLayout_Debit.setObjectName("gLayout_Debit")
-
         self.label_Debit = label("ДОХОДЫ", self.frame_PWG_DK, 0, 2, 760, 30)
         font = QtGui.QFont()
         font.setPointSize(14)
@@ -84,22 +73,11 @@ class UiWinDebitKredit(object):
         self.LINE_RAZDEL.setFrameShape(QtWidgets.QFrame.HLine)
         self.LINE_RAZDEL.setObjectName("LINE_RAZDEL")
 
-        # виджет с полями для РАСХОДОВ
-        self.frame_Kredit = QtWidgets.QFrame(self.WinDebKred)
-        self.frame_Kredit.setGeometry(QtCore.QRect(20, 225, 760, 0))
-        self.frame_Kredit.setObjectName("frame_Kredit")
-
-        self.gLayout_Kredit = QtWidgets.QGridLayout(self.frame_Kredit)
-        self.gLayout_Kredit.setSizeConstraint(QtWidgets.QLayout.SetDefaultConstraint)
-        self.gLayout_Kredit.setVerticalSpacing(1)
-        self.gLayout_Kredit.setContentsMargins(0, 0, 0, 0)
-        self.gLayout_Kredit.setObjectName("gLayout_Kredit")
-
-        self.label_Debit = label("РАСХОДЫ", self.frame_PWG_DK, 0, 107, 760, 30)
+        self.label_Kredit = label("РАСХОДЫ", self.frame_PWG_DK, 0, 107, 760, 30)
         font = QtGui.QFont()
         font.setPointSize(14)
-        self.label_Debit.setFont(font)
-        self.label_Debit.setStyleSheet("font-weight: 700; \n color: rgb(209, 209, 217); \n padding: .1em;")
+        self.label_Kredit.setFont(font)
+        self.label_Kredit.setStyleSheet("font-weight: 700; \n color: rgb(209, 209, 217); \n padding: .1em;")
 
         # кнопка вызова метода для внесения значений ДОХОДОВ/РАСХОДОВ
         self.pushButton_add_Plateg_DK = btn("Добавить доход или расход", self.frame_PWG_DK, 10, 0, 780, 30)
@@ -107,6 +85,28 @@ class UiWinDebitKredit(object):
                                                     "padding: .5em 1em;")
 
         self.verticalLayout.addWidget(self.pushButton_add_Plateg_DK)
+
+        # виджет с полями для ДОХОДОВ
+        self.frame_Debit = QtWidgets.QFrame(self.WinDebKred)
+        self.frame_Debit.setGeometry(QtCore.QRect(20, 55, 760, 0))
+        self.frame_Debit.setObjectName("frame_Plategi_KP")
+
+        self.gLayout_Debit = QtWidgets.QGridLayout(self.frame_Debit)
+        self.gLayout_Debit.setSizeConstraint(QtWidgets.QLayout.SetDefaultConstraint)
+        self.gLayout_Debit.setVerticalSpacing(1)
+        self.gLayout_Debit.setContentsMargins(0, 0, 0, 0)
+        self.gLayout_Debit.setObjectName("gLayout_Debit")
+
+        # виджет с полями для РАСХОДОВ
+        self.frame_Kredit = QtWidgets.QFrame(self.WinDebKred)
+        self.frame_Kredit.setGeometry(QtCore.QRect(20, 140, 760, 0))
+        self.frame_Kredit.setObjectName("frame_Kredit")
+
+        self.gLayout_Kredit = QtWidgets.QGridLayout(self.frame_Kredit)
+        self.gLayout_Kredit.setSizeConstraint(QtWidgets.QLayout.SetDefaultConstraint)
+        self.gLayout_Kredit.setVerticalSpacing(1)
+        self.gLayout_Kredit.setContentsMargins(0, 0, 0, 0)
+        self.gLayout_Kredit.setObjectName("gLayout_Kredit")
 
         # виджет с полем ИТОГОВОЙ СУММЫ
         self.Itog_DK = QtWidgets.QWidget(self.WinDebKred)
@@ -168,3 +168,22 @@ class UiWinDebitKredit(object):
         self.pushButton_Save_DK.setGeometry(QtCore.QRect(550, 5, 110, 30))
         # кнопка ЗАКРЫТИЯ окна
         self.pushButton_Cancel_DK.setGeometry(QtCore.QRect(670, 5, 110, 30))
+
+    def frame_plateg(self, frame_plateg, name, gLayout, position):
+        self.widget_Plat = widget_plateg(frame_plateg, 10, 0, 760, 32)
+        self.label_Plat = label_plateg(name, self.widget_Plat, 40, 1, 130, 30)
+        self.btn_check_Plat = btn_check_plateg(self.widget_Plat, 0, 1, 30, 30)
+
+        color = "(209, 209, 217)"
+        grad_1 = "(91, 92, 96, 255)"
+        grad_2 = "(108, 109, 114, 255)"
+
+        self.lineEdit_sum_Plat = line_edit_pokaz(self.widget_Plat, 180, 1, 170, 30, color, grad_2, grad_1)
+        self.lineEdit_sum_Plat.setReadOnly(False)
+
+        self.btn_del_Plat = btn_check_plateg(self.widget_Plat, 720, 2, 30, 30)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("Resource/img/icon_delete.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.btn_del_Plat.setIcon(icon)
+
+        gLayout.addWidget(self.widget_Plat, position, 0, 1, 1)

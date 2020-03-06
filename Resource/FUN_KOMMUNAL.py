@@ -26,6 +26,14 @@ def denominacia(year, cash):
     return den_cash
 
 
+def check_plateg(pressed):
+    if pressed:
+        status = 1
+    else:
+        status = 0
+    return status
+
+
 def clear_layout(layout):
     if layout is not None:
         while layout.count():

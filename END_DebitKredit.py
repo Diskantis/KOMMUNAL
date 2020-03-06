@@ -3,12 +3,12 @@
 import sys
 import win32api
 
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QApplication
 
-from FUN_KOMMUNAL import *
-from END_CLASS_KOMM import Period
-from UI_CLASS_KOMM import UiWinAdd
+from Resource.FUN_KOMMUNAL import *
+from Resource.END_CLASS_KOMM import Period
+from Resource.UI_CLASS_KOMM import UiWinAdd
 
 from UI_DebitKredit import UiWinDebitKredit
 
@@ -17,8 +17,6 @@ from UI_DebitKredit import UiWinDebitKredit
 class DebitKredit(QtWidgets.QWidget, UiWinDebitKredit):
     def __init__(self, parent=None):
         super(DebitKredit, self).__init__(parent)
-
-        self.wa = UiWinAdd()
 
         self.setupUi_DK(self)
 
@@ -50,7 +48,7 @@ class DebitKredit(QtWidgets.QWidget, UiWinDebitKredit):
         self.btn_Right_DK.clicked.connect(self.btn_period_right)
 
         # ДОБАВЛЕНИЕ новые данные
-        self.pushButton_add_Plateg_DK.clicked.connect(self.btn_add_plateg)
+        self.pushButton_add_Plateg_DK.clicked.connect(self.sel_deb_kred)
 
         # СОХРАНЯЕМ значения ДОХОДЫ/РАСХОДЫ
         self.pushButton_Save_DK.clicked.connect(self.btn_save_dk)
@@ -78,40 +76,108 @@ class DebitKredit(QtWidgets.QWidget, UiWinDebitKredit):
         self.month_index = self.period_dk.click_btn_right(self.month_index)
         self.read_debit_kredit()
 
-    # открывает окно "добавление нового платежа"
-    def btn_add_plateg(self):
-        self.wa.name_plateg()
+    # значения по умолчанию
+    def default_win(self, y=0):
+        self.WinDebKred.resize(800, 400)
+        self.WinDebKred.setMinimumSize(QtCore.QSize(800, 365 + y))
+        self.frame_Debit.setGeometry(QtCore.QRect(20, 85, 760, 0 + y))
+        self.frame_Kredit.setGeometry(QtCore.QRect(20, 190, 760, 0 + y))
+
+    # окно выбора "ДОХОД/РАСХОД"
+    def sel_deb_kred(self):
+        self.radio_plat = UiWinAdd()
+        self.radio_plat.radio_btn()
+
+        self.radio_plat.btn_OK.clicked.connect(self.win_add_name_ok)  # кнопка OK
+        self.radio_plat.btn_OK.setAutoDefault(True)
+
+        self.radio_plat.btn_Cancel.clicked.connect(self.radio_plat_cancel)  # кнопка CANCEL
+
+    # кнопка CANCEL окна выбора "ДОХОД/РАСХОД"
+    def radio_plat_cancel(self):
+        self.radio_plat.close()
+
+    # окно "ИМЯ нового платежа"
+    def win_add_name_ok(self):
+        self.radio_plat.close()
+
         if win32api.GetKeyboardLayout() == 67699721:  # 67699721 - английский 00000409
             win32api.LoadKeyboardLayout("00000419", 1)  # 68748313 - русский    00000419
 
-        # # КНОПКИ окна ДОБАВЛЕНИЕ ПЛАТЕЖА
-        # # кнопка OK
-        # self.wa.btn_OK.clicked.connect(self.btn_ok_wa_name)
-        # self.wa.btn_OK.setAutoDefault(True)
-        # self.wa.lineEdit.returnPressed.connect(self.wa.btn_OK.click)
-        #
-        # # кнопка ОТМЕНА
-        # self.wa.btn_Cancel.clicked.connect(self.btn_cancel_wa)
+        self.win_add = UiWinAdd()
+        self.win_add.name_plateg()
 
-    # кнопка OK окна выбора "ДОХОД/РАСХОД"
-    def btn_ok_wa_name(self):
-        pass
+        self.name = self.win_add.lineEdit.text()
 
-    # кнопка OK окна "сумма нового платежа"
-    def btn_ok_sum_pl(self):
-        pass
+        self.win_add.btn_OK.clicked.connect(self.win_add_summ_ok)  # кнопка OK
+        self.win_add.btn_OK.setAutoDefault(True)
+        self.win_add.lineEdit.returnPressed.connect(self.win_add.btn_OK.click)
 
-    # кнопка CANCEL окна "имя нового платежа"
-    def btn_cancel_wa(self):
-        pass
+        self.win_add.btn_Cancel.clicked.connect(self.win_add_name_cancel)  # кнопка CANCEL
 
-    # кнопка CANCEL окна "сумма нового платежа"
-    def btn_cancel_sum_plat(self):
-        pass
+    # кнопка CANCEL окна "ИМЯ нового платежа"
+    def win_add_name_cancel(self):
+        self.win_add.lineEdit.clear()
+        self.win_add.close()
+
+    # окно "СУММА нового платежа"
+    def win_add_summ_ok(self):
+        self.win_add.lineEdit.clear()
+        self.win_add.close()
+
+        if win32api.GetKeyboardLayout() == 68748313:  # 67699721 - английский 00000409
+            win32api.LoadKeyboardLayout("00000409", 1)  # 68748313 - русский    00000419
+
+        self.summ_plat = UiWinAdd()
+        self.summ_plat.name_plateg()
+        self.summ_plat.label.setText("Сумма платежа")
+
+        self.sum = self.summ_plat.lineEdit.text()
+
+        if self.summ_plat.btn_OK.clicked.connect(lambda: self.create_plat(self.win_resize_y, self.position)): pass
+        self.summ_plat.btn_OK.setAutoDefault(True)
+        self.summ_plat.lineEdit.returnPressed.connect(self.summ_plat.btn_OK.click)
+
+        self.summ_plat.btn_Cancel.clicked.connect(self.win_add_summ_cancel)  # кнопка CANCEL
+
+    # кнопка CANCEL окна "СУММА нового платежа"
+    def win_add_summ_cancel(self):
+        self.summ_plat.lineEdit.clear()
+        self.summ_plat.close()
+
+    def create_plat(self, y, position):
+        self.summ_plat.lineEdit.clear()
+        self.summ_plat.close()
+
+        self.frame_plateg(self.frame_Kredit, self.name, self.gLayout_Kredit, position)
+        self.default_win(y)
+        # self.lineEdit_sum_Plat.setText(text_convert(self.sum) + " руб")
+
+        # self.dop_plategi[self.name] = float(self.sum), 0, 0, 0
+        # self.dict_pole[self.name] = self.lineEdit_sum_Plat
+        # self.plategi_sum += float(self.sum)
+        # self.itog_sum(self.plategi_sum)
+
+        self.win_resize_y += 32
+        self.position += 1
+
+        self.btn_del_Plat.clicked.connect(self.btn_del_plateg)  # возможно удаление после того как был создан доп. плат.
+
+    # УДАЛЕНИЕ "нового платежа"
+    def btn_del_plateg(self):
+        self.widget_Plat.close()
+        self.plategi_sum -= float(self.sum)
+        if self.plategi_sum <= 0:
+            self.lineEdit_IS_sum.clear()
+        self.itog_sum(self.plategi_sum)
+        self.win_resize_y -= 32
+        self.position -= 1
 
     # читаем сохраненые данные из базы данных
     def read_debit_kredit(self):  # читаем данные из базы данных
         pass
+        self.win_resize_y = 35
+        self.position = 1
 
     # вычисляем сумму платежа и заносим в поле сумма
     def sum_platega(self):

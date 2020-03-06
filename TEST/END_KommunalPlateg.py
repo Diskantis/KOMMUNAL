@@ -1,16 +1,14 @@
 # -*- coding: utf-8 -*-
 
 import sys
-import win32api
 
-from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtWidgets import QApplication
 
-from FUN_KOMMUNAL import *
-from END_CLASS_KOMM import *
-from UI_CLASS_KOMM import UiWinAdd
+from Resource.FUN_KOMMUNAL import *
+from Resource.END_CLASS_KOMM import *
+from Resource.UI_CLASS_KOMM import UiWinAdd
 
-from UI_KommunalPlateg import UiWinPlateg
+from TEST.UI_KommunalPlateg import UiWinPlateg
 
 
 # ОКНО КОММУНАЛЬНЫХ ПЛАТЕЖЕЙ
@@ -71,7 +69,7 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
         # ЧИТАЕТ платежи из базы данных
         self.read_kommunal_plateg()
 
-        self.show()
+        # self.show()
 
     # показывает в заголовке выбранный месяц и год
     def label_period(self):
@@ -182,7 +180,7 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
 
         clear_layout(self.gridLayout)  # удаляем все доп. платежи
 
-        file_db = open('Komunal.db', 'a')
+        file_db = open('../Komunal.db', 'a')
         file_db.close()
         data_base = 'Komunal.db'
         table_pokaz = 'Pokazanya_year_' + str(self.comboBox_year_KP.currentText())

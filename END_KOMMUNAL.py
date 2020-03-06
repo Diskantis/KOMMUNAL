@@ -6,9 +6,9 @@ from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMainWindow
 
 from UI_KOMMUNAL import Ui_MainWindow
-from FUN_KOMMUNAL import dt_day, dt_month, dt_year, convert_month
+from Resource.FUN_KOMMUNAL import dt_day, dt_month, dt_year, convert_month
 from END_PokazSchet import PokazSchet
-from END_KommunalPlateg import KommunalPlateg
+from END_KommPlateg import KommunalPlateg
 from END_DebitKredit import DebitKredit
 
 

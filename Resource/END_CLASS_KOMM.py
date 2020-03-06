@@ -1,6 +1,6 @@
 import win32api
-from UI_CLASS_KOMM import *
-from FUN_KOMMUNAL import text_convert
+from Resource.UI_CLASS_KOMM import *
+from Resource.FUN_KOMMUNAL import text_convert
 
 
 # ВЫБОР ПЕРИОДА
@@ -54,6 +54,13 @@ class DataAdd:
     def __init__(self):
         self.win_add = UiWinAdd
 
+    # значения по умолчанию
+    def default_win(self, y=0):
+        self.WinPlateg.resize(800, 400)
+        self.WinPlateg.setMinimumSize(QtCore.QSize(800, 365 + y))
+        self.frame_plategi_KP.setGeometry(QtCore.QRect(20, 225, 760, 0 + y))
+
+
     # открывает окно "добавление нового платежа"
     def btn_add_plateg(self):
         self.win_add.name_plateg()
@@ -61,11 +68,32 @@ class DataAdd:
         if win32api.GetKeyboardLayout() == 67699721:  # 67699721 - английский 00000409
             win32api.LoadKeyboardLayout("00000419", 1)  # 68748313 - русский    00000419
 
+        # КНОПКИ окна ДОБАВЛЕНИЕ ПЛАТЕЖА
+        self.win_add.btn_OK.clicked.connect(self.win_add_name_ok)  # кнопка OK окна ИМЯ
+        self.win_add.btn_OK.setAutoDefault(True)
+        self.win_add.lineEdit.returnPressed.connect(self.win_add.btn_OK.click)
+
+        self.win_add.btn_Cancel.clicked.connect(self.win_add_name_cancel)  # кнопка CANCEL
+
+    def sel_deb_kred(self):
+        self.radio_plat = UiWinAdd()
+        self.radio_plat.name_plateg()
+        self.radio_plat.setWindowTitle("Выбор раздела")
+        self.radio_plat.lineEdit.close()
+        self.radio_plat.label.close()
+        self.radio_plat.rad_btn_1.show()
+        self.radio_plat.rad_btn_2.show()
+
+        # КНОПКИ окна ДОБАВЛЕНИЕ ПЛАТЕЖА
+        self.radio_plat.btn_OK.clicked.connect(self.win_add_name_ok)  # кнопка OK окна ИМЯ
+        self.radio_plat.btn_OK.setAutoDefault(True)
+        self.radio_plat.lineEdit.returnPressed.connect(self.win_add.btn_OK.click)
+
+        self.radio_plat.btn_Cancel.clicked.connect(self.radio_plat_cancel)  # кнопка CANCEL
+
     # кнопка OK окна "имя нового платежа"
-    def win_add_name_ok(self, ):
+    def win_add_name_ok(self):
         self.name = self.win_add.lineEdit.text()
-        self.win_add.lineEdit.clear()
-        self.win_add.close()
 
         self.summ_plat = UiWinAdd()
         self.summ_plat.name_plateg()
@@ -74,10 +102,18 @@ class DataAdd:
         if win32api.GetKeyboardLayout() == 68748313:  # 67699721 - английский 00000409
             win32api.LoadKeyboardLayout("00000409", 1)  # 68748313 - русский    00000419
 
-        if self.summ_plat.btn_OK.clicked.connect(lambda: self.win_add_summ_ok(self.win_resize_y, self.position)): pass
+        self.summ_plat.btn_OK.clicked.connect(self.win_add_summ_ok)  # кнопка OK окна СУММА
         self.summ_plat.btn_OK.setAutoDefault(True)
         self.summ_plat.lineEdit.returnPressed.connect(self.summ_plat.btn_OK.click)
+
         self.summ_plat.btn_Cancel.clicked.connect(self.win_add_summ_cancel)
+
+        self.win_add.lineEdit.clear()
+        self.win_add.close()
+
+    def radio_plat_cancel(self):
+        self.radio_plat.lineEdit.clear()
+        self.radio_plat.close()
 
     # кнопка CANCEL окна "имя нового платежа"
     def win_add_name_cancel(self):
@@ -85,9 +121,15 @@ class DataAdd:
         self.win_add.close()
 
     # кнопка OK окна "сумма нового платежа"
-    def win_add_summ_ok(self, y, position):
-        self.summ_plat.lineEdit.close()
+    def win_add_summ_ok(self):
         self.sum = self.summ_plat.lineEdit.text()
+
+        self.create_plat(self.win_resize_y, self.position)
+
+        self.summ_plat.lineEdit.clear()
+        self.summ_plat.close()
+
+    def create_plat(self, y, position):
         self.frame_plateg(self.name, position)
         self.default_win(y)
         self.lineEdit_sum_Plat.setText(text_convert(self.sum) + " руб")
@@ -99,9 +141,6 @@ class DataAdd:
 
         self.win_resize_y += 32
         self.position += 1
-
-        self.summ_plat.lineEdit.clear()
-        self.summ_plat.close()
 
         self.btn_del_Plat.clicked.connect(self.btn_del_plateg)  # возможно удаление после того как был создан доп. плат.
 

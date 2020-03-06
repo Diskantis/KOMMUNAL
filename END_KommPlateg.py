@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 
 import sys
-import win32api
 
-from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtWidgets import QApplication
 
-from FUN_KOMMUNAL import *
-from END_CLASS_KOMM import *
+from Resource.FUN_KOMMUNAL import *
+from Resource.END_CLASS_KOMM import *
 
 from UI_KommPlateg import UiWinPlateg, UiWinAdd
 
@@ -16,8 +14,6 @@ from UI_KommPlateg import UiWinPlateg, UiWinAdd
 class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
     def __init__(self, parent=None):
         super(KommunalPlateg, self).__init__(parent)
-
-        self.wa = UiWinAdd()
 
         self.setupUi_KP(self)
 
@@ -54,13 +50,6 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
         # ДОБАВЛЕНИЕ ПЛАТЕЖА
         self.pushButton_add_Plateg_KP.clicked.connect(self.btn_add_plateg)
 
-        # КНОПКИ окна ДОБАВЛЕНИЕ ПЛАТЕЖА
-        self.wa.btn_OK.clicked.connect(self.btn_ok_wa_name)  # кнопка OK
-        self.wa.btn_OK.setAutoDefault(True)
-        self.wa.lineEdit.returnPressed.connect(self.wa.btn_OK.click)
-
-        self.wa.btn_Cancel.clicked.connect(self.btn_cancel_wa)  # кнопка CANCEL
-
         # СОХРАНЯЕМ показания
         self.pushButton_Save_KP.clicked.connect(self.btn_save_kp)
 
@@ -95,33 +84,59 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
 
     # открывает окно "добавление нового платежа"
     def btn_add_plateg(self):
-        self.wa.name_plateg()
+        self.win_add = UiWinAdd()
+        self.win_add.name_plateg()
 
         if win32api.GetKeyboardLayout() == 67699721:  # 67699721 - английский 00000409
             win32api.LoadKeyboardLayout("00000419", 1)  # 68748313 - русский    00000419
 
-    # кнопка OK окна "имя нового платежа"
-    def btn_ok_wa_name(self, ):
-        self.name = self.wa.lineEdit.text()
-        self.wa.lineEdit.clear()
-        self.wa.close()
+        # КНОПКИ окна ДОБАВЛЕНИЕ ПЛАТЕЖА
+        self.win_add.btn_OK.clicked.connect(self.win_add_name_ok)  # кнопка OK окна ИМЯ
+        self.win_add.btn_OK.setAutoDefault(True)
+        self.win_add.lineEdit.returnPressed.connect(self.win_add.btn_OK.click)
 
-        self.sum_pl = UiWinAdd()
-        self.sum_pl.name_plateg()
-        self.sum_pl.label.setText("Сумма платежа")
+        self.win_add.btn_Cancel.clicked.connect(self.win_add_name_cancel)  # кнопка CANCEL
+
+    # кнопка OK окна "ИМЯ нового платежа"
+    def win_add_name_ok(self):
+        self.name = self.win_add.lineEdit.text()
+
+        self.win_add.lineEdit.clear()
+        self.win_add.close()
+
+        self.summ_plat = UiWinAdd()
+        self.summ_plat.name_plateg()
+        self.summ_plat.label.setText("Сумма платежа")
 
         if win32api.GetKeyboardLayout() == 68748313:  # 67699721 - английский 00000409
             win32api.LoadKeyboardLayout("00000409", 1)  # 68748313 - русский    00000419
 
-        if self.sum_pl.btn_OK.clicked.connect(lambda: self.btn_ok_sum_pl(self.win_resize_y, self.position)): pass
-        self.sum_pl.btn_OK.setAutoDefault(True)
-        self.sum_pl.lineEdit.returnPressed.connect(self.sum_pl.btn_OK.click)
-        self.sum_pl.btn_Cancel.clicked.connect(self.btn_cancel_sum_pl)
+        self.summ_plat.btn_OK.clicked.connect(self.win_add_summ_ok)  # кнопка OK окна СУММА
+        self.summ_plat.btn_OK.setAutoDefault(True)
+        self.summ_plat.lineEdit.returnPressed.connect(self.summ_plat.btn_OK.click)
 
-    # кнопка OK окна "сумма нового платежа"
-    def btn_ok_sum_pl(self, y, position):
-        self.sum_pl.lineEdit.close()
-        self.sum = self.sum_pl.lineEdit.text()
+        self.summ_plat.btn_Cancel.clicked.connect(self.win_add_summ_cancel)
+
+    # кнопка CANCEL окна "ИМЯ нового платежа"
+    def win_add_name_cancel(self):
+        self.win_add.lineEdit.clear()
+        self.win_add.close()
+
+    # кнопка OK окна "СУММА нового платежа"
+    def win_add_summ_ok(self):
+        self.sum = self.summ_plat.lineEdit.text()
+
+        self.create_plat(self.win_resize_y, self.position)
+
+        self.summ_plat.lineEdit.clear()
+        self.summ_plat.close()
+
+    # кнопка CANCEL окна "СУММА нового платежа"
+    def win_add_summ_cancel(self):
+        self.summ_plat.lineEdit.clear()
+        self.summ_plat.close()
+
+    def create_plat(self, y, position):
         self.frame_plateg(self.name, position)
         self.default_win(y)
         self.lineEdit_sum_Plat.setText(text_convert(self.sum) + " руб")
@@ -134,9 +149,6 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
         self.win_resize_y += 32
         self.position += 1
 
-        self.sum_pl.lineEdit.clear()
-        self.sum_pl.close()
-
         self.btn_del_Plat.clicked.connect(self.btn_del_plateg)  # возможно удаление после того как был создан доп. плат.
 
     def btn_del_plateg(self):
@@ -147,16 +159,6 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
         self.itog_sum(self.plategi_sum)
         self.win_resize_y -= 32
         self.position -= 1
-
-    # кнопка CANCEL окна "имя нового платежа"
-    def btn_cancel_wa(self):
-        self.wa.lineEdit.clear()
-        self.wa.close()
-
-    # кнопка CANCEL окна "сумма нового платежа"
-    def btn_cancel_sum_pl(self):
-        self.sum_pl.lineEdit.clear()
-        self.sum_pl.close()
 
     # читаем сохраненые данные из базы данных
     def read_kommunal_plateg(self):  # читаем данные из базы данных
@@ -315,16 +317,9 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
 
         self.itog_sum(self.plategi_sum)
 
-        self.btn_check_Power.clicked[bool].connect(self.check_plateg)
-        self.btn_check_Water.clicked[bool].connect(self.check_plateg)
-        self.btn_check_Gaz.clicked[bool].connect(self.check_plateg)
-
-    def check_plateg(self, pressed):
-        if pressed:
-            status = 1
-        else:
-            status = 0
-        return status
+        self.btn_check_Power.clicked[bool].connect(check_plateg)
+        self.btn_check_Water.clicked[bool].connect(check_plateg)
+        self.btn_check_Gaz.clicked[bool].connect(check_plateg)
 
     # вычисляем итоговою сумму платежей
     def itog_sum(self, plategi_sum):
@@ -358,7 +353,7 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
         if self.lineEdit_trf_Gaz.textEdited[str].connect(lambda: self.text_editing(self.lineEdit_sum_Gaz)): pass
 
     # режим редактирования
-    def text_editing(self, label):
+    def text_editing(self, lineEdit_sum):
         try:
             if win32api.GetKeyboardLayout() == 68748313:  # 67699721 - английский 00000409
                 win32api.LoadKeyboardLayout("00000409", 1)  # 68748313 - русский    00000419
@@ -367,13 +362,13 @@ class KommunalPlateg(QtWidgets.QWidget, UiWinPlateg):
             self.checkBox_Edit_KP.show()
             year = self.comboBox_year_KP.currentText()
 
-            if label == self.lineEdit_sum_Power:
+            if lineEdit_sum == self.lineEdit_sum_Power:
                 self.sum_platega(self.dict_pole, 'Электричество', year)
-            elif label == self.lineEdit_sum_Water:
+            elif lineEdit_sum == self.lineEdit_sum_Water:
                 self.sum_platega(self.dict_pole, 'Вода', year)
-            elif label == self.lineEdit_sum_Gaz:
+            elif lineEdit_sum == self.lineEdit_sum_Gaz:
                 self.sum_platega(self.dict_pole, 'Газ', year)
-            elif label == self.lineEdit_sum_Plat:
+            elif lineEdit_sum == self.lineEdit_sum_Plat:
                 v = self.dict_pole.get(self.label_Plat.text())
                 pl_sum = float(v.text())
                 list_pl = pl_sum, 0, 0

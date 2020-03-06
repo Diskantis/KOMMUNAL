@@ -7,7 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5.QtGui import QIcon
-from UI_CLASS_KOMM import *
+from Resource.UI_CLASS_KOMM import *
 
 
 class UiWinPokazanya(object):

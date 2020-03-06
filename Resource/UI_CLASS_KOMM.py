@@ -8,7 +8,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QCompleter
 
 
 def ui_win_head(Win_app):
@@ -103,10 +103,11 @@ def line_edit_pokaz(group, x, y, xl, yl, color, grad_1, grad_2):
     font.setPointSize(12)
     font.setWeight(75)
     lineEdit_pokaz.setFont(font)
-    lineEdit_pokaz.setStyleSheet(
-        "border-radius: 4px; \n color: rgb" + color + "; \n border: 1px solid rgba(50, 50, 50, 240); \n "
-        "background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(125, 126, 131, 255), "
-        "stop:0.01 rgba" + grad_1 + ", stop:0.99 rgba" + grad_2 + ", stop:1 rgba(125, 126, 131, 255));")
+    lineEdit_pokaz.setStyleSheet("border-radius: 4px; \n color: rgb" + color
+                                 + "; \n border: 1px solid rgba(50, 50, 50, 240); \n "
+                                   "background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, "
+                                   "stop:0 rgba(125, 126, 131, 255), stop:0.01 rgba" + grad_1 + ", stop:0.99 rgba"
+                                 + grad_2 + ", stop:1 rgba(125, 126, 131, 255));")
     lineEdit_pokaz.setAlignment(QtCore.Qt.AlignCenter)
     lineEdit_pokaz.setReadOnly(True)
     lineEdit_pokaz.setObjectName("lineEdit_pokaz")
@@ -120,10 +121,11 @@ def label_month_ras(name, group, x, y, xl, yl, color, grad_1, grad_2):
     font.setPointSize(12)
     font.setWeight(75)
     label_str_month_ras.setFont(font)
-    label_str_month_ras.setStyleSheet(
-        "border-radius: 4px; \n color: rgb" + color + "; \n border: 1px solid rgba(50, 50, 50, 240); \n "
-        "background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(125, 126, 131, 255), "
-        "stop:0.02 rgba" + grad_1 + ", stop:0.98 rgba" + grad_2 + ", stop:1 rgba(125, 126, 131, 255));")
+    label_str_month_ras.setStyleSheet("border-radius: 4px; \n color: rgb" + color
+                                      + "; \n border: 1px solid rgba(50, 50, 50, 240); \n "
+                                        "background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, "
+                                        "stop:0 rgba(125, 126, 131, 255), stop:0.02 rgba" + grad_1 + ", stop:0.98 rgba"
+                                      + grad_2 + ", stop:1 rgba(125, 126, 131, 255));")
     label_str_month_ras.setAlignment(QtCore.Qt.AlignCenter)
     label_str_month_ras.setObjectName("label_month_ras")
     return label_str_month_ras
@@ -174,14 +176,27 @@ def btn_check_plateg(group, x, y, xl, yl):
     return btn_check
 
 
-class UiWinAdd(QWidget):  # метод создания ДОЛНИТЕЛЬНЫХ ПЛАТЕЖЕЙ
+def radio_btn(name, group, x, y, xl, yl):
+    rad_btn = QtWidgets.QRadioButton(name, group)
+    rad_btn.setGeometry(QtCore.QRect(x, y, xl, yl))
+    font = QtGui.QFont()
+    font.setPointSize(12)
+    rad_btn.setFont(font)
+    rad_btn.setStyleSheet("font-weight: 700; \n color: rgb(209, 209, 217); \n padding: .1em; \n border: 1px;")
+    rad_btn.setObjectName("radioButton")
+    return rad_btn
+
+
+class FramePlat(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.label = label_plateg("Имя платежа", self, 10, 5, 270, 30)
-        self.lineEdit = QtWidgets.QLineEdit(self)
-        self.btn_OK = btn("OK", self, 30, 80, 110, 30)
-        self.btn_Cancel = btn("Отмена", self, 150, 80, 110, 30)
+
+
+
+class UiWinAdd(QWidget):  # метод создания ДОЛНИТЕЛЬНЫХ ПЛАТЕЖЕЙ
+    def __init__(self):
+        super().__init__()
 
     def name_plateg(self):
         self.setObjectName("Form")
@@ -190,9 +205,11 @@ class UiWinAdd(QWidget):  # метод создания ДОЛНИТЕЛЬНЫХ
         self.setStyleSheet("background-color: rgb(78, 79, 84);")
         self.setWindowTitle("Добавление платежа")
 
+        self.label = label_plateg("Имя платежа", self, 10, 5, 270, 30)
         self.label.setStyleSheet("font-weight: 700; \n color: rgb(209, 209, 217); \n padding: .1em; \n border: 1px;")
         self.label.setAlignment(QtCore.Qt.AlignCenter)
 
+        self.lineEdit = QtWidgets.QLineEdit(self)
         self.lineEdit.setGeometry(QtCore.QRect(10, 40, 270, 30))
         font = QtGui.QFont()
         font.setPointSize(12)
@@ -207,10 +224,44 @@ class UiWinAdd(QWidget):  # метод создания ДОЛНИТЕЛЬНЫХ
         self.lineEdit.setFocus()
         self.lineEdit.setObjectName("lineEdit")
 
+        strList = ['Квартира', 'Телефон', 'Интернет', 'Детский сад', 'Зарплата МИША (ОНТ)', 'Зарплата МИША (БелМУЗ)',
+                   'Зарплата ОЛЯ (ОНТ)']
+        completer = QCompleter(strList, self.lineEdit)
+        self.lineEdit.setCompleter(completer)
+        font = QtGui.QFont()
+        font.setPointSize(11)
+        completer.popup().setFont(font)
+        completer.popup().setStyleSheet("font-weight: 600; \n color: rgb(209, 209, 217); \n "
+                                        "background-color: rgb(78, 79, 84); ")
+
+        self.btn_OK = btn("OK", self, 30, 80, 110, 30)
         self.btn_OK.setAutoDefault(True)
         self.btn_OK.setStyleSheet("font-weight: 700;\n color: rgb(209, 209, 217);\n padding: .5em 1em;")
 
+        self.btn_Cancel = btn("Отмена", self, 150, 80, 110, 30)
         self.btn_Cancel.setStyleSheet("font-weight: 700;\n color: rgb(209, 209, 217);\n padding: .5em 1em;")
 
         self.show()
+
+        return strList
+
+    def radio_btn(self):
+        self.setObjectName("Form")
+        self.setWindowModality(QtCore.Qt.ApplicationModal)
+        self.resize(290, 120)
+        self.setStyleSheet("background-color: rgb(78, 79, 84);")
+        self.setWindowTitle("Выбор раздела")
+
+        self.rad_btn_1 = radio_btn("Доходы", self, 35, 25, 110, 30)
+        self.rad_btn_2 = radio_btn("Расходы", self, 155, 25, 110, 30)
+
+        self.btn_OK = btn("OK", self, 30, 80, 110, 30)
+        self.btn_OK.setAutoDefault(True)
+        self.btn_OK.setStyleSheet("font-weight: 700;\n color: rgb(209, 209, 217);\n padding: .5em 1em;")
+
+        self.btn_Cancel = btn("Отмена", self, 150, 80, 110, 30)
+        self.btn_Cancel.setStyleSheet("font-weight: 700;\n color: rgb(209, 209, 217);\n padding: .5em 1em;")
+
+        self.show()
+
 
