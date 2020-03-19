@@ -187,11 +187,25 @@ def radio_btn(name, group, x, y, xl, yl):
     return rad_btn
 
 
-class FramePlat(QWidget):
-    def __init__(self):
-        super().__init__()
+class NewPlateg(QtWidgets.QWidget):
+    def __init__(self, name, summ):
+        super(NewPlateg, self).__init__()
 
+        self.label_Plat = label_plateg(name, self, 40, 1, 130, 30)
+        self.btn_check_Plat = btn_check_plateg(self, 0, 1, 30, 30)
 
+        color = "(209, 209, 217)"
+        grad_1 = "(91, 92, 96, 255)"
+        grad_2 = "(108, 109, 114, 255)"
+
+        self.lineEdit_sum_Plat = line_edit_pokaz(self, 180, 1, 190, 30, color, grad_2, grad_1)
+        self.lineEdit_sum_Plat.setText(summ + " руб")
+        self.lineEdit_sum_Plat.setReadOnly(False)
+
+        self.btn_del_Plat = btn_check_plateg(self, 720, 2, 30, 30)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("Resource/img/icon_delete.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.btn_del_Plat.setIcon(icon)
 
 
 class UiWinAdd(QWidget):  # метод создания ДОЛНИТЕЛЬНЫХ ПЛАТЕЖЕЙ
@@ -224,8 +238,8 @@ class UiWinAdd(QWidget):  # метод создания ДОЛНИТЕЛЬНЫХ
         self.lineEdit.setFocus()
         self.lineEdit.setObjectName("lineEdit")
 
-        strList = ['Квартира', 'Телефон', 'Интернет', 'Детский сад', 'Зарплата МИША (ОНТ)', 'Зарплата МИША (БелМУЗ)',
-                   'Зарплата ОЛЯ (ОНТ)']
+        strList = ['Квартира', 'Телефон', 'Интернет', 'Детский сад', 'Космос ТВ', 'Зарплата МИША (ОНТ)',
+                   'Зарплата МИША (БелМУЗ)', 'Зарплата ОЛЯ (ОНТ)']
         completer = QCompleter(strList, self.lineEdit)
         self.lineEdit.setCompleter(completer)
         font = QtGui.QFont()
@@ -263,5 +277,3 @@ class UiWinAdd(QWidget):  # метод создания ДОЛНИТЕЛЬНЫХ
         self.btn_Cancel.setStyleSheet("font-weight: 700;\n color: rgb(209, 209, 217);\n padding: .5em 1em;")
 
         self.show()
-
-

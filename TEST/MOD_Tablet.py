@@ -21,7 +21,6 @@ import sqlite3  # создание и управление базой данны
 # heading - заголовок
 
 
-# class SQLite3_Data_Base(object):
 def sqlite3_create_db(data_base, table, heading):
     """метод для создания базы данных"""
 

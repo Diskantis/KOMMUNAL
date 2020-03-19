@@ -7,18 +7,18 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5.QtGui import QIcon
-
 from Resource.UI_CLASS_KOMM import *
 
 
+# окно приложения "ПЛАТЕЖИ"
 class UiWinPlateg(object):
     def setupUi_KP(self, WinPlateg):
         self.WinPlateg = WinPlateg
         self.WinPlateg.setObjectName("KommunPlateg")
         self.WinPlateg.setWindowModality(QtCore.Qt.ApplicationModal)
-        self.WinPlateg.resize(800, 400)
-        self.WinPlateg.setGeometry(QtCore.QRect(560, 200, 800, 400))
-        self.WinPlateg.setMinimumSize(QtCore.QSize(800, 400))
+        self.WinPlateg.resize(800, 365)
+        self.WinPlateg.setGeometry(QtCore.QRect(560, 200, 800, 365))
+        self.WinPlateg.setMinimumSize(QtCore.QSize(800, 365))
         self.WinPlateg.setFixedWidth(800)
         self.WinPlateg.setWindowTitle('ПЛАТЕЖИ')
         self.WinPlateg.setWindowIcon(QIcon('Resource/img/dollar.png'))
@@ -51,7 +51,7 @@ class UiWinPlateg(object):
         self.verticalLayout.addWidget(self.frame)
 
         self.frame_PWG_KP = QtWidgets.QWidget(self.WinPlateg)
-        self.frame_PWG_KP.setGeometry(QtCore.QRect(20, 52, 760, 210))
+        self.frame_PWG_KP.setGeometry(QtCore.QRect(20, 52, 760, 167))
         self.frame_PWG_KP.setObjectName("frame_PWG_KP")
 
         self.label_Plategi_KP = label("Комунальные платежи", self.frame_PWG_KP, 0, 0, 760, 30)
@@ -60,9 +60,9 @@ class UiWinPlateg(object):
         self.label_Plategi_KP.setFont(font)
         self.label_Plategi_KP.setStyleSheet("font-weight: 700; \n color: rgb(209, 209, 217); \n padding: .1em;")
 
-        self.label_sum = label("сумма", self.frame_PWG_KP, 180, 35, 170, 25)
-        self.label_kol = label("количество", self.frame_PWG_KP, 360, 35, 170, 25)
-        self.label_trf = label("тариф", self.frame_PWG_KP, 540, 35, 170, 25)
+        self.label_sum = label("сумма", self.frame_PWG_KP, 180, 35, 190, 25)
+        self.label_kol = label("количество", self.frame_PWG_KP, 375, 35, 190, 25)
+        self.label_trf = label("тариф", self.frame_PWG_KP, 570, 35, 190, 25)
 
         # ЭЛЕКТРИЧЕСТВО создаем виджет с полями
         self.widget_Power = widget_plateg(self.frame_PWG_KP, 0, 60, 760, 34)
@@ -73,9 +73,9 @@ class UiWinPlateg(object):
         grad_1 = "(91, 92, 96, 255)"
         grad_2 = "(108, 109, 114, 255)"
 
-        self.lineEdit_sum_Power = line_edit_pokaz(self.widget_Power, 180, 0, 170, 30, color, grad_1, grad_2)
-        self.lineEdit_kol_Power = line_edit_pokaz(self.widget_Power, 360, 0, 170, 30, color, grad_1, grad_2)
-        self.lineEdit_trf_Power = line_edit_pokaz(self.widget_Power, 540, 0, 170, 30, color, grad_2, grad_1)
+        self.lineEdit_sum_Power = line_edit_pokaz(self.widget_Power, 180, 0, 190, 30, color, grad_1, grad_2)
+        self.lineEdit_kol_Power = line_edit_pokaz(self.widget_Power, 375, 0, 190, 30, color, grad_1, grad_2)
+        self.lineEdit_trf_Power = line_edit_pokaz(self.widget_Power, 570, 0, 190, 30, color, grad_2, grad_1)
 
         # ВОДА создаем виджет с полями
         self.widget_Water = widget_plateg(self.frame_PWG_KP, 0, 94, 760, 34)
@@ -84,9 +84,9 @@ class UiWinPlateg(object):
 
         color = "(0, 170, 255)"
 
-        self.lineEdit_sum_Water = line_edit_pokaz(self.widget_Water, 180, 0, 170, 30, color, grad_1, grad_2)
-        self.lineEdit_kol_Water = line_edit_pokaz(self.widget_Water, 360, 0, 170, 30, color, grad_1, grad_2)
-        self.lineEdit_trf_Water = line_edit_pokaz(self.widget_Water, 540, 0, 170, 30, color, grad_2, grad_1)
+        self.lineEdit_sum_Water = line_edit_pokaz(self.widget_Water, 180, 0, 190, 30, color, grad_1, grad_2)
+        self.lineEdit_kol_Water = line_edit_pokaz(self.widget_Water, 375, 0, 190, 30, color, grad_1, grad_2)
+        self.lineEdit_trf_Water = line_edit_pokaz(self.widget_Water, 570, 0, 190, 30, color, grad_2, grad_1)
 
         # ГАЗ создаем виджет с полями
         self.widget_Gaz = widget_plateg(self.frame_PWG_KP, 0, 128, 760, 34)
@@ -95,9 +95,9 @@ class UiWinPlateg(object):
 
         color = "(160, 0, 160)"
 
-        self.lineEdit_sum_Gaz = line_edit_pokaz(self.widget_Gaz, 180, 0, 170, 30, color, grad_1, grad_2)
-        self.lineEdit_kol_Gaz = line_edit_pokaz(self.widget_Gaz, 360, 0, 170, 30, color, grad_1, grad_2)
-        self.lineEdit_trf_Gaz = line_edit_pokaz(self.widget_Gaz, 540, 0, 170, 30, color, grad_2, grad_1)
+        self.lineEdit_sum_Gaz = line_edit_pokaz(self.widget_Gaz, 180, 0, 190, 30, color, grad_1, grad_2)
+        self.lineEdit_kol_Gaz = line_edit_pokaz(self.widget_Gaz, 375, 0, 190, 30, color, grad_1, grad_2)
+        self.lineEdit_trf_Gaz = line_edit_pokaz(self.widget_Gaz, 570, 0, 190, 30, color, grad_2, grad_1)
 
         # РАЗДЕЛИТЕЛЬ между основными и дополнительными платежами
         self.LINE_RAZDEL = QtWidgets.QFrame(self.frame_PWG_KP)
@@ -184,23 +184,3 @@ class UiWinPlateg(object):
         self.WinPlateg.setTabOrder(self.pushButton_Save_KP, self.pushButton_Cancel_KP)
         self.WinPlateg.setTabOrder(self.pushButton_Cancel_KP, self.comboBox_month_KP)
         self.WinPlateg.setTabOrder(self.comboBox_month_KP, self.comboBox_year_KP)
-
-    def frame_plateg(self, name, position):
-
-        self.widget_Plat = widget_plateg(self.frame_plategi_KP, 10, 0, 760, 32)
-        self.label_Plat = label_plateg(name, self.widget_Plat, 40, 1, 130, 30)
-        self.btn_check_Plat = btn_check_plateg(self.widget_Plat, 0, 1, 30, 30)
-
-        color = "(209, 209, 217)"
-        grad_1 = "(91, 92, 96, 255)"
-        grad_2 = "(108, 109, 114, 255)"
-
-        self.lineEdit_sum_Plat = line_edit_pokaz(self.widget_Plat, 180, 1, 170, 30, color, grad_2, grad_1)
-        self.lineEdit_sum_Plat.setReadOnly(False)
-
-        self.btn_del_Plat = btn_check_plateg(self.widget_Plat, 720, 2, 30, 30)
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("Resource/img/icon_delete.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.btn_del_Plat.setIcon(icon)
-
-        self.gridLayout.addWidget(self.widget_Plat, position, 0, 1, 1)

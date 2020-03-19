@@ -15,8 +15,8 @@ from UI_DebitKredit import UiWinDebitKredit
 
 # ОКНО ДОХОДЫ/РАСХОДЫ
 class DebitKredit(QtWidgets.QWidget, UiWinDebitKredit):
-    def __init__(self, parent=None):
-        super(DebitKredit, self).__init__(parent)
+    def __init__(self):
+        super(DebitKredit, self).__init__()
 
         self.setupUi_DK(self)
 
@@ -134,7 +134,7 @@ class DebitKredit(QtWidgets.QWidget, UiWinDebitKredit):
 
         self.sum = self.summ_plat.lineEdit.text()
 
-        if self.summ_plat.btn_OK.clicked.connect(lambda: self.create_plat(self.win_resize_y, self.position)): pass
+        self.summ_plat.btn_OK.clicked.connect(lambda: self.create_plat(self.win_resize_y, self.position))
         self.summ_plat.btn_OK.setAutoDefault(True)
         self.summ_plat.lineEdit.returnPressed.connect(self.summ_plat.btn_OK.click)
 

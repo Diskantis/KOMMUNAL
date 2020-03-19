@@ -6,10 +6,11 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5.QtGui import QIcon
+
 from Resource.UI_CLASS_KOMM import *
 
 
+# окно приложения "ПОКАЗАНИЯ СЧЕТЧИКОВ"
 class UiWinPokazanya(object):
     def setupUi_PS(self, WinPokazanya):
         self.WinPokazanya = WinPokazanya

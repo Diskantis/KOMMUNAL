@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import win32api
 
+from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtWidgets import QApplication
 
 from Resource.FUN_KOMMUNAL import *
-from Resource.END_CLASS_KOMM import *
+from Resource.END_CLASS_KOMM import Period
 from Resource.UI_CLASS_KOMM import UiWinAdd
 
 from UI_PokazSchet import UiWinPokazanya
@@ -13,8 +15,8 @@ from UI_PokazSchet import UiWinPokazanya
 
 # ОКНО ПОКАЗАНИЯ СЧЕТЧИКОВ
 class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
-    def __init__(self, parent=None):
-        super(PokazSchet, self).__init__(parent)
+    def __init__(self):
+        super(PokazSchet, self).__init__()
 
         self.setupUi_PS(self)
 
@@ -81,7 +83,7 @@ class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
 
         file_db = open('Komunal.db', 'a')  # открываем файл базы данных
         file_db.close()
-        data_base = 'Komunal.db'  # имя базы данных
+        self.data_base = 'Komunal.db'  # имя базы данных
         table = 'Pokazanya_year_' + str(self.comboBox_year_PS.currentText())  # имя таблицы
         col_name = 'id'  # Имя колонки
 
@@ -92,7 +94,7 @@ class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
                    'GZ_month_ras integer')
 
         # это нужно если база данных отсутствует
-        sqlite3_create_db(data_base, table, heading)  # создаем таблицу в базе данных
+        sqlite3_create_db(self.data_base, table, heading)  # создаем таблицу в базе данных
 
         # очищаем поля окна ПОКАЗАНИЯ СЧЕТЧИКОВ
         win_pole = [self.lineEdit_pred_pokaz_P, self.lineEdit_post_pokaz_P,
@@ -109,13 +111,13 @@ class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
 
         self.checkBox_Edit_PS.show()
 
-        if self.comboBox_month_PS.currentIndex() + 1 in sqlite3_read_db(data_base, table, col_name)[0]:
+        if self.comboBox_month_PS.currentIndex() + 1 in sqlite3_read_db(self.data_base, table, col_name)[0]:
             self.label_OK_PS.setPixmap(QtGui.QPixmap("./Resource/img/Galochka.png"))
 
-        if not sqlite3_read_db(data_base, table)[0] and month[self.comboBox_month_PS.currentIndex()] == "Январь":
+        if not sqlite3_read_db(self.data_base, table)[0] and month[self.comboBox_month_PS.currentIndex()] == "Январь":
             table = 'Pokazanya_year_' + str(int(self.comboBox_year_PS.currentText()) - 1)
 
-        read_table = sqlite3_read_db(data_base, table)  # читаем таблицу из базе данных
+        read_table = sqlite3_read_db(self.data_base, table)  # читаем таблицу из базе данных
         read_table = read_table[0]
 
         for i in range(len(read_table)):
@@ -136,34 +138,18 @@ class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
                     for j in win_pole[1: 12: 2] + win_pole[12: 17]:
                         j.setText("0")
 
-        if self.lineEdit_post_pokaz_P.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_P)): pass
-        if self.lineEdit_pred_pokaz_P.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_P)): pass
-        if self.lineEdit_post_pokaz_W1.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_WC)): pass
-        if self.lineEdit_pred_pokaz_W1.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_WC)): pass
-        if self.lineEdit_post_pokaz_W2.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_WH)): pass
-        if self.lineEdit_pred_pokaz_W2.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_WH)): pass
-        if self.lineEdit_post_pokaz_W3.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_WC)): pass
-        if self.lineEdit_pred_pokaz_W3.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_WC)): pass
-        if self.lineEdit_post_pokaz_W4.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_WH)): pass
-        if self.lineEdit_pred_pokaz_W4.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_WH)): pass
-        if self.lineEdit_post_pokaz_G.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_G)): pass
-        if self.lineEdit_pred_pokaz_G.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_G)): pass
-
-    def read_only(self):  # режим РЕДАКТИРОВАНИЯ значений
-        if self.checkBox_Edit_PS.isChecked():
-            self.lineEdit_pred_pokaz_P.setReadOnly(False)
-            self.lineEdit_pred_pokaz_W1.setReadOnly(False)
-            self.lineEdit_pred_pokaz_W2.setReadOnly(False)
-            self.lineEdit_pred_pokaz_W3.setReadOnly(False)
-            self.lineEdit_pred_pokaz_W4.setReadOnly(False)
-            self.lineEdit_pred_pokaz_G.setReadOnly(False)
-        else:
-            self.lineEdit_pred_pokaz_P.setReadOnly(True)
-            self.lineEdit_pred_pokaz_W1.setReadOnly(True)
-            self.lineEdit_pred_pokaz_W2.setReadOnly(True)
-            self.lineEdit_pred_pokaz_W3.setReadOnly(True)
-            self.lineEdit_pred_pokaz_W4.setReadOnly(True)
-            self.lineEdit_pred_pokaz_G.setReadOnly(True)
+        self.lineEdit_post_pokaz_P.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_P))
+        self.lineEdit_pred_pokaz_P.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_P))
+        self.lineEdit_post_pokaz_W1.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_WC))
+        self.lineEdit_pred_pokaz_W1.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_WC))
+        self.lineEdit_post_pokaz_W2.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_WH))
+        self.lineEdit_pred_pokaz_W2.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_WH))
+        self.lineEdit_post_pokaz_W3.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_WC))
+        self.lineEdit_pred_pokaz_W3.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_WC))
+        self.lineEdit_post_pokaz_W4.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_WH))
+        self.lineEdit_pred_pokaz_W4.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_WH))
+        self.lineEdit_post_pokaz_G.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_G))
+        self.lineEdit_pred_pokaz_G.textEdited[str].connect(lambda: self.text_editing(self.label_month_ras_G))
 
     def text_editing(self, label_month):
         try:
@@ -204,6 +190,22 @@ class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
 
         self.create_list_pokaz_schet()
 
+    def read_only(self):  # режим РЕДАКТИРОВАНИЯ значений
+        if self.checkBox_Edit_PS.isChecked():
+            self.lineEdit_pred_pokaz_P.setReadOnly(False)
+            self.lineEdit_pred_pokaz_W1.setReadOnly(False)
+            self.lineEdit_pred_pokaz_W2.setReadOnly(False)
+            self.lineEdit_pred_pokaz_W3.setReadOnly(False)
+            self.lineEdit_pred_pokaz_W4.setReadOnly(False)
+            self.lineEdit_pred_pokaz_G.setReadOnly(False)
+        else:
+            self.lineEdit_pred_pokaz_P.setReadOnly(True)
+            self.lineEdit_pred_pokaz_W1.setReadOnly(True)
+            self.lineEdit_pred_pokaz_W2.setReadOnly(True)
+            self.lineEdit_pred_pokaz_W3.setReadOnly(True)
+            self.lineEdit_pred_pokaz_W4.setReadOnly(True)
+            self.lineEdit_pred_pokaz_G.setReadOnly(True)
+
     def create_list_pokaz_schet(self):
         ppw = self.lineEdit_pred_pokaz_P.text()  # ПРЕДЫДУЩИЕ значение ЭЛЕКТРИЧЕСТВО
         apw = self.lineEdit_post_pokaz_P.text()  # ПОСЛЕДНЕЕ значение ЭЛЕКТРИЧЕСТВО
@@ -236,19 +238,18 @@ class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
         return data
 
     def btn_save(self):
-        data_base = 'Komunal.db'
         data = self.create_list_pokaz_schet()
         table = 'Pokazanya_year_' + data_convert(data)
         col_name = 'id'  # Имя колонки
         row_record = str(data[0])  # Имя записи
 
-        a = sqlite3_read_db(data_base, table, col_name)[0]
+        a = sqlite3_read_db(self.data_base, table, col_name)[0]
 
         try:
             if int(row_record) in a:
                 self.save_yes_or_not()
             else:
-                sqlite3_insert_tbl(data_base, table, data)
+                sqlite3_insert_tbl(self.data_base, table, data)
 
                 self.read_pokaz_schet()
 
@@ -280,14 +281,13 @@ class PokazSchet(QtWidgets.QWidget, UiWinPokazanya):
         self.save_yn.btn_Cancel.clicked.connect(self.btn_cancel_save_yn)
 
     def btn_ok_save_yn(self):
-        data_base = 'Komunal.db'  # имя базы данных
         data = self.create_list_pokaz_schet()  # список данных для записи
         table = 'Pokazanya_year_' + data_convert(data)  # имя таблицы (период)
         col_name = 'id'  # имя колонки
         row_record = str(data[0])  # имя записи
 
-        sqlite3_delete_record(data_base, table, col_name, row_record)
-        sqlite3_insert_tbl(data_base, table, data)
+        sqlite3_delete_record(self.data_base, table, col_name, row_record)
+        sqlite3_insert_tbl(self.data_base, table, data)
 
         self.read_pokaz_schet()
 
